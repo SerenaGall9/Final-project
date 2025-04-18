@@ -1,1 +1,9 @@
 .idea/
+.DS_Store
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Ignore all __pycache__ folders anywhere
+**/__pycache__/

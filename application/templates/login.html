@@ -1,0 +1,14 @@
+{% extends "layout2.html" %}
+{% block body_content %}
+<h1>Welcome to Food for Thought</h1>
+<p>Please log in</p>
+<section>
+   <form action="" method="POST">
+      <p><label for="username">Username: </label></p>
+      <p><input type="text" id="username" name="username"/></p>
+      <p><label for="password">Password: </label></p>
+      <p><input type="password" id="password" name="password"/></p>
+      <p><input type=submit value='Login' /></p>
+   </form>
+</section>
+{% endblock %}
