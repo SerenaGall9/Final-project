@@ -1,8 +1,8 @@
 from flask import render_template, url_for, request, redirect, session
 
-from food_for_thought import app
+from application import app
 from datetime import datetime
-from food_for_thought.utilities import get_time_of_day
+from application.utilities import get_time_of_day
 
 import os
 
