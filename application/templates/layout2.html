@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- My Style Sheet -->
+    <link href="../static/styles2.css" rel="stylesheet" type="text/css"/>
+    <title>{{title}}</title>
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/products">Demo Flask App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/welcome/everyone">Welcome</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Products
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/product/0">Product 0</a></li>
+                        <li><a class="dropdown-item" href="/product/1">Product 1</a></li>
+                        <li><a class="dropdown-item" href="/product/2">Product 2</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/products">All Products</a></li>
+                    </ul>
+                </li>
+<!--                <li class="nav-item">-->
+<!--                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>-->
+<!--                </li>-->
+                {% if session['role'] == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" aria-disabled="true">ADMIN!!!</a>
+                </li>
+                {% endif %}
+                {% if session['role'] == 'admin' %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Admin Pages
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/adminpage1">Admin Page 1</a></li>
+                        <li><a class="dropdown-item" href="/adminpage2">Admin Page 2</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        People
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/register">Register</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="/people">All People</a></li>
+                        <li><a class="dropdown-item" href="/peopledb">Database People</a></li>
+                    </ul>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Admin Access
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if session['loggedIn'] == False %}
+                        <li><a class="dropdown-item" href="/login">Login</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+                </li>
+            </ul>
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- First Container -->
+<div class="container-fluid bg-2 text-center">
+    <a name="App"></a>
+    <h3>Demo App</h3>
+    <img src="/static/images/python_flask.png" class="img-responsive img-rounded" style="display:inline"
+         alt="Python Flask Logo"
+         width="10%" height="5%">
+    <p></p>
+    <p>This is a demo application written in Python with the Flask micro web framework.</p>
+    <p>It uses Jinja templates and Bootstrap 5.</p>
+</div>
+<!-- Second Container -->
+<div class="container-fluid bg-3 text-left">
+    <a name="prod_info"></a>
+
+    <h1>{{ title }}</h1>
+    {% block body_content %}
+    {% endblock %}
+
+</div>
+
+<!-- Footer -->
+<footer class="container-fluid bg-4 text-center">
+    <p>&copy; 2024 Victoria Lloyd</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

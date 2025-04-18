@@ -1,0 +1,28 @@
+{% extends "layout2.html" %}
+{% block body_content %}
+
+<section>
+    <div class="form">
+        <form method="POST">
+            {{ form.hidden_tag() }}
+    <div class="row">
+        <div class="col-sm">{{form.first_name.label}}</div>
+        <div class="col-sm">{{form.first_name}}</div>
+    </div>
+    <div class="row">
+        <div class="col-sm">{{form.last_name.label}}</div>
+        <div class="col-sm">{{form.last_name}}</div>
+    </div>
+        <div class="row">
+         <div class="col-sm">{{form.submit}}</div>
+        </div>
+    <hr>
+            <div id="message">
+        {{message}}
+                </div>
+            </form>
+        <a href="/people">Show all people</a>
+    </div>
+     </section>
+
+{% endblock %}

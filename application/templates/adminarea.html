@@ -1,0 +1,15 @@
+{% extends "layout2.html" %}
+{% block body_content %}
+<section>
+   <p>This is the admin only area. You must be logged in to access this area.</p>
+  {% if username==False %}
+  <p>You are not logged in.</p>
+  <br>
+  <p><a href = '/login'>click here to log in</a></p>
+  {% else %}
+  <p>Logged in as {{ username }}<p>
+  <br>
+  <p><b><a href = '/logout'>Log out</a></b></p>
+  {% endif %}
+</section>
+{% endblock %}

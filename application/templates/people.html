@@ -1,0 +1,24 @@
+{% extends "layout2.html" %}
+{% block body_content %}
+
+<section>
+    <div class="row strong">
+        <div class="col-sm">Firstname</div>
+        <div class="col-sm">Lastname</div>
+    </div>
+    <hr>
+    {% for person in people %}
+    <div class="row">
+        <div class="col-sm">
+    <p>{{person.Firstname}}</p>
+        </div>
+        <div class="col-sm">
+    <p>{{ person.Lastname }}</p>
+                </div>
+       <hr>
+    </div>
+    {% endfor %}
+            <a href="/register">Add new person</a>
+ </section>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/main_styles.css">
+    <title>{{title}} Page</title>
+</head>
+<body>
+<header>
+    {% if is_morning %}
+    <p>Good Morning</p>
+    {% else %}
+    <p>Good Afternoon</p>
+    {% endif %}
+
+    <p>Good {{time_slot}}</p>
+</header>
+<h1>{{ title }}</h1>
+{% block body_content %}
+{% endblock %}
+</body>
+</html>
