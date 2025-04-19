@@ -4,15 +4,16 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="persondb"
+  database="projectdb2"
 )
+
 
 def get_db_connection():
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
         password="",
-        database="persondb"
+        database="projectdb2"
     )
 
     return mydb

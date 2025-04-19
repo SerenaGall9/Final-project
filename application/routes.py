@@ -4,25 +4,53 @@ from flask import render_template, url_for, request, redirect, session
 
 from application import app
 from datetime import datetime
+from app import bcrypt
+from application.data_access import get_db_connection
+import mysql
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        entered_password=request.form['password']
+        email = request.form['email']
+        entered_password = request.form['password']
+
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
         user = cursor.fetchone()
+
+        if not user:
+            conn.close()
+            return render_template('login.html', error="User not found. Please sign up first.")
+
+        stored_password = user['password']
+
+        try:
+            # Try checking as if it's a hashed password
+            if bcrypt.check_password_hash(stored_password, entered_password):
+                session['email'] = email
+                session['loggedIn'] = True
+                conn.close()
+                return redirect(url_for('get_vibes'))
+
+        except ValueError:
+            # ValueError means the stored password was not a valid hash
+
+            if stored_password == entered_password:
+                # If correct, rehash the password and store it
+                new_hash = bcrypt.generate_password_hash(entered_password).decode('utf-8')
+                cursor.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
+                conn.commit()
+
+                session['email'] = email
+                session['loggedIn'] = True
+                conn.close()
+                return redirect(url_for('vibes'))
+
+        # If password check failed
         conn.close()
-
-        if user and bcrypt.check_password_hash(user['password_hash'], entered_password):
-            session['username'] = username
-            session['loggedIn'] = True
-            return redirect(url_for('vibes'))
-
         return render_template('login.html', error="Invalid credentials.")
 
     return render_template('login.html')
@@ -31,26 +59,27 @@ def login():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
         existing_user = cursor.fetchone()
 
         if existing_user:
-            return render_template('signup.html', error="Username already exists.")
+            conn.close()
+            return render_template('signup.html', error="User already exists. Please log in.")
 
-        cursor.execute("INSERT INTO users (username, password_hash) VALUES (%s, %s)", (username, password_hash))
+        cursor.execute("INSERT INTO user (email, password) VALUES (%s, %s)", (email, password_hash))
         conn.commit()
         conn.close()
 
         return redirect(url_for('login'))
 
     return render_template('signup.html')
-#
+
 
 # @app.route('/logout')
 # def logout():

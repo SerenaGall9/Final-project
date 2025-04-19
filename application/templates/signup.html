@@ -1,21 +1,21 @@
 {% extends "layout2.html" %}
 {% block body_content %}
-<h1>Welcome to Food for Thought</h1>
+<p style="color: blue;">DEBUG BLOCK: this is rendering</p>
 {% if error %}
-  <p style="color: red;">{{ error }}</p>
+<p style="color: red;">{{ error }}</p>
 {% else %}
-  <p>Please log in</p>
+<h1>Do not have an account with us yet?</h1>
+<p>Sign up and start sharing your thoughts!</p>
 {% endif %}
-
 <section>
    <form action="" method="POST">
       <p><label for="email">Email: </label></p>
       <p><input type="email" id="email" name="email" required/></p>
       <p><label for="password">Password: </label></p>
       <p><input type="password" id="password" name="password" required/></p>
-      <p><input type="submit" value="Login" /></p>
-      <p>Don't have an account?</p>
-      <p><a href="{{ url_for('signup') }}"><button type="button">Sign Up</button></a></p>
+      <p><input type=submit value='Sign Up' /></p>
+      <p>Already have an account?</p>
+      <p><a href="{{ url_for('login') }}"><button type="button">Login</button></a></p>
    </form>
 </section>
 {% endblock %}
