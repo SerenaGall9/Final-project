@@ -104,7 +104,7 @@ CREATE TABLE `restaurants` (
 
 LOCK TABLES `restaurants` WRITE;
 /*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
-INSERT INTO `restaurants` VALUES (1,'Coco Grill & Lounge','34a Shad Thames, London, SE1 2YG',2,'+44 20 7407 7999','https://www.coco-restaurants.com/coco-index.html',5,3);
+
 /*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,12 +126,16 @@ VALUES
 ('Chutney Mary', '73 St. James’s Street, London SW1A 1PH', 4 , '020 7629 6688', 'https://www.chutneymary.com/', 2, 3),
 ('Dishoom Covent Garden', '12 Upper St. Martin’s Lane, London WC2H 9FB', 4, '020 7420 9320', 'https://www.dishoom.com/covent-garden/', 2, 6), 
 ('Gymkhana', '42 Albemarle Street, London W1S 4JH', 4, '020 3011 5900', 'https://gymkhanalondon.com/', 2, 2), 
-('Babel grill house' , '40 Brick lane, London E1 6RF', 3, '+44 20 7392 9675', 'https://www.babelgrillhouse.co.uk/ cuisine_id, vibeid', 4,3), 
+('Babel grill house' , '40 Brick lane, London E1 6RF', 3, '+44 20 7392 9675', 'https://www.babelgrillhouse.co.uk/, cuisine_id, vibeid', 4,3), 
 ('Baba ghanouj' , '105 Gloucester Road, London, SW7 4SS', 4, '02039171660' , 'https://www.babaghanouj.co.uk/', 4, 4), 
 ('Mazar' , '11-12 Battersea Square, Battersea, London, SW11 3RA', 2, '020 7978 5374', 'https://mazarrestaurant.com/' , 4, 2),
 ('Beit El Zaytoun', '15-17 Barrets Green Road, London, NW10 7AE', 1, '+442089611166', 'https://beitelzaytoun.com/menu', 4, 1), 
 ('Nijo', '20 Berkeley Street, London, W1J 8EE', 4 ,'020 98862426' , 'https://nijulondon.com/', 3, 3), 
 ('Inamo sukoshi',  '2 – 10, Bethnal Green Road, London, E1 6GY', 3  ,'0207 186 8800' , 'https://boxpark.co.uk/food-and-drink/inamo-sukoshi/', 3, 6);
+
+UPDATE restaurants
+SET website = 'https://www.babelgrillhouse.co.uk/'
+WHERE restaurant_id = 10;
 
 select *
 from restaurants;

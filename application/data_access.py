@@ -19,5 +19,6 @@ def get_db_connection():
     return mydb
 
 
+
 if __name__ == "__main__":
     main()

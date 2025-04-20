@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout2.html" %}
 
-</body>
-</html>
+{% block body_content %}
+<br />
+<br />
+<br />
+
+<ul>{{ name }}</ul>
+<!--<img src="./images/{{ id }}.png" />-->
+<br>
+<ul>{{ address }}</ul>
+<br>
+<ul>{{ phone_number }}</ul>
+<br>
+<ul>{{ website }}</ul>
+<br>
+<ul>{{ cuisine }}</ul>
+<br>
+<ul>{{ vibe }}</ul>
+<br>
+
+
+
+{% endblock %}
