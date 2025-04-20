@@ -8,6 +8,7 @@ from app import bcrypt
 from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review,get_user,get_reviews_by_user
 
 import mysql
+from application.models import Review, User
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -475,6 +476,12 @@ def review(restaurant_id):
 # do stars from bootstrap
 # dropdown/stars for different things/ tick boxes (would you go here again?), structure, prepopulate the label
 
+# Route to all the reviews written by the user under the account
+@app.route('/account/my-reviews')
+# @login_required
+def my_reviews():
+    reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.date_posted.desc()).all()
+    return render_template('my_reviews.html', reviews=reviews)
 
 @app.route('/health')
 def get_health():
