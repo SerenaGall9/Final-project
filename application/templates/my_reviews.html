@@ -1,0 +1,22 @@
+{% extends "layout2.html" %}
+{% block body_content %}
+
+<h1>My Reviews</h1>
+
+{% if reviews %}
+    <ul>
+        {% for review in reviews %}
+            <li style="margin-bottom: 20px;">
+                <h3>{{review.restaurant.name }}</h3>
+                <p><strong>Rating:</strong> {{ review.rating }} / 5</p>
+                <p><strong>Comment:</strong> {{ review.comment }}</p>
+                <p><em>Posted on {{ review.date_posted.utctime('%Y-%m-%d') }}</em></p>
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You haven’t written any reviews yet.</p>
+    <a href="{{ url_for('restaurants') }}"><button>Find Restaurants to Review</button></a>
+{% endif %}
+{% endblock %}
