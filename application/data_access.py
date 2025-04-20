@@ -140,5 +140,6 @@ def get_vibe_by_id(vibe_id):
         print(f"No vibe found with ID: {vibe_id}")
     return result
 
+
 if __name__ == "__main__":
     main()
