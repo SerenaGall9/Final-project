@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Reviews</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Reviews</h1>
+
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review-card">
+                    <h2>{{ review.restaurant_name }}</h2>
+                    <p><strong>Overall:</strong> {{ review.Rating }}/5</p>
+                    <p><strong>Ambience:</strong> {{ review.Ambience }}/5</p>
+                    <p><strong>Service:</strong> {{ review.Service }}/5</p>
+                    <p><strong>Location:</strong> {{ review.Location }}/5</p>
+                    <p><strong>Value for Money:</strong> {{ review.Value_for_money }}/5</p>
+                    <p><strong>Price Range:</strong> {{ review.price_range }}</p>
+                    <p><strong>Review:</strong> {{ review.Overall_review }}</p>
+                    <p class="date"><em>Posted on {{ review.creation_date.strftime('%d %B %Y') }}</em></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>You haven’t submitted any reviews yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
