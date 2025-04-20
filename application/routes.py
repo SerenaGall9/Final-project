@@ -1,6 +1,8 @@
 from flask import request, redirect, url_for, render_template, flash
 from flask import flash
 from flask import render_template, url_for, request, redirect, session
+from flask_login import current_user
+from flask_login import login_required
 
 from application import app
 from datetime import datetime
@@ -353,9 +355,9 @@ def review(restaurant_id):
 # do stars from bootstrap
 # dropdown/stars for different things/ tick boxes (would you go here again?), structure, prepopulate the label
 
-# Route to all the reviews written by the user under the account
+# Route to all the reviews written by the user under the account- once the user is logged in
 @app.route('/account/my-reviews')
-# @login_required
+@login_required
 def my_reviews():
     reviews = Review.query.filter_by(user_id=current_user.id).order_by(Review.date_posted.desc()).all()
     return render_template('my_reviews.html', reviews=reviews)
