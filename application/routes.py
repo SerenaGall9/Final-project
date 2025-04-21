@@ -5,7 +5,7 @@ from flask import render_template, url_for, request, redirect, session
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines
+from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review
 import mysql
 
 
@@ -33,7 +33,7 @@ def login():
                 session['email'] = email
                 session['loggedIn'] = True
                 conn.close()
-                return redirect(url_for('get_vibes'))
+                return redirect(url_for('show_vibes'))
 
         except ValueError:
             # ValueError means the stored password was not a valid hash
@@ -47,7 +47,7 @@ def login():
                 session['email'] = email
                 session['loggedIn'] = True
                 conn.close()
-                return redirect(url_for('vibes'))
+                return redirect(url_for('show_vibes'))
 
         # If password check failed
         conn.close()
@@ -93,9 +93,15 @@ def display_cuisines(vibe_id):
     selected_vibe = get_vibe_by_id(vibe_id)
     if not selected_vibe:
         return "Vibe not found", 404
+    session['selected_vibe_id'] = vibe_id
     cuisines = get_all_cuisines()
     return render_template('cuisines.html', cuisines=cuisines, vibe=selected_vibe)
 
+
+@app.route('/select_cuisine/<int:cuisine_id>')
+def select_cuisine(cuisine_id):
+    session['selected_cuisine_id'] = cuisine_id  # Use the value from the URL
+    return redirect(url_for('all_restaurants'))
 
 # @app.route('/logout')
 # def logout():
@@ -105,15 +111,6 @@ def display_cuisines(vibe_id):
 #     session['loggedIn'] = False
 #     return redirect(url_for('all_cats'))
 
-@app.route('/vibes')
-def get_vibes():
-    return render_template('layout2.html')
-# # banner, carousel, confirm button, I can't choose button
-#
-@app.route('/cuisines')
-def get_cuisine():
-    return render_template(cuisines.html)
-# dynamic dropdown menu, back button, I can't choose button
 
 #
 @app.route('/all_restaurants')
@@ -128,6 +125,14 @@ def all_restaurants():
     selected_value = request.args.get('value', type=float)
     selected_location_rating = request.args.get('location_rating', type=float)
     selected_price_range = request.args.get('price_range', type=float)
+
+    if selected_cuisine is None and selected_vibe is None:
+        selected_cuisine = session.get('selected_cuisine_id')
+        selected_vibe = session.get('selected_vibe_id')
+    else:
+
+        session['selected_cuisine_id'] = selected_cuisine
+        session['selected_vibe_id'] = selected_vibe
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
@@ -229,12 +234,13 @@ def get_restaurant(id):
         vibe = find_vibe_from_id(restaurant["vibe_id"])
         description = restaurant['description']
         menu_link = restaurant['menu_link']
-
+        reviews = get_reviews_by_restaurant_id(id)
+        restaurant_id = id
         if cuisine is None:
             cuisine = "Unknown cuisine"
         # vibe = restaurant["vibe_id"]
         return render_template('restaurant.html', name=name, phone_number=phone_number, address=address, website=website,
-                               price_range=price_range, cuisine=cuisine, vibe=vibe, description=description, menu_link=menu_link)
+                               price_range=price_range, cuisine=cuisine, vibe=vibe, description=description, menu_link=menu_link, reviews=reviews,restaurant_id=restaurant_id)
     else:
         return render_template("404.html")
 #
@@ -278,72 +284,55 @@ def account():
 
     return render_template('account.html', reviews=reviews)
 
-
-@app.route('/all_restaurants/<int:restaurant_id>')
-# this needs to display the signle restaurant page with image, menu link, details, leave review button and reviews from database
-def restaurant_by_id(restaurant_id):
-    # Fetch the project from the database
-    restaurants = get_restaurant_by_id(restaurant_id)
-
-    if not restaurant:
-        return render_template('404.html'), 404
-
-    # Time-based greeting
-    time_slot = get_time_of_day(datetime.now().hour)
-
-    # Get all projects to create next/previous navigation links
-    all_restaurants = get_restaurants()
-    total = len(all_restaurants)
-
-    # Generate URLs for next and previous projects
-    next_url = url_for('restaurant_by_id', restaurant_id=restaurant_id + 1) if restaurant_id + 1 < 4 else None
-    previous_url = url_for('restaurant_by_id', restaraunt_id=restaurant_id - 1) if restaurant_id > 0 else None
+@app.route("/ethos")
+def ethos():
+    return render_template("ethos.html", title="Our Ethos")
 
 
-    return render_template(
-        'restaurant.html',  # Render project.html
-        restaurant=restaurant,
-        time_slot=time_slot,
-        next_url=next_url,
-        previous_url=previous_url,
-        image_src=image_src,
-        image_gif=image_gif,
-        title=restaurant['name']
-    )
-
-@app.route('/restaurant_detail/<int:restaurant_id>')
-def restaurant_detail(restaurant_id):
-    # Fetch the restaurant from the database by its ID
-    restaurant = get_restaurant_by_id(restaurant_id)
-
-    if not restaurant:
-        return render_template('404.html'), 404  # Handle the case where the restaurant doesn't exist
-
-    return render_template('restaurant_details.html', project=restaurant)
 
 
-@app.route('/account')
-def get_account():
-    return render_template('account.html')
+# @app.route('/review/<int:restaurant_id>', methods=['GET', 'POST'])
+# # prefilled form with restaurant name
+# def review(restaurant_id):
+#     restaurant = restaurants.query.get_or_404(restaurant_id)
+#
+#     if request.method == 'POST':
+#         new_review = Review(
+#             restaurant_id=restaurant.id,
+#             user_id=current_user.id,
+#             rating=int(request.form['rating']),
+#             comment=request.form['comment']
+#         )
+#         db.session.add(new_review)
+#         db.session.commit()
+#         flash('Review added successfully!')
+#         return redirect(url_for('restaurant_detail', id=restaurant.id))
+#
+#     return render_template('review.html', restaurant=restaurant)
 
 @app.route('/review/<int:restaurant_id>', methods=['GET', 'POST'])
-# prefilled form with restaurant name
 def review(restaurant_id):
-    restaurant = Restaurant.query.get_or_404(restaurant_id)
+    restaurant = find_restaurant(restaurant_id)
+
+    if not restaurant:
+        return "Restaurant not found", 404
 
     if request.method == 'POST':
-        new_review = Review(
-            restaurant_id=restaurant.id,
-            user_id=current_user.id,
-            rating=int(request.form['rating']),
-            comment=request.form['comment']
-        )
-        db.session.add(new_review)
-        db.session.commit()
-        flash('Review added successfully!')
-        return redirect(url_for('restaurant_detail', id=restaurant.id))
 
-    return render_template('review.html', restaurant=restaurant)
+        overall = int(request.form['overall_rating'])
+        ambience = int(request.form['ambience_rating'])
+        service = int(request.form['service_rating'])
+        location = int(request.form['location_rating'])
+        value = int(request.form['value_rating'])
+        comment = request.form['comment']
+
+        # Save to database
+        save_review(restaurant_id, overall, ambience, service, location, value, comment)
+        flash('Review submitted successfully!')
+        return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
+
+    return render_template('review_form.html', restaurant=restaurant)
+
 
 # review url->pass in restaurant id->got into database, get restaurant name, put it in a label
 # do stars from bootstrap

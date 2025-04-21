@@ -99,7 +99,7 @@
 <div class="cuisine-grid">
     {% for cuisine in cuisines %}
         <div class="cuisine-card">
-            <a href="{{ url_for('display_cuisines', vibe_id=vibe.vibe_id, cuisine_id=cuisine.cuisine_id) }}">
+            <a href="{{ url_for('select_cuisine', cuisine_id=cuisine.cuisine_id) }}">
                 <img src="{{ cuisine.image_url|default('/static/images/cuisines/default.jpg') }}" alt="{{ cuisine.name }}">
                 <div class="cuisine-name">{{ cuisine.name }}</div>
             </a>

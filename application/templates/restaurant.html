@@ -25,6 +25,31 @@
     <button> MENU LINK </button>
 </a>
 
+<br>
+<em> Reviews </em>
+{% if reviews %}
+  {% for review in reviews %}
+    <div class="review-box">
+      <p><strong>Overall:</strong> {{ review.Rating }}</p>
+      <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
+      <p><strong>Service:</strong> {{ review.Service }}</p>
+      <p><strong>Location:</strong> {{ review.Location }}</p>
+      <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
+      <blockquote class="review-box">
+    "{{ review.Overall_review }}"
+    </blockquote>
+
+      <hr>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No reviews yet. Be the first to leave one!</p>
+{% endif %}
+<br>
+<a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
+  <button>Leave a Review</button>
+</a>
+
 
 <br>
 

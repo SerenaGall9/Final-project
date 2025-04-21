@@ -48,12 +48,12 @@ def find_vibe_from_id(vibe_id):
 
 def get_all_vibes():
     return [
-        {"id": 1, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
-        {"id": 2, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
-        {"id": 3, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
+        {"id": 3, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
+        {"id": 5, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
+        {"id": 6, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
         {"id": 4, "name": "Special Occasion", "image_url": "/static/images/vibes/occassion.png"},
-        {"id": 5, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
-        {"id": 6, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
+        {"id": 1, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
+        {"id": 2, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
     ]
 
 def get_all_cuisines():
@@ -78,6 +78,47 @@ def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):
     conn.close()
     return restaurants
 
+
+def find_restaurant(id):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    sql = "SELECT restaurant_id,name, address, location_id, phone_number, website, price_range, cuisine_id, vibe_id, description, menu_link FROM restaurants WHERE restaurant_id = %s"
+    cursor.execute(sql, (id,))
+
+    restaurant = cursor.fetchone()
+    connection.close()
+
+    if restaurant:
+        return {
+            'restaurant_id': restaurant[0],
+            'name': restaurant[1],
+            'address': restaurant[2],
+            'location_id': restaurant[3],
+            'phone_number': restaurant[4],
+            'website': restaurant[5],
+            'price_range': restaurant[6],
+            'cuisine_id': restaurant[7],
+            'vibe_id': restaurant[8],
+            'description':restaurant[9],
+            'menu_link': restaurant[10]
+        }
+    return None
+
+
+def get_vibe_by_id(vibe_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM vibetype WHERE vibe_id = %s"
+    cursor.execute(query, (vibe_id,))
+
+    result = cursor.fetchone()  # Might be None if no match
+    cursor.close()
+
+    if result is None:
+        print(f"No vibe found with ID: {vibe_id}")
+    return result
+
 def save_review(restaurant_id, overall, ambience, service, location, value, comment):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -95,50 +136,12 @@ def save_review(restaurant_id, overall, ambience, service, location, value, comm
 def get_reviews_by_restaurant_id(restaurant_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM reviews WHERE restaurant_id = %s ORDER BY timestamp DESC", (restaurant_id,))
+    cursor.execute("SELECT * FROM review WHERE restaurant_id = %s ORDER BY creation_date DESC", (restaurant_id,))
     reviews = cursor.fetchall()
     cursor.close()
     conn.close()
     return reviews
 
-def find_restaurant(id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    sql = "SELECT name, address, location_id, phone_number, website, price_range, cuisine_id, vibe_id, description, menu_link FROM restaurants WHERE restaurant_id = %s"
-    cursor.execute(sql, (id,))
-
-    restaurant = cursor.fetchone()
-    connection.close()
-
-    if restaurant:
-        return {
-            'name': restaurant[0],
-            'address': restaurant[1],
-            'location_id': restaurant[2],
-            'phone_number': restaurant[3],
-            'website': restaurant[4],
-            'price_range': restaurant[5],
-            'cuisine_id': restaurant[6],
-            'vibe_id': restaurant[7],
-            'description' :restaurant[8],
-            'menu_link' : restaurant[9]
-        }
-    return None
-
-
-def get_vibe_by_id(vibe_id):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM vibetype WHERE vibe_id = %s"
-    cursor.execute(query, (vibe_id,))
-
-    result = cursor.fetchone()  # Might be None if no match
-    cursor.close()
-
-    if result is None:
-        print(f"No vibe found with ID: {vibe_id}")
-    return result
 
 if __name__ == "__main__":
     main()

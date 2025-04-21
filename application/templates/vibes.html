@@ -89,8 +89,9 @@
 <div class="card-container">
     <div class="card">
         {% for vibe in vibes %}
+
             <p style="background-image: url('{{ vibe['image_url'] }}');">
-                <a href="{{ url_for('display_cuisines', vibe_id=vibe['id']) }}">
+                <a href="{{ url_for('display_cuisines', vibe_id=vibe['id'])}}">
                     <span>{{ vibe['name'] }}</span>
                 </a>
             </p>
