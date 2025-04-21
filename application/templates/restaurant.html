@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout2.html" %}
 
-</body>
-</html>
+{% block body_content %}
+<br />
+<br />
+<br />
+
+<ul>{{ name }}</ul>
+<!--<img src="./images/{{ id }}.png" />-->
+<ul> About: {{ description }} </ul>
+<br>
+<ul>Address: {{ address }}</ul>
+<br>
+<ul>Phone number: {{ phone_number }}</ul>
+<br>
+<ul>Website: {{ website }}</ul>
+<br>
+<ul>Price range: {{ price_range }}</ul>
+<br>
+<ul>Cuisine: {{ cuisine }}</ul>
+<br>
+<ul>Vibe: {{ vibe }}</ul>
+
+<a href="{{ menu_link }}">
+    <button> MENU LINK </button>
+</a>
+
+
+<br>
+
+
+
+{% endblock %}

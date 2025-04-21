@@ -1,14 +1,17 @@
 {% extends "layout2.html" %}
 {% block body_content %}
-<p style="color: blue;">DEBUG BLOCK: this is rendering</p>
 {% if error %}
-<p style="color: red;">{{ error }}</p>
+<p style="color: red; margin-top: 20px; padding-top: 20px;">{{ error }}</p>
 {% else %}
 <h1>Do not have an account with us yet?</h1>
 <p>Sign up and start sharing your thoughts!</p>
 {% endif %}
 <section>
    <form action="" method="POST">
+      <p><label for="name">First Name: </label></p>
+      <p><input type="name" id="name" name="name" required/></p>
+      <p><label for="surname">Surname: </label></p>
+      <p><input type="surname" id="surname" name="surname" required/></p>
       <p><label for="email">Email: </label></p>
       <p><input type="email" id="email" name="email" required/></p>
       <p><label for="password">Password: </label></p>
