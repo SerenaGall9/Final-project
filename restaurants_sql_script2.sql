@@ -86,7 +86,7 @@ CREATE TABLE `restaurants` (
   `location_id` int DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
-  `description` varchar(500) NOT NULL,
+  `description` varchar(5000) NOT NULL,
   `menu_link` varchar(255) DEFAULT NULL,
   `cuisine_id` int DEFAULT NULL,
   `vibe_id` int DEFAULT NULL,
@@ -113,7 +113,7 @@ UNLOCK TABLES;
 select *
 from restaurants;
 
-DROP TABLE restaurants;
+-- DROP TABLE restaurants;
 
 INSERT into restaurants (name, address, location_id, phone_number, website, description, menu_link, cuisine_id, vibe_id) 
 VALUES 
