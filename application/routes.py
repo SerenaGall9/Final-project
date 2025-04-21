@@ -5,7 +5,7 @@ from flask import render_template, url_for, request, redirect, session
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant
+from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines
 import mysql
 
 
@@ -81,6 +81,20 @@ def signup():
         return redirect(url_for('login'))
 
     return render_template('signup.html')
+
+
+@app.route('/vibes')
+def show_vibes(name=None):
+    vibes = get_all_vibes()
+    return render_template('vibes.html', vibes=vibes, name=name)
+
+@app.route('/cuisines/<int:vibe_id>')
+def display_cuisines(vibe_id):
+    selected_vibe = get_vibe_by_id(vibe_id)
+    if not selected_vibe:
+        return "Vibe not found", 404
+    cuisines = get_all_cuisines()
+    return render_template('cuisines.html', cuisines=cuisines, vibe=selected_vibe)
 
 
 # @app.route('/logout')
@@ -210,7 +224,7 @@ def get_restaurant(id):
         phone_number = restaurant["phone_number"]
         address = restaurant["address"]
         website = restaurant["website"]
-        price_range=restaurant["price_range"]
+        price_range = restaurant["price_range"]
         cuisine = find_cuisine_from_id(restaurant["cuisine_id"])
         vibe = find_vibe_from_id(restaurant["vibe_id"])
         description = restaurant['description']

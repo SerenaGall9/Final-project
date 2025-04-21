@@ -1,10 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout2.html" %}
+{% block title %}Pick a Vibe{% endblock %}
+{% block body_content %}
 
-</body>
-</html>
+<style>
+    /* Container for the card */
+    .card-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding-top: 60px; /* Add padding to account for fixed navbar */
+    }
+
+    /* Card styling */
+    .card {
+        width: 1400px;
+        height: 1800px;
+        display: flex;
+        gap: 5px;
+        padding: .4em;
+        position: relative;
+    }
+
+    .card p {
+        height: 100%;
+        flex: 1;
+        overflow: hidden;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all .5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .card p:hover {
+        flex: 4;
+    }
+
+    .card p span {
+        min-width: 14em;
+        padding: .5em;
+        text-align: center;
+        transform: rotate(90deg); /* Changed from -90deg to 90deg */
+        transition: all .5s;
+        text-transform: uppercase;
+        color: white;
+        letter-spacing: .1em;
+        font-weight: bold;
+        z-index: 1;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+
+    .card p:hover span {
+        transform: rotate(0);
+    }
+
+    /* Overlay to make text more readable */
+    .card p::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.3);
+        transition: background 0.3s;
+    }
+
+    .card p:hover::after {
+        background: rgba(0,0,0,0.5);
+    }
+
+    /* Style for the anchor tags */
+    .card p a {
+        text-decoration: none;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="card-container">
+    <div class="card">
+        {% for vibe in vibes %}
+            <p style="background-image: url('{{ vibe['image_url'] }}');">
+                <a href="{{ url_for('display_cuisines', vibe_id=vibe['id']) }}">
+                    <span>{{ vibe['name'] }}</span>
+                </a>
+            </p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
