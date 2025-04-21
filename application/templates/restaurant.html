@@ -5,25 +5,39 @@
 <br />
 <br />
 
-<ul>{{ name }}</ul>
-<!--<img src="./images/{{ id }}.png" />-->
-<ul> About: {{ description }} </ul>
-<br>
-<ul>Address: {{ address }}</ul>
-<br>
-<ul>Phone number: {{ phone_number }}</ul>
-<br>
-<ul>Website: {{ website }}</ul>
-<br>
-<ul>Price range: {{ price_range }}</ul>
-<br>
-<ul>Cuisine: {{ cuisine }}</ul>
-<br>
-<ul>Vibe: {{ vibe }}</ul>
+<p class="fw-lighter">Lighter weight text (relative to the parent element).</p>
 
-<a href="{{ menu_link }}">
-    <button> MENU LINK </button>
-</a>
+<div class="content">
+    <h1>{{ name }}</h1>
+    <!--<img src="./images/{{ id }}.png" />-->
+    <i>Description</i>
+    <ul> {{ description }} </ul>
 
+    <br>
+    <i>Address:</i><ul>{{ address }}</ul>
+    <br>
+    <i>Phone Number:</i><ul>{{ phone_number }}</ul>
+    <br>
+    <i>Website:</i><ul>{{ website }}</ul>
+    <br>
+    <i>Cuisine Type:</i><ul>{{ cuisine }}</ul>
+    <br>
+    <i>Price range:</i><ul>{{ price_range }}</ul>
+    <br>
+    <i>Vibe Type:</i><ul>{{ vibe }}</ul>
+                               ⭐⭐⭐⭐⭐
+    <strong> Click Here to Check out the Menu! </strong>
+    <a href="{{ menu_link }}">
+        <button> MENU </button>
+    </a>
+</div>
+
+
+
+<br>
+<em> Reviews </em>
+
+<br>
+<button> Leave a Review</button>
 
 {% endblock %}
