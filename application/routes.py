@@ -9,6 +9,7 @@ def show_vibes(name=None):
     vibes = data_access.get_all_vibes()
     return render_template('vibes.html', vibes=vibes, name=name)
 
+
 @app.route('/cuisines/<int:vibe_id>')
 def display_cuisines(vibe_id):
     selected_vibe = data_access.get_vibe_by_id(vibe_id)
@@ -17,10 +18,12 @@ def display_cuisines(vibe_id):
     cuisines = data_access.get_all_cuisines()
     return render_template('cuisine.html', cuisines=cuisines, vibe=selected_vibe)
 
+
 @app.route('/all_restaurants')
 def all_restaurants():
     restaurants = data_access.get_all_restaurants()
     return render_template('restaurants.html', restaurants=restaurants)
+
 
 @app.route('/all_restaurants/<int:restaurant_id>')
 def restaurant_by_id(restaurant_id):

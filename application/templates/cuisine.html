@@ -1,36 +1,112 @@
 {% extends "layout2.html" %}
-{% block title %}Cuisines{% endblock %}
-{% block content %}
+{% block title %}Choose a Cuisine{% endblock %}
+{% block body_content %}
 
-<head>
 <style>
-body {
-  height: 3000px;
-  background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
-}
+    .page-header {
+        text-align: center;
+        margin: 2rem 0;
+        padding-top: 60px; /* Add padding for fixed navbar */
+    }
+
+    .selected-vibe {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .cuisine-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        padding: 0 2rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .cuisine-card {
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        height: 200px;
+    }
+
+    .cuisine-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .cuisine-card img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+    }
+
+    .cuisine-name {
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .cuisine-card a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Overlay effect on hover */
+    .cuisine-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.3s ease;
+        z-index: 1;
+    }
+
+    .cuisine-card:hover::before {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .cuisine-card a {
+        z-index: 2;
+    }
 </style>
-</head>
-<body>
 
-<h1>You picked [vibe] </h1>
+<div class="page-header">
+    <h1>Choose a Cuisine</h1>
+</div>
 
-<!--  <h2>Select a Cuisine for the "{{ vibe }}" vibe</h2>-->
+<div class="selected-vibe">
+    You have picked: <strong>{{ vibe.name }}</strong>
+</div>
 
- <form action="{{ url_for('show_restaurants') }}" method="get">
-    <input type="hidden" name="vibe_id" value="{{ vibe.vibe_id }}">
-    <label for="cuisine">Cuisine:</label>
-    <select name="cuisine" id="cuisine">
-      {% for cuisine in cuisines %}
-        <option value="{{ cuisine }}">{{ cuisine }}</option>
-      {% endfor %}
-    </select>
+<div class="cuisine-grid">
+    {% for cuisine in cuisines %}
+        <div class="cuisine-card">
+            <a href="{{ url_for('display_restaurants', vibe_id=vibe.vibe_id, cuisine_id=cuisine.cuisine_id) }}">
+                <img src="{{ cuisine.image_url|default('/static/images/cuisines/default.jpg') }}" alt="{{ cuisine.name }}">
+                <div class="cuisine-name">{{ cuisine.name }}</div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
 
-    <button type="submit">Find Restaurants</button>
-  </form>
-
-<h2 style="position:fixed;">Scroll to see the effect.</h2>
-
-</body>
 {% endblock %}
 
 
