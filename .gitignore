@@ -1,3 +1,4 @@
 	.idea/
 	application/__pycache__/
 	application/forms/__pycache__/
+	__pycache__/

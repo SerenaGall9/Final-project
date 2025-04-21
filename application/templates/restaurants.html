@@ -1,0 +1,45 @@
+{% extends "layout2.html" %}
+
+{% block body_content %}
+<br />
+<br />
+<br />
+
+<ul>{{ name }}</ul>
+<!--<img src="./images/{{ id }}.png" />-->
+<ul> {{ description }} </ul>
+<br>
+<ul>{{ address }}</ul>
+<br>
+<ul>{{ phone_number }}</ul>
+<br>
+<ul>{{ website }}</ul>
+<br>
+<ul>{{ cuisine }}</ul>
+<br>
+<ul>{{ vibe }}</ul>
+
+<a href="{{ menu_link }}">
+    <button> MENU LINK </button>
+</a>
+
+
+ <a href="{{ url_for('review_restaurant', restaurant_id=restaurant.id) }}">Leave a Review</a>
+
+  <hr>
+  <h3>Reviews</h3>
+  {% for review in reviews %}
+    <div class="review-box">
+      <p><strong>Submitted on:</strong> {{ review.timestamp }}</p>
+      <p>Overall: {% for i in range(review.overall_rating) %}★{% endfor %}{% for i in range(5 - review.overall_rating) %}☆{% endfor %}</p>
+      <p>Ambience: {% for i in range(review.ambience_rating) %}★{% endfor %}{% for i in range(5 - review.ambience_rating) %}☆{% endfor %}</p>
+      <p>Service: {% for i in range(review.service_rating) %}★{% endfor %}{% for i in range(5 - review.service_rating) %}☆{% endfor %}</p>
+      <p>Location: {% for i in range(review.location_rating) %}★{% endfor %}{% for i in range(5 - review.location_rating) %}☆{% endfor %}</p>
+      <p>Value: {% for i in range(review.value_rating) %}★{% endfor %}{% for i in range(5 - review.value_rating) %}☆{% endfor %}</p>
+      {% if review.comment %}
+        <p><em>"{{ review.comment }}"</em></p>
+      {% endif %}
+      <hr>
+    </div>
+  {% endfor %}
+{% endblock %}

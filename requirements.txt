@@ -2,3 +2,5 @@ Flask
 flask_wtf
 wtforms
 mysql-connector-python
+flask-login==0.6.3
+flask_bcrypt

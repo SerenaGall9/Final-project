@@ -1,0 +1,36 @@
+{% extends "layout2.html" %}
+{% block title %}Cuisines{% endblock %}
+{% block content %}
+
+<head>
+<style>
+body {
+  height: 3000px;
+  background: linear-gradient(141deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 75%);
+}
+</style>
+</head>
+<body>
+
+<h1>You picked [vibe] </h1>
+
+<!--  <h2>Select a Cuisine for the "{{ vibe }}" vibe</h2>-->
+
+ <form action="{{ url_for('show_restaurants') }}" method="get">
+    <input type="hidden" name="vibe_id" value="{{ vibe.vibe_id }}">
+    <label for="cuisine">Cuisine:</label>
+    <select name="cuisine" id="cuisine">
+      {% for cuisine in cuisines %}
+        <option value="{{ cuisine }}">{{ cuisine }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit">Find Restaurants</button>
+  </form>
+
+<h2 style="position:fixed;">Scroll to see the effect.</h2>
+
+</body>
+{% endblock %}
+
+

@@ -1,28 +1,21 @@
 {% extends "layout2.html" %}
 {% block body_content %}
-
+<p style="color: blue;">DEBUG BLOCK: this is rendering</p>
+{% if error %}
+<p style="color: red;">{{ error }}</p>
+{% else %}
+<h1>Do not have an account with us yet?</h1>
+<p>Sign up and start sharing your thoughts!</p>
+{% endif %}
 <section>
-    <div class="form">
-        <form method="POST">
-            {{ form.hidden_tag() }}
-    <div class="row">
-        <div class="col-sm">{{form.first_name.label}}</div>
-        <div class="col-sm">{{form.first_name}}</div>
-    </div>
-    <div class="row">
-        <div class="col-sm">{{form.last_name.label}}</div>
-        <div class="col-sm">{{form.last_name}}</div>
-    </div>
-        <div class="row">
-         <div class="col-sm">{{form.submit}}</div>
-        </div>
-    <hr>
-            <div id="message">
-        {{message}}
-                </div>
-            </form>
-        <a href="/people">Show all people</a>
-    </div>
-     </section>
-
+   <form action="" method="POST">
+      <p><label for="email">Email: </label></p>
+      <p><input type="email" id="email" name="email" required/></p>
+      <p><label for="password">Password: </label></p>
+      <p><input type="password" id="password" name="password" required/></p>
+      <p><input type=submit value='Sign Up' /></p>
+      <p>Already have an account?</p>
+      <p><a href="{{ url_for('login') }}"><button type="button">Login</button></a></p>
+   </form>
+</section>
 {% endblock %}
