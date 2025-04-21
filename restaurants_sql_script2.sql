@@ -86,6 +86,8 @@ CREATE TABLE `restaurants` (
   `location_id` int DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `website` varchar(255) DEFAULT NULL,
+  `description` varchar(500) NOT NULL,
+  `menu_link` varchar(255) DEFAULT NULL,
   `cuisine_id` int DEFAULT NULL,
   `vibe_id` int DEFAULT NULL,
   PRIMARY KEY (`restaurant_id`),
@@ -111,31 +113,25 @@ UNLOCK TABLES;
 select *
 from restaurants;
 
-TRUNCATE TABLE restaurants;
+DROP TABLE restaurants;
 
-DELETE FROM restaurants WHERE restaurant_id='<7';
-
-INSERT into restaurants (name, address, location_id, phone_number, website, cuisine_id, vibe_id) 
+INSERT into restaurants (name, address, location_id, phone_number, website, description, menu_link, cuisine_id, vibe_id) 
 VALUES 
-('Coco Grill & Lounge', '34a Shad Thames, London, SE1 2YG', 2 , '+44 20 7407 7999', 'https://www.coco-restaurants.com/coco-index.html', 5, 3),
-('Olives and Meze','131 Clapham High St, London SW4 7SS', 2, '020 3583 7790','https://www.olivesandmeze.co.uk/', 5, 5),
-('Scarpetta Canary Wharf', '20 Canada Square, London, E14 5NN', 3 , '+44 20 3649 6803', 'https://scarpettapasta.com/restaurant-canary-wharf/', 1, 5),
-('Alexander The Great Greek Restaurant', '8 Plender Street, London, NW1 0JT', 1 ,  '+44 20 7388 1111', 'https://alexanderthegreatgreekrestaurant.co.uk/', 5, 2),
-('La Tagliata', '80 Upper Street, Islington, London N1 0NP, UK', 3,  '020 73 771 551', 'https://www.la-tagliata.com/?404=%27', 1, 4), 
-('Gloria Trattoria', '54–56 Great Eastern Street, Shoreditch, London EC2A 3QR' , 3, '020 4578 4370', 'https://menu.bigmammagroup.com/gloria', 1, 1), 
-('Chutney Mary', '73 St. James’s Street, London SW1A 1PH', 4 , '020 7629 6688', 'https://www.chutneymary.com/', 2, 3),
-('Dishoom Covent Garden', '12 Upper St. Martin’s Lane, London WC2H 9FB', 4, '020 7420 9320', 'https://www.dishoom.com/covent-garden/', 2, 6), 
-('Gymkhana', '42 Albemarle Street, London W1S 4JH', 4, '020 3011 5900', 'https://gymkhanalondon.com/', 2, 2), 
-('Babel grill house' , '40 Brick lane, London E1 6RF', 3, '+44 20 7392 9675', 'https://www.babelgrillhouse.co.uk/, cuisine_id, vibeid', 4,3), 
-('Baba ghanouj' , '105 Gloucester Road, London, SW7 4SS', 4, '02039171660' , 'https://www.babaghanouj.co.uk/', 4, 4), 
-('Mazar' , '11-12 Battersea Square, Battersea, London, SW11 3RA', 2, '020 7978 5374', 'https://mazarrestaurant.com/' , 4, 2),
-('Beit El Zaytoun', '15-17 Barrets Green Road, London, NW10 7AE', 1, '+442089611166', 'https://beitelzaytoun.com/menu', 4, 1), 
-('Nijo', '20 Berkeley Street, London, W1J 8EE', 4 ,'020 98862426' , 'https://nijulondon.com/', 3, 3), 
-('Inamo sukoshi',  '2 – 10, Bethnal Green Road, London, E1 6GY', 3  ,'0207 186 8800' , 'https://boxpark.co.uk/food-and-drink/inamo-sukoshi/', 3, 6);
-
-UPDATE restaurants
-SET website = 'https://www.babelgrillhouse.co.uk/'
-WHERE restaurant_id = 10;
+('Coco Grill & Lounge', '34a Shad Thames, London, SE1 2YG', 2 , '+44 20 7407 7999', 'https://www.coco-restaurants.com/coco-index.html', 'Coco Grill & Lounge is a stylish alcohol-free restaurant in London offering modern Anatolian cuisine with halal ingredients, all set against the iconic backdrop of Tower Bridge. Known for its elegant ambiance, Coco features a unique Redemption Bar serving crafted alcohol-free cocktails and a scenic shisha terrace for a memorable dining experience.', 'https://www.coco-restaurants.com/menu.html', 5, 3),
+('Olives and Meze','131 Clapham High St, London SW4 7SS', 2, '020 3583 7790','https://www.olivesandmeze.co.uk/', '​Olives + Meze is a contemporary Mediterranean eatery with locations in Clapham and Soho, London, celebrated for its fresh, healthy dishes like charcoal-grilled meats, vibrant salads, and house specials such as the Mix Protein Gym Box. Recognized at the 2024 British Kebab Awards, it offers a sleek dining experience and convenient takeaway options.', 'https://www.olivesandmeze.co.uk/menu', 5, 5),
+('Scarpetta Canary Wharf', '20 Canada Square, London, E14 5NN', 3 , '+44 20 3649 6803', 'https://scarpettapasta.com/restaurant-canary-wharf/', "​Scarpetta Canary Wharf is a modern Italian restaurant located at 20 Canada Square, London E14 5NN, offering fresh handmade pasta, Italian cocktails, and a curated selection of wines in a stylish, lively setting. It's an ideal spot for after-work drinks, date nights, or gatherings with friends and family. ", 'https://scarpettapasta.com/wp-content/uploads/2024/05/A4-Food-Menu-1.pdf',  1, 5),
+('Alexander The Great Greek Restaurant', '8 Plender Street, London, NW1 0JT', 1 ,  '+44 20 7388 1111', 'https://alexanderthegreatgreekrestaurant.co.uk/', '​Alexander The Great is a family-run Greek restaurant in Camden, London, offering authentic Mediterranean cuisine in a warm, traditional setting. Signature dishes like kleftiko and moussaka are prepared with locally sourced ingredients, making it a favorite for both casual meals and special occasions.', 'https://alexanderthegreatgreekrestaurant.co.uk/menu/', 5, 2),
+('La Tagliata', '80 Upper Street, Islington, London N1 0NP, UK', 3,  '020 73 771 551', 'https://www.la-tagliata.com/?404=%27', '​La Tagliata is a family-run Italian restaurant located in Spitalfields, London, near Liverpool Street station. It offers authentic Italian cuisine in a setting reminiscent of an Italian villa, featuring themed rooms like the library and wine cellar. The restaurant specializes in traditional dishes, including its namesake tagliata steak, and provides private dining options for intimate gatherings.', 'https://www.la-tagliata.com/menu/', 1, 4), 
+('Gloria Trattoria', '54–56 Great Eastern Street, Shoreditch, London EC2A 3QR' , 3, '020 4578 4370', 'https://menu.bigmammagroup.com/gloria', '​Gloria is a vibrant 1970s Capri-style trattoria located in Shoreditch, London, operated by the Big Mamma Group. It offers a lively atmosphere with a menu of Italian classics made from ingredients sourced from 180 small producers across Italy, including dishes like Spaghetti al Tartufo and Neapolitan pizzas baked in a Marana oven','https://menu.bigmammagroup.com/gloria',1, 1), 
+('Chutney Mary', '73 St. James’s Street, London SW1A 1PH', 4 , '020 7629 6688', 'https://www.chutneymary.com/', '​Chutney Mary is a pioneering Indian fine dining restaurant located in St James’s, London, renowned for its elegant interiors and diverse regional Indian cuisine. Established in 1990, it offers an opulent dining experience complemented by the stylish Pukka Bar and private dining rooms', 'https://www.chutneymary.com/menu/', 2, 3),
+('Dishoom Covent Garden', '12 Upper St. Martin’s Lane, London WC2H 9FB', 4, '020 7420 9320', 'https://www.dishoom.com/covent-garden/', "​Dishoom is a celebrated Indian restaurant group in the UK, inspired by the Irani cafés of Bombay. Their all-day menu offers a diverse selection of Bombay comfort food, featuring dishes from the city's cafés, grills, street stalls, and homes. Guests can enjoy options ranging from small plates and grills to biryanis and curries, all served in a setting that pays homage to the vibrant culture of Bombay", 'https://www.dishoom.com/menu/all-day-main/', 2, 6), 
+('Gymkhana', '42 Albemarle Street, London W1S 4JH', 4, '020 3011 5900', 'https://gymkhanalondon.com/', "​Gymkhana is a two-Michelin-starred Indian restaurant in Mayfair, London, inspired by the elite clubs of colonial India. It offers refined North Indian cuisine with a focus on tandoor and chatpatta dishes, all set within opulent interiors that evoke the elegance of Raj-era mansions", 'https://gymkhanalondon.com/wp-content/uploads/2020/02/GYMKHANA-ALC-1.pdf', 2, 2), 
+('Babel grill house' , '40 Brick lane, London E1 6RF', 3, '+44 20 7392 9675', 'https://www.babelgrillhouse.co.uk/', "Babel Grill House is a Lebanese halal restaurant located on Brick Lane in London, offering authentic Middle Eastern cuisine in a warm and inviting atmosphere. Their menu features a variety of dishes, including cold and hot mezza, grilled meats, and traditional desserts, all prepared using inherited ingredients elevated to new levels.", 'https://www.babelgrillhouse.co.uk/menu', 4,3), 
+('Baba ghanouj' , '105 Gloucester Road, London, SW7 4SS', 4, '02039171660' , 'https://www.babaghanouj.co.uk/', "Baba Ghanouj is a charming Lebanese restaurant in South Kensington, offering an array of authentic dishes like shawarma, manakeesh, and vibrant mezze. With its cozy atmosphere and diverse menu, it’s a go-to spot for both casual dining and special gatherings.", "https://www.babaghanouj.co.uk/uploads/our_menu/photo_68309BABA%20GHANOUJ%202024%20MENU%20(1).pdf", 4, 4), 
+('Mazar' , '11-12 Battersea Square, Battersea, London, SW11 3RA', 2, '020 7978 5374', 'https://mazarrestaurant.com/', "​Mazar Restaurant in Battersea offers an authentic Lebanese dining experience, specializing in a diverse array of hot and cold mezze dishes that showcase the rich flavors of Lebanese and Mediterranean cuisine. Located in the vibrant Battersea Square, it provides both indoor and outdoor seating, fostering a welcoming atmosphere for guests to enjoy their meals.", 'https://mazarrestaurant.com/#menu', 4, 2),
+('Beit El Zaytoun', '15-17 Barrets Green Road, London, NW10 7AE', 1, '+442089611166', 'https://beitelzaytoun.com', 'Beit El Zaytoun is a celebrated Lebanese restaurant in London, renowned for its authentic cuisine and vibrant atmosphere. The menu features a wide array of traditional dishes, including mezze, grilled meats, and specialty items like lamb shawarma and kabse lahme, complemented by desserts such as baklava cheesecake and pistachio cake. ', 'https://beitelzaytoun.com/menu', 4, 1), 
+('Nijo', '20 Berkeley Street, London, W1J 8EE', 4 ,'020 98862426' , 'https://nijulondon.com/', "NIJŪ is a refined Japanese restaurant in Mayfair, London, offering a contemporary take on 'katei ryōri'—traditional Japanese home-style cooking. Led by third-generation sushi master Chef Endo Kazutoshi, the restaurant features a bespoke sushi bar, a grill serving premium Wagyu and Kobe beef, and an intimate private dining space, Nipperkin, inspired by Japanese listening bars from the 1950s", 'https://nijulondon.com/menus/', 3, 3), 
+('Inamo sukoshi',  '2 – 10, Bethnal Green Road, London, E1 6GY', 3  ,'0207 186 8800' , 'https://boxpark.co.uk/food-and-drink/inamo-sukoshi/', "Inamo Sukoshi at BOXPARK Wembley serves a dynamic fusion of sushi and Asian street food, featuring signature dishes like Dragon Rolls, Bao Buns, and Katsu Curry. Recognized with awards such as the Golden Chopsticks Award for Best Street Food UK in 2023, it offers a vibrant dining experience in the heart of Wembley Park ", 'https://boxpark.co.uk/food-and-drink/inamo-sukoshi/',3, 6);
 
 select *
 from restaurants;
