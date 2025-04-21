@@ -1,11 +1,10 @@
-from flask import request, redirect, url_for, render_template, flash
 from flask import flash
 from flask import render_template, url_for, request, redirect, session
 
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection
+from application.data_access import get_db_connection, find_cuisine_from_id, find_vibe_from_id, find_restaurant
 import mysql
 
 
@@ -112,62 +111,15 @@ def get_restaurant(id):
         website = restaurant["website"]
         cuisine = find_cuisine_from_id(restaurant["cuisine_id"])
         vibe = find_vibe_from_id(restaurant["vibe_id"])
+        description = restaurant['description']
+        menu_link = restaurant['menu_link']
+
         if cuisine is None:
             cuisine = "Unknown cuisine"
         # vibe = restaurant["vibe_id"]
-        return render_template('restaurant.html', name=name, phone_number=phone_number, address=address, website=website, cuisine=cuisine, vibe=vibe)
+        return render_template('restaurant.html', name=name, phone_number=phone_number, address=address, website=website, cuisine=cuisine, vibe=vibe, description=description, menu_link=menu_link)
     else:
         return render_template("404.html")
-
-def find_cuisine_from_id(cuisine_id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    sql = "SELECT name FROM cuisine WHERE cuisine_id = %s"
-
-    cursor.execute(sql, (cuisine_id,))
-    cuisine = cursor.fetchone()
-    connection.close()
-
-    if cuisine is not None:
-        return cuisine[0]
-    return None
-
-def find_vibe_from_id(vibe_id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    sql = "SELECT name FROM vibetype WHERE vibe_id = %s"
-
-    cursor.execute(sql, (vibe_id,))
-    vibe = cursor.fetchone()
-    connection.close()
-
-    if vibe is not None:
-        return vibe[0]
-    return None
-
-def find_restaurant(id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
-
-    sql = "SELECT name, address, location_id, phone_number, website, cuisine_id, vibe_id FROM restaurants WHERE restaurant_id = %s"
-    cursor.execute(sql, (id,))
-
-    restaurant = cursor.fetchone()
-    connection.close()
-
-    if restaurant:
-        return {
-            'name': restaurant[0],
-            'address': restaurant[1],
-            'location_id': restaurant[2],
-            'phone_number': restaurant[3],
-            'website': restaurant[4],
-            'cuisine_id': restaurant[5],
-            'vibe_id': restaurant[6],
-        }
-    return None
 
 
 @app.route('/all_restaurants')
