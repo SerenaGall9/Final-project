@@ -74,7 +74,7 @@ def signup():
             conn.close()
             return render_template('signup.html', error="User already exists. Please login instead.")
 
-        cursor.execute("INSERT INTO user (email, password,name,surname) VALUES (%s, %s,%s,$s)", (email, password_hash, name, surname))
+        cursor.execute("INSERT INTO user (email, password, user_name, surname) VALUES (%s, %s, %s, %s)", (email, password_hash, name, surname))
         conn.commit()
         conn.close()
 
