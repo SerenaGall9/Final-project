@@ -17,7 +17,13 @@ p {text-align:center;}
 .carousel-item:hover {
     transform: scale(1);
 }
+.card p {
+    border: 5px solid #11293D;
+}
 
+.card-container {
+    background-color: #11293D;  /* Or whatever your body bg color is */
+}
 
 .carousel-item img {
     width: 100%;
