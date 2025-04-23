@@ -31,6 +31,7 @@ def login():
             # Try checking as if it's a hashed password
             if bcrypt.check_password_hash(stored_password, entered_password):
                 session['email'] = email
+                session['username'] = user['user_name']
                 session['loggedIn'] = True
                 conn.close()
                 return redirect(url_for('show_vibes'))
@@ -45,6 +46,7 @@ def login():
                 conn.commit()
 
                 session['email'] = email
+                session['username'] = user['user_name']
                 session['loggedIn'] = True
                 conn.close()
                 return redirect(url_for('show_vibes'))
@@ -88,6 +90,7 @@ def show_vibes(name=None):
     vibes = get_all_vibes()
     return render_template('vibes.html', vibes=vibes, name=name)
 
+
 @app.route('/cuisines/<int:vibe_id>')
 def display_cuisines(vibe_id):
     selected_vibe = get_vibe_by_id(vibe_id)
@@ -103,13 +106,14 @@ def select_cuisine(cuisine_id):
     session['selected_cuisine_id'] = cuisine_id  # Use the value from the URL
     return redirect(url_for('all_restaurants'))
 
-# @app.route('/logout')
-# def logout():
-#         # remove the username from the session if it is there
-#     session.pop('username', None)
-#
-#     session['loggedIn'] = False
-#     return redirect(url_for('all_cats'))
+
+@app.route('/logout')
+def logout():
+        # remove the username from the session if it is there
+    session.pop('email', None)
+
+    session['loggedIn'] = False
+    return redirect(url_for('login'))
 
 
 #
@@ -245,8 +249,10 @@ def get_restaurant(id):
         return render_template("404.html")
 #
 #
-@app.route('/account')
-def account():
+
+
+@app.route('/myreviews')
+def reviews():
     if 'email' not in session:
         return redirect(url_for('login'))
 
@@ -282,12 +288,15 @@ def account():
     cursor.close()
     conn.close()
 
-    return render_template('account.html', reviews=reviews)
+    return render_template('myreviews.html', reviews=reviews)
 
 @app.route("/ethos")
 def ethos():
     return render_template("ethos.html", title="Our Ethos")
 
+@app.route("/account")
+def account():
+    return render_template("account.html", title="Account")
 
 
 

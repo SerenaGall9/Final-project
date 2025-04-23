@@ -29,8 +29,12 @@
     </div>
 
     <!-- Right: empty spacer for layout balance -->
-    <div style="width: 40px;"></div>
-
+    <div>
+    {% if session['loggedIn'] == False %}
+    <a href="{{url_for('login')}}"><button> Login</button></a>
+    {% else %}
+    <a href="{{url_for('logout')}}"><button> Logout </button></a>
+    {% endif %}
   </div>
 </nav>
 
@@ -43,20 +47,21 @@
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Our Restaurants</a>
+        <a class="nav-link active" aria-current="page" href="{{url_for('all_restaurants')}}">Our Restaurants</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Our Ethos</a>
+        <a class="nav-link" href="{{url_for('ethos')}}">Our Ethos</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Account
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">My Reviews</a></li>
-        </ul>
-      </li>
-    </ul>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Account
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="{{ url_for('account') }}">My Details</a></li>
+    <li><a class="dropdown-item" href="{{ url_for('reviews') }}">My Reviews</a></li>
+  </ul>
+</li>
+
   </div>
 </div>
 
@@ -65,11 +70,22 @@
   {% block body_content %}
   {% endblock %}
 </main>
+<hr>
+<footer class="container-fluid bg-4 text-center">
+      <div>
+    {% if session['loggedIn'] == True %}
+    <p> Hungry yet, {{ session['username'] }}?
+    <p>&copy; 2025 Get Into Tech</p>
+        {% else %} <p>&copy; 2025 Get Into Tech</p>
+        {% endif %}
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 
 </body>
+<!-- Footer -->
+
 </html>
 
