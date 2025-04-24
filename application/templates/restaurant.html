@@ -1,0 +1,227 @@
+{% extends "layout2.html" %}
+
+{% block body_content %}
+<!-- Fade-in class -->
+<style>
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .star-rating {
+    color: gold;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  /* Responsive design for mobile */
+  @media screen and (max-width: 768px) {
+    .restaurant-details,
+    .review-box {
+      padding: 1rem;
+      margin: 1rem;
+      max-width: 90%;
+    }
+    .fade-in {
+      transform: translateY(0);
+    }
+    .hero-container img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+  }
+
+  /* Stylish buttons */
+  .main-btn {
+    background-color: #f5b700;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .main-btn:hover {
+    background-color: #e09c00;
+    transform: scale(1.05);
+  }
+
+  .menu-btn {
+    background-color: #11293D;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .menu-btn:hover {
+    background-color: #0f2a3d;
+    transform: scale(1.05);
+  }
+
+  /* Section Layout */
+  .restaurant-details,
+  .review-box {
+    background-color: #1e3a5f;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+  }
+
+  /* Hero Section */
+  .hero-container {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    overflow: hidden;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+  }
+
+  /* Review Cards */
+  .review-box {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+  }
+
+  /* Image Layout */
+  .extra-images {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 2rem auto;
+  }
+
+  .extra-images img {
+    width: 45%;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+
+  /* Centering the Page */
+  .centered {
+    text-align: center;
+  }
+
+  /* Typography and Spacing */
+  h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0.8rem 0;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  blockquote {
+    font-style: italic;
+    color: #ccc;
+    padding-left: 1rem;
+    border-left: 3px solid #f5b700;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+</style>
+
+<!-- Hero Image -->
+<div class="fade-in hero-container">
+  <img src="{{ url_for('static', filename='images/restaurant_banner.jpg') }}" alt="Restaurant Banner">
+</div>
+
+<!-- Restaurant Info Section -->
+<div class="restaurant-details fade-in centered">
+  <h2>{{ name }}</h2>
+
+  <p><strong>About:</strong> {{ description }}</p>
+  <p><strong>Address:</strong> {{ address }}</p>
+  <p><strong>Phone:</strong> {{ phone_number }}</p>
+  <p><strong>Price Range:</strong> {{ price_range }}</p>
+  <p><strong>Cuisine:</strong> {{ cuisine }}</p>
+  <p><strong>Vibe:</strong> {{ vibe }}</p>
+  <p><strong>Website:</strong>
+    <a href="{{ website }}" target="_blank">{{ website }}</a>
+  </p>
+
+  <a href="{{ menu_link }}">
+    <button class="menu-btn">📖 View Menu</button>
+  </a>
+</div>
+
+<!-- Extra Images Section -->
+<div class="extra-images fade-in">
+  <img src="{{ url_for('static', filename='restaurant/bluewineglass.jpg') }}" alt="Interior 1">
+  <img src="{{ url_for('static', filename='restaurant/bluewineglass.jpg') }}" alt="Interior 2">
+</div>
+
+<!-- Reviews Section -->
+<div class="fade-in centered" style="max-width: 800px; margin: auto;">
+  <h3>Reviews</h3>
+
+  {% if reviews %}
+    {% for review in reviews %}
+      <div class="review-box">
+        <p><strong>User:</strong> {{ review.user_id }}</p>
+        <p>
+          <strong>Overall:</strong>
+          <span class="star-rating">
+            {% for i in range(review.Rating|int) %}
+              &#9733;
+            {% endfor %}
+            {% for i in range(5 - review.Rating|int) %}
+              &#9734;
+            {% endfor %}
+          </span>
+        </p>
+        <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
+        <p><strong>Service:</strong> {{ review.Service }}</p>
+        <p><strong>Location:</strong> {{ review.Location }}</p>
+        <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
+        <blockquote>
+          "{{ review.Overall_review }}"
+        </blockquote>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No reviews yet. Be the first to leave one!</p>
+  {% endif %}
+
+  <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
+    <button class="main-btn">Leave a Review</button>
+  </a>
+</div>
+
+{% endblock %}

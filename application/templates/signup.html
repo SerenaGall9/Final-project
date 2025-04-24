@@ -1,0 +1,24 @@
+{% extends "layout_landing.html" %}
+{% block body_content %}
+{% if error %}
+<p style="color: red; margin-top: 20px; padding-top: 20px;">{{ error }}</p>
+{% else %}
+<h1>Do not have an account with us yet?</h1>
+<p>Sign up and start sharing your thoughts!</p>
+{% endif %}
+<section>
+   <form action="" method="POST">
+      <p><label for="name">First Name: </label></p>
+      <p><input type="name" id="name" name="name" required/></p>
+      <p><label for="surname">Surname: </label></p>
+      <p><input type="surname" id="surname" name="surname" required/></p>
+      <p><label for="email">Email: </label></p>
+      <p><input type="email" id="email" name="email" required/></p>
+      <p><label for="password">Password: </label></p>
+      <p><input type="password" id="password" name="password" required/></p>
+      <p><input type=submit value='Sign Up' /></p>
+      <p>Already have an account?</p>
+      <p><a href="{{ url_for('login') }}"><button type="button">Login</button></a></p>
+   </form>
+</section>
+{% endblock %}
