@@ -5,7 +5,9 @@ from flask import render_template, url_for, request, redirect, session
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review
+from application.data_access import get_db_connection, find_cuisine_from_id, find_vibe_from_id, find_restaurant, \
+    get_all_vibes, get_vibe_by_id, get_all_cuisines, get_reviews_by_restaurant_id, save_review, get_user, \
+    get_reviews_by_user
 import mysql
 
 
@@ -33,6 +35,7 @@ def login():
                 session['email'] = email
                 session['username'] = user['user_name']
                 session['loggedIn'] = True
+                session['user_id'] = user['user_id']
                 conn.close()
                 return redirect(url_for('show_vibes'))
 
@@ -48,6 +51,7 @@ def login():
                 session['email'] = email
                 session['username'] = user['user_name']
                 session['loggedIn'] = True
+                session['user_id'] = user['user_id']
                 conn.close()
                 return redirect(url_for('show_vibes'))
 
@@ -296,7 +300,25 @@ def ethos():
 
 @app.route("/account")
 def account():
-    return render_template("account.html", title="Account")
+    try:
+        print(session)
+        user_id = session['user_id']
+        user = get_user(user_id)
+    except KeyError:
+        return redirect(url_for('login'))
+
+    user_reviews = get_reviews_by_user(user_id)
+
+    for user_review in user_reviews:
+        stars = ""
+        for i in range(user_review["Rating"]):
+            stars = stars + "⭐"
+        user_review["stars"] = stars
+        user_review["restaurant_name"] = find_restaurant(user_review["restaurant_id"])["name"]
+
+
+    return render_template("account.html", title="Account", user_name=user["user_name"], surname=user["surname"],
+                           email=user["email"], reviews=user_reviews)
 
 
 

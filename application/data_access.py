@@ -142,6 +142,23 @@ def get_reviews_by_restaurant_id(restaurant_id):
     conn.close()
     return reviews
 
+def get_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM user WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
+
+def get_reviews_by_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM review WHERE user_id = %s ORDER BY creation_date DESC", (user_id,))
+    reviews = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return reviews
 
 if __name__ == "__main__":
     main()

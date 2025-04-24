@@ -67,3 +67,22 @@ p {text-align:center;}
   font-size: 1.2rem;
   color: gold;
 }
+
+.reviews {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.review-card {
+    text-align: left;
+    background-color: #11293D;
+    border: 1px solid white;
+    color: white;
+}
+
+.review-title {
+    margin-left: 1rem;
+}
