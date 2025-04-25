@@ -1,34 +1,151 @@
+<!-- layout_landing.html with smooth-scroll sections and context usage -->
+<!--  # Ensure your static folder has:-->
+<!--  # static/images/logo.png-->
+<!--  # static/images/Renée.png, Milena.png, etc.-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="../static/main_styles.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   <title>Food for Thought</title>
+
+  <style>
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+    .scroll-container { overflow-y: auto; height: 100vh; scroll-snap-type: y mandatory; }
+    .scroll-section {
+      scroll-snap-align: start;
+      position: relative;
+      min-height: 100vh;
+      padding: 100px 20px;
+      background-color: #11293D;
+      color: #d2cac5;
+    }
+    .scroll-section:not(:first-child) { margin-top: -50px; }
+    .scroll-section:nth-child(1) { z-index: 4; }
+    .scroll-section:nth-child(2) { z-index: 3; }
+    .scroll-section:nth-child(3) { z-index: 2; }
+    .scroll-section:nth-child(4) { z-index: 1; }
+    .team-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-<br>
-<br>
-  {% block body_content %}
-  {% endblock %}
+
+<div class="scroll-container">
+  <!-- Section 1: Logo -->
+  <section class="scroll-section d-flex align-items-center justify-content-center">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="img-fluid" style="max-width: 300px;">
+  </section>
+
+  <!-- Section 2: Team -->
+  <section class="scroll-section">
+    <div class="container text-center">
+      <h2>Meet Our Team</h2>
+      <p>Learn a little about the people behind Food for Thought.</p>
+
+  <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for member in team_members %}
+    <div class="carousel-item {% if loop.first %}active{% endif %}">
+      <!-- NEW wrapper -->
+      <div class="carousel-slide-content team-slide">
+        <img
+          src="{{ url_for('static', filename=member.photo) }}"
+          class="team-img"
+          alt="{{ member.name }}">
+        <h5 class="mt-3">{{ member.name }}</h5>
+        <p class="small">{{ member.title }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+<!--  …controls…-->
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Login -->
+  <section class="scroll-section d-flex align-items-center justify-content-center">
+    <div class="col-md-6">
+      {% if error %}
+        <p class="text-danger">{{ error }}</p>
+      {% else %}
+        <p>Please log in to continue</p>
+      {% endif %}
+      <form action="" method="POST" class="mt-4">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password:</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <div class="d-flex justify-content-between mt-2">
+          <a href="{{ url_for('forgot_password') }}" class="btn btn-link">Forgot Password?</a>
+          <a href="{{ url_for('signup') }}" class="btn btn-link">Sign Up</a>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Section 4: Partners -->
+  <section class="scroll-section">
+    <div class="container">
+      <h2 class="text-center">Our Restaurant Partners</h2>
+  <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for partner in restaurant_partners %}
+    <div class="carousel-item {% if loop.first %}active{% endif %}">
+      <!-- NEW wrapper -->
+      <div class="carousel-slide-content partner-slide">
+        <img
+          src="{{ url_for('static', filename=partner.image) }}"
+          class="partner-img"
+          alt="{{ partner.name }}">
+        <div class="partner-text">
+          <h5>{{ partner.name }}</h5>
+          <p>{{ partner.description }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- controls… -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#partnersCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#partnersCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
 <hr>
-<footer class="container-fluid bg-4 text-center">
-      <div>
-    {% if session['loggedIn'] == True %}
-    <p> Hungry yet, {{ session['username'] }}?
-    <p>&copy; 2025 Get Into Tech</p>
-        {% else %} <p>&copy; 2025 Get Into Tech</p>
-        {% endif %}
+<footer class="container-fluid bg-4 text-center py-3">
+  <p>&copy; Food for Thought Ltd 2025</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

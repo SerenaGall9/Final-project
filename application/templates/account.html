@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout2.html" %}
 
-</body>
-</html>
+{% block body_content %}
+
+<div class="container mt-4">
+
+  <!-- User Info -->
+  <div class="mb-4">
+    <p class="h2">{{ user_name }} {{ surname }}</p>
+    <p class="h5">{{ email }}</p>
+  </div>
+
+  <hr>
+
+  <!-- Reviews Section -->
+  <p class="h5 text-start review-title"><em>Your Reviews</em></p>
+
+  {% if reviews %}
+    <div class="reviews d-flex flex-wrap gap-3">
+      {% for review in reviews %}
+        <div class="card review-card" style="width: 15rem;">
+          <div class="card-body">
+            <div class="card-title"><strong>{{ review.restaurant_name }}</strong></div>
+            <h6 class="card-subtitle mb-2"><strong>Overall:</strong> {{ review.stars }}</h6>
+            <hr>
+            <div class="card-text">Ambience: {{ review.Ambience }}</div>
+            <div class="card-text">Service: {{ review.Service }}</div>
+            <div class="card-text">Location: {{ review.Location }}</div>
+            <div class="card-text">Value: {{ review.Value_for_money }}</div>
+            <hr>
+            <div class="card-text">{{ review.Overall_review }}</div>
+            <br>
+            <div class="card-text date"><em>Posted on {{ review.creation_date.strftime('%d %B %Y') }}</em></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No reviews yet. Be the first to leave one!</p>
+  {% endif %}
+
+</div>
+
+{% endblock %}

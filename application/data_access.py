@@ -13,7 +13,7 @@ def get_db_connection():
         host="localhost",
         user="root",
         password="",
-        database="projectdb3"
+        database="projectdb4"
     )
 
     return mydb
@@ -45,6 +45,15 @@ def find_vibe_from_id(vibe_id):
     if vibe is not None:
         return vibe[0]
     return None
+
+def get_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM user WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return user
 
 def get_all_vibes():
     return [
@@ -131,6 +140,15 @@ def save_review(restaurant_id, overall, ambience, service, location, value, comm
     conn.commit()
     cursor.close()
     conn.close()
+
+def get_reviews_by_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM review WHERE user_id = %s ORDER BY creation_date DESC", (user_id,))
+    reviews = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return reviews
 
 
 def get_reviews_by_restaurant_id(restaurant_id):

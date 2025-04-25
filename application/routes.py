@@ -5,58 +5,109 @@ from flask import render_template, url_for, request, redirect, session
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review
+from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review,get_user,get_reviews_by_user
+
 import mysql
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # 1. Prepare the carousel data
+    team_members = [
+        { 'name': 'Renée', 'photo': 'images/members/renee.png' },
+        { 'name': 'Milena', 'photo': 'images/members/milena.png' },
+        { 'name': 'Serena', 'photo': 'images/members/serena.png' },
+        { 'name': 'Eleanor', 'photo': 'images/members/eleanor.png' },
+        { 'name': 'Khrisha', 'photo': 'images/members/khrisha.png' },
+    ]
+    restaurant_partners = [
+        { 'name': 'Gymkhana', 'description': 'A Michelin-starred Indian restaurant.', 'image': 'images/restaurantimages/gymkhana.png' },
+        { 'name': 'Dishoom', 'description': 'Bombay-inspired cafés with bold flavors.', 'image': 'images/restaurantimages/dishoom.png' },
+        { 'name': 'Beit El Zaytoun', 'description': 'Authentic Palestinian cuisine.', 'image': 'images/restaurantimages/beit.png' },
+        { 'name': 'Inamo Sukoshi', 'description': 'Pan-Asian fusion with interactive tables.', 'image': 'images/restaurantimages/inamo.png' },
+        { 'name': 'La Tagliata', 'description': 'Traditional Italian trattoria.', 'image': 'images/restaurantimages/tagliata.png' },
+    ]
+
+    error = None
+    if request.method == 'POST':
+        # — your existing login logic —
+        email = request.form['email']
+        pw = request.form['password']
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
+        user = cur.fetchone()
+
+        if not user:
+            error = "User not found. Please sign up first."
+        else:
+            stored = user['password']
+            try:
+                if bcrypt.check_password_hash(stored, pw):
+                    # success
+                    session.update({
+                      'email': email,
+                      'username': user['user_name'],
+                      'loggedIn': True,
+                      'user_id': user['user_id'],
+                    })
+                    conn.close()
+                    return redirect(url_for('show_vibes'))
+            except ValueError:
+                # legacy plaintext
+                if stored == pw:
+                    new_hash = bcrypt.generate_password_hash(pw).decode('utf-8')
+                    cur.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
+                    conn.commit()
+                    session.update({
+                      'email': email,
+                      'username': user['user_name'],
+                      'loggedIn': True,
+                      'user_id': user['user_id'],
+                    })
+                    conn.close()
+                    return redirect(url_for('show_vibes'))
+            error = "Invalid email or password, please try again."
+        conn.close()
+
+    # render the landing page (which includes the login form in section 3)
+    return render_template(
+      'layout_landing.html',
+      team_members=team_members,
+      restaurant_partners=restaurant_partners,
+      error=error
+    )
+
+@app.route('/forgot-password', methods=['GET','POST'])
+@app.route('/forgot_password', methods=['GET','POST'])
+def forgot_password():
     if request.method == 'POST':
         email = request.form['email']
-        entered_password = request.form['password']
+        surname = request.form['surname']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            return render_template('forgot_password.html', error="Passwords do not match.")
 
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
+        cursor.execute("SELECT * FROM user WHERE email = %s AND surname = %s", (email, surname))
         user = cursor.fetchone()
 
         if not user:
             conn.close()
-            return render_template('login.html', error="User not found. Please sign up first.")
+            return render_template('forgot_password.html', error="User not found. Please check your email and surname.")
 
-        stored_password = user['password']
-
-        try:
-            # Try checking as if it's a hashed password
-            if bcrypt.check_password_hash(stored_password, entered_password):
-                session['email'] = email
-                session['username'] = user['user_name']
-                session['loggedIn'] = True
-                conn.close()
-                return redirect(url_for('show_vibes'))
-
-        except ValueError:
-            # ValueError means the stored password was not a valid hash
-
-            if stored_password == entered_password:
-                # If correct, rehash the password and store it
-                new_hash = bcrypt.generate_password_hash(entered_password).decode('utf-8')
-                cursor.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
-                conn.commit()
-
-                session['email'] = email
-                session['username'] = user['user_name']
-                session['loggedIn'] = True
-                conn.close()
-                return redirect(url_for('show_vibes'))
-
-        # If password check failed
+        new_hash = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        cursor.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
+        conn.commit()
         conn.close()
-        return render_template('login1.html', error="Invalid credentials.")
 
-    return render_template('login1.html')
+        return render_template('forgot_password.html', success="Password updated. You can now log in.")
 
+    return render_template('forgot_password.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -129,15 +180,17 @@ def all_restaurants():
     selected_value = request.args.get('value', type=float)
     selected_location_rating = request.args.get('location_rating', type=float)
     selected_price_range = request.args.get('price_range', type=float)
+    sort_option = request.args.get('sort')  # NEW: Sorting option
 
-    if selected_cuisine is None and selected_vibe is None:
+    # Use session-stored cuisine/vibe if not selected
+    if not request.args:
         selected_cuisine = session.get('selected_cuisine_id')
         selected_vibe = session.get('selected_vibe_id')
     else:
-
         session['selected_cuisine_id'] = selected_cuisine
         session['selected_vibe_id'] = selected_vibe
 
+    # Connect to database
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -199,36 +252,49 @@ def all_restaurants():
         selected_location_rating, selected_location_rating
     ]
 
+    # Add sorting logic
+    if sort_option == 'top5':
+        query += " ORDER BY avg_rating DESC LIMIT 5"
+    elif sort_option == 'bottom5':
+        query += " ORDER BY avg_rating ASC LIMIT 5"
+    else:
+        query += " ORDER BY avg_rating DESC"  # Default sorting
+
+    # Execute query
     cursor.execute(query, params)
     restaurants = cursor.fetchall()
     conn.close()
 
     return render_template(
-        "all_restaurants.html",
-        restaurants=restaurants,
+        'all_restaurants.html',
         cuisines=cuisines,
         vibes=vibes,
         locations=locations,
+        restaurants=restaurants,
         selected_cuisine=selected_cuisine,
-        selected_price_range=selected_price_range,
         selected_vibe=selected_vibe,
         selected_location=selected_location,
         selected_rating=selected_rating,
         selected_ambiance=selected_ambiance,
         selected_service=selected_service,
         selected_value=selected_value,
-        selected_location_rating=selected_location_rating
+        selected_location_rating=selected_location_rating,
+        selected_price_range=selected_price_range,
+        sort_option=sort_option  # Pass the sort option for button highlighting
     )
+
 
 
 # takes input from the first 2 pages into the filtering criteria,
 # interacts with the database to filter based on other criteria (session handling; price, vibe,cuisine,location)
 
+import os
+
 @app.route('/restaurant/<int:id>')
 def get_restaurant(id):
     restaurant = find_restaurant(id)
-    # cuisine = find_cuisine_to_restaurant(id)
     if restaurant is not None:
+
         name = restaurant["name"]
         phone_number = restaurant["phone_number"]
         address = restaurant["address"]
@@ -240,13 +306,52 @@ def get_restaurant(id):
         menu_link = restaurant['menu_link']
         reviews = get_reviews_by_restaurant_id(id)
         restaurant_id = id
+
         if cuisine is None:
             cuisine = "Unknown cuisine"
-        # vibe = restaurant["vibe_id"]
-        return render_template('restaurant.html', name=name, phone_number=phone_number, address=address, website=website,
-                               price_range=price_range, cuisine=cuisine, vibe=vibe, description=description, menu_link=menu_link, reviews=reviews,restaurant_id=restaurant_id)
+
+        image_folder = os.path.join(app.static_folder, 'restaurant_images', str(restaurant_id))
+        banner_image = None
+        carousel_images = []
+
+        if os.path.exists(image_folder):
+
+            banner_path = os.path.join(image_folder, 'banner.jpg')
+            if os.path.exists(banner_path):
+                banner_image = f'restaurant_images/{restaurant_id}/banner.jpg'
+            else:
+                banner_image = 'default/banner_default.jpg'  # fallback banner
+
+
+            carousel_images = [
+                f'restaurant_images/{restaurant_id}/{filename}'
+                for filename in os.listdir(image_folder)
+                if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')) and filename != 'banner.jpg'
+            ]
+        else:
+
+            banner_image = 'default/banner_default.jpg'
+            carousel_images = []
+
+        return render_template(
+            'restaurant.html',
+            name=name,
+            phone_number=phone_number,
+            address=address,
+            website=website,
+            price_range=price_range,
+            cuisine=cuisine,
+            vibe=vibe,
+            description=description,
+            menu_link=menu_link,
+            reviews=reviews,
+            restaurant_id=restaurant_id,
+            banner_image=banner_image,     # pass banner image
+            images=carousel_images         # pass carousel images
+        )
     else:
         return render_template("404.html")
+
 #
 #
 
@@ -296,7 +401,25 @@ def ethos():
 
 @app.route("/account")
 def account():
-    return render_template("account.html", title="Account")
+    try:
+        print(session)
+        user_id = session['user_id']
+        user = get_user(user_id)
+    except KeyError:
+        return redirect(url_for('login'))
+
+    user_reviews = get_reviews_by_user(user_id)
+
+    for user_review in user_reviews:
+        stars = ""
+        for i in range(user_review["Rating"]):
+            stars = stars + "⭐"
+        user_review["stars"] = stars
+        user_review["restaurant_name"] = find_restaurant(user_review["restaurant_id"])["name"]
+
+
+    return render_template("account.html", title="Account", user_name=user["user_name"], surname=user["surname"],
+                           email=user["email"], reviews=user_reviews)
 
 
 

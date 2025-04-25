@@ -35,6 +35,8 @@
     {% else %}
     <a href="{{url_for('logout')}}"><button> Logout </button></a>
     {% endif %}
+      </ul>
+        </div>
   </div>
 </nav>
 
@@ -58,15 +60,10 @@
       <li class="nav-item">
         <a class="nav-link" href="{{url_for('ethos')}}">Our Ethos</a>
       </li>
-<li class="nav-item dropdown">
-  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Account
-  </a>
-  <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="{{ url_for('account') }}">My Details</a></li>
-    <li><a class="dropdown-item" href="{{ url_for('reviews') }}">My Reviews</a></li>
-  </ul>
-</li>
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="{{url_for('account')}}">My Account</a>
+      </li>
+
 
   </div>
 </div>

@@ -1,4 +1,5 @@
 {% extends "layout2.html" %}
+
 {% block body_content %}
 
 <div class="container mt-4">
@@ -6,112 +7,141 @@
 
   <!-- Filter bar -->
   <form method="get" action="{{ url_for('all_restaurants') }}" class="row g-3 mb-4 bg-white p-4 rounded shadow-sm">
-
-    <!-- Cuisine -->
-    <div class="col-md-3">
-      <label for="cuisine" class="form-label">Cuisine</label>
-      <select class="form-select" name="cuisine" id="cuisine">
-        <option value="">All</option>
-        {% for c in cuisines %}
-          <option value="{{ c.cuisine_id }}" {% if selected_cuisine == c.cuisine_id %}selected{% endif %}>{{ c.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Vibe -->
-    <div class="col-md-3">
-      <label for="vibe" class="form-label">Vibe</label>
-      <select class="form-select" name="vibe" id="vibe">
-        <option value="">All</option>
-        {% for v in vibes %}
-          <option value="{{ v.vibe_id }}" {% if selected_vibe == v.vibe_id %}selected{% endif %}>{{ v.name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Location -->
-    <div class="col-md-3">
-      <label for="location" class="form-label">Location</label>
-      <select class="form-select" name="location" id="location">
-        <option value="">All</option>
-        {% for l in locations %}
-          <option value="{{ l.location_id }}" {% if selected_location == l.location_id %}selected{% endif %}>{{ l.direction }}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Price Range -->
-    <div class="col-md-3">
-      <label for="price_range" class="form-label">Price Range</label>
-      <select class="form-select" name="price_range" id="price_range">
-        <option value="">All</option>
-          {% for i in range(1, 5) %}
-            <option value="{{ i }}" {% if selected_price_range == i %}selected{% endif %}>{{ "£" * i }}</option>
+    <div class="col-md-3 d-flex justify-content-center">
+      <!-- Cuisine Filter -->
+      <div class="w-100">
+        <label for="cuisine" class="form-label">Cuisine</label>
+        <select class="form-select" name="cuisine" id="cuisine">
+          <option value="">All</option>
+          {% for c in cuisines %}
+            <option value="{{ c.cuisine_id }}" {% if selected_cuisine == c.cuisine_id %}selected{% endif %}>{{ c.name }}</option>
           {% endfor %}
-
-      </select>
+        </select>
+      </div>
     </div>
 
-    <!-- Min Avg Rating -->
-    <div class="col-md-3">
-      <label for="rating" class="form-label">Min Avg Rating</label>
-      <select class="form-select" name="rating" id="rating">
-        <option value="">Any</option>
-        {% for i in range(5, 0, -1) %}
-          <option value="{{ i }}" {% if selected_rating and selected_rating == i %}selected{% endif %}>{{ i }}+</option>
-        {% endfor %}
-      </select>
+    <div class="col-md-3 d-flex justify-content-center">
+      <!-- Vibe Filter -->
+      <div class="w-100">
+        <label for="vibe" class="form-label">Vibe</label>
+        <select class="form-select" name="vibe" id="vibe">
+          <option value="">All</option>
+          {% for v in vibes %}
+            <option value="{{ v.vibe_id }}" {% if selected_vibe == v.vibe_id %}selected{% endif %}>{{ v.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
 
-    <!-- Ambiance -->
-    <div class="col-md-3">
-      <label for="ambiance" class="form-label">Min Ambiance</label>
-      <select class="form-select" name="ambiance" id="ambiance">
-        <option value="">Any</option>
-        {% for i in range(5, 0, -1) %}
-          <option value="{{ i }}" {% if selected_ambiance and selected_ambiance == i %}selected{% endif %}>{{ i }}+</option>
-        {% endfor %}
-      </select>
+    <div class="col-md-3 d-flex justify-content-center">
+      <!-- Location Filter -->
+      <div class="w-100">
+        <label for="location" class="form-label">Location</label>
+        <select class="form-select" name="location" id="location">
+          <option value="">All</option>
+          {% for l in locations %}
+            <option value="{{ l.location_id }}" {% if selected_location == l.location_id %}selected{% endif %}>{{ l.direction }}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
 
-    <!-- Service -->
-    <div class="col-md-3">
-      <label for="service" class="form-label">Min Service</label>
-      <select class="form-select" name="service" id="service">
-        <option value="">Any</option>
-        {% for i in range(5, 0, -1) %}
-          <option value="{{ i }}" {% if selected_service and selected_service == i %}selected{% endif %}>{{ i }}+</option>
-        {% endfor %}
-      </select>
+    <div class="col-md-3 d-flex justify-content-center">
+      <!-- Sort By Filter -->
+      <div class="w-100">
+        <label for="sort" class="form-label">Sort By</label>
+        <select class="form-select" name="sort" id="sort">
+          <option value="">All</option>
+          <option value="top5" {% if sort_option == 'top5' %}selected{% endif %}>Top 5 Rated</option>
+          <option value="bottom5" {% if sort_option == 'bottom5' %}selected{% endif %}>Bottom 5 Rated</option>
+        </select>
+      </div>
     </div>
 
-    <!-- Value -->
-    <div class="col-md-3">
-      <label for="value" class="form-label">Min Value</label>
-      <select class="form-select" name="value" id="value">
-        <option value="">Any</option>
-        {% for i in range(5, 0, -1) %}
-          <option value="{{ i }}" {% if selected_value and selected_value == i %}selected{% endif %}>{{ i }}+</option>
-        {% endfor %}
-      </select>
+    <div class="col-md-3 d-flex justify-content-center">
+      <!-- Button to open the additional filters modal -->
+      <button class="btn btn-outline-secondary w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#additionalFiltersModal" aria-controls="additionalFiltersModal">
+        Filter by
+      </button>
     </div>
 
-    <!-- Location Rating -->
-    <div class="col-md-3">
-      <label for="location_rating" class="form-label">Min Location Rating</label>
-      <select class="form-select" name="location_rating" id="location_rating">
-        <option value="">Any</option>
-        {% for i in range(5, 0, -1) %}
-          <option value="{{ i }}" {% if selected_location_rating and selected_location_rating == i %}selected{% endif %}>{{ i }}+</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    <!-- Submit -->
     <div class="col-md-3 d-flex align-items-end">
+      <!-- Apply Filters Button -->
       <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
     </div>
   </form>
+
+  <!-- Offcanvas for Additional Filters -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="additionalFiltersModal" aria-labelledby="additionalFiltersModalLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="additionalFiltersModalLabel">Additional Filters</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <!-- Additional Filters Form -->
+      <form method="get" action="{{ url_for('all_restaurants') }}">
+        <!-- Hidden sort input to preserve sort option -->
+        <input type="hidden" name="sort" value="{{ sort_option }}">
+
+        <!-- Price Range Filter -->
+        <div class="mb-3">
+          <label for="price_range" class="form-label">Price Range</label>
+          <select class="form-select" name="price_range" id="price_range">
+            <option value="">All</option>
+            {% for i in range(1, 5) %}
+              <option value="{{ i }}" {% if selected_price_range == i %}selected{% endif %}>{{ "£" * i }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Rating Filter -->
+        <div class="mb-3">
+          <label for="rating" class="form-label">Overall Rating</label>
+          <select class="form-select" name="rating" id="rating">
+            <option value="">Any</option>
+            {% for i in range(5, 0, -1) %}
+              <option value="{{ i }}" {% if selected_rating and selected_rating == i %}selected{% endif %}>{{ i }}+</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Ambiance Filter -->
+        <div class="mb-3">
+          <label for="ambiance" class="form-label">Ambiance</label>
+          <select class="form-select" name="ambiance" id="ambiance">
+            <option value="">Any</option>
+            {% for i in range(5, 0, -1) %}
+              <option value="{{ i }}" {% if selected_ambiance and selected_ambiance == i %}selected{% endif %}>{{ i }}+</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Service Filter -->
+        <div class="mb-3">
+          <label for="service" class="form-label">Service</label>
+          <select class="form-select" name="service" id="service">
+            <option value="">Any</option>
+            {% for i in range(5, 0, -1) %}
+              <option value="{{ i }}" {% if selected_service and selected_service == i %}selected{% endif %}>{{ i }}+</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Value Filter -->
+        <div class="mb-3">
+          <label for="value" class="form-label">Value</label>
+          <select class="form-select" name="value" id="value">
+            <option value="">Any</option>
+            {% for i in range(5, 0, -1) %}
+              <option value="{{ i }}" {% if selected_value and selected_value == i %}selected{% endif %}>{{ i }}+</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+      </form>
+    </div>
+  </div>
 
   <!-- Restaurant list -->
   {% if restaurants %}
@@ -123,50 +153,9 @@
           <p><strong>Vibe:</strong> {{ r.vibe }}</p>
           <p><strong>Location:</strong> {{ r.location }}</p>
           <p><strong>Price range:</strong> {{ r.price_range }}</p>
-
-          <p><strong>Rating:</strong>
-            {% if r.avg_rating is not none %}
-              {{ r.avg_rating | round(1) }}
-            {% else %}
-              No reviews yet
-            {% endif %}
-          </p>
-
-          <p><strong>Ambiance:</strong>
-            {% if r.avg_ambiance is not none %}
-              {{ r.avg_ambiance | round(1) }}
-            {% else %}
-              No reviews yet
-            {% endif %}
-          </p>
-
-          <p><strong>Service:</strong>
-            {% if r.avg_service is not none %}
-              {{ r.avg_service | round(1) }}
-            {% else %}
-              No reviews yet
-            {% endif %}
-          </p>
-
-          <p><strong>Value:</strong>
-            {% if r.avg_value is not none %}
-              {{ r.avg_value | round(1) }}
-            {% else %}
-              No reviews yet
-            {% endif %}
-          </p>
-
-          <p><strong>Location Rating:</strong>
-            {% if r.avg_location_rating is not none %}
-              {{ r.avg_location_rating | round(1) }}
-            {% else %}
-              No reviews yet
-            {% endif %}
-          </p>
-
+          <p><strong>Rating:</strong> {% if r.avg_rating is not none %}{{ r.avg_rating | round(1) }}{% else %}No reviews yet{% endif %}</p>
           <a href="{{ r.website }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">Visit Website</a>
         </div>
-
         <div class="col-md-4">
           <img src="{{ url_for('static', filename='restaurant_images/default.jpg') }}" alt="{{ r.name }}" class="img-fluid rounded">
         </div>
@@ -178,5 +167,21 @@
 </div>
 
 {% endblock %}
+
+<script>
+  // Auto-submit Sort By dropdown
+  document.getElementById('sort').addEventListener('change', function () {
+    this.form.submit();
+  });
+
+  // Ensure the modal submit works
+  document.querySfelector('#additionalFiltersModal').addEventListener('hidden.bs.offcanvas', function () {
+    var form = document.querySelector('#additionalFiltersModal form');
+    if (form) {
+      form.submit();
+    }
+  });
+</script>
+
 
 

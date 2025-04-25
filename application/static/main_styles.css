@@ -6,21 +6,7 @@ body {text-align:center;
 html, body {
   height: 100%;
 }
-.intro-text {text-align:center;
-      font-family: 'Lora', serif;
-      padding: 10%}
 
-.login-form {
-  background-color: #B0C4DE !important;
-  font-weight: bold;
-  font-family: 'Lora', serif;
-  color: #11293D;
-  padding: 2rem;              /* Adds space inside the form */
-  border-radius: 10px;         /* Rounded corners */
-  width: 300px;                /* Optional: control width */
-  margin: 0 auto;              /* Center horizontally */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Optional: add a soft shadow */
-}
 
 form {text-align:center;
 background-color: transparent;}
@@ -81,3 +67,219 @@ p {text-align:center;}
   font-size: 1.2rem;
   color: gold;
 }
+
+.reviews {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem;
+}
+
+.review-card {
+    text-align: left;
+    background-color: #11293D;
+    border: 1px solid white;
+    color: white;
+}
+
+.review-title {
+    margin-left: 1rem;
+}
+
+.scroll-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.scroll-track {
+  display: inline-block;
+  animation: scroll 20s linear infinite;
+}
+
+.scroll-item {
+  display: inline-block;
+  margin-right: -80px;
+  width: 300px;
+  height: 200px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 200px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.filter-controls {
+    position: relative; /* Needed for positioning the pop-up */
+    /* ... other styles for your main filter area ... */
+}
+
+.other-filters-container {
+    position: absolute; /* To position the button */
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+
+#filter-by-button {
+    padding: 8px 15px;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#other-filters-popup {
+    position: absolute;
+    top: 40px; /* Adjust based on button height */
+    right: 10px; /* Align with the button */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it's above other elements */
+    display: none; /* Initially hidden */
+    flex-direction: column; /* Stack filter groups vertically */
+    gap: 10px;
+}
+
+#other-filters-popup.show {
+    display: flex; /* Show the pop-up */
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* === TEAM SLIDES === */
+.team-content {
+  text-align: center;        /* center image and text below */
+}
+.team-img {
+  max-width: 200px;
+  width: 100%;               /* shrink responsively */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* === PARTNER SLIDES === */
+.partner-content {
+  display: flex;
+  justify-content: center;   /* center the whole block */
+  align-items: center;
+  gap: 2rem;                 /* breathing room */
+  flex-wrap: wrap;           /* wrap on narrow screens */
+  text-align: center;        /* default center on mobile */
+}
+.partner-img {
+  max-width: 300px;
+  width: 100%;               /* shrink responsively */
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* on medium+ screens, text sits to the right */
+@media (min-width: 768px) {
+  .partner-content {
+    text-align: left;
+  }
+  .partner-text {
+    max-width: 50%;           /* roughly half the width */
+  }
+}
+
+}
+@media (min-width: 768px) {
+  #partnersCarousel .carousel-item .carousel-slide-content {
+    flex-direction: row;             /* image + text side by side */
+    text-align: left;                /* left-align the text block */
+    max-width: 800px;                /* optional: constrain total width */
+    margin: 0 auto;                  /* keep that block centered */
+  }
+}
+
+/* =====================================================================
+   Center & pad only your slide-content wrapper
+   ===================================================================== */
+.carousel-slide-content {
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;       /* vertical centering */
+  flex-wrap: wrap;           /* wrap on narrow viewports */
+  gap: 1rem;                 /* space between image & text */
+  padding: 3rem;             /* breathing room on all four sides */
+  box-sizing: border-box;    /* include padding within the element’s size */
+  min-height: 50vh;          /* ensure it’s tall enough for centering */
+}
+
+/* Team slides: always stack vertically */
+.carousel-slide-content.team-slide {
+  flex-direction: column;
+  text-align: center;
+}
+
+/* Partner slides: stack on mobile, side-by-side on md+ */
+.carousel-slide-content.partner-slide {
+  flex-direction: column;
+  text-align: center;
+}
+@media (min-width: 768px) {
+  .carousel-slide-content.partner-slide {
+    flex-direction: row;
+    text-align: left;
+    max-width: 800px;       /* constrain overall width */
+    margin: 0 auto;         /* keep it centered horizontally */
+  }
+  .carousel-slide-content.partner-slide .partner-img {
+    flex: 0 0 40%;          /* image takes 40% of the wrapper */
+  }
+  .carousel-slide-content.partner-slide .partner-text {
+    flex: 0 0 60%;          /* text takes 60% */
+    padding-left: 2rem;     /* a little gap from the image */
+  }
+}
+
+/* ==== Container 4: Align partner text properly ==== */
+
+/* Ensure .carousel-item remains untouched by flex overrides */
+
+/* Target only your own wrapper */
+.carousel-slide-content.partner-slide {
+  display: flex;
+  flex-direction: column;  /* stack on mobile */
+  align-items: center;     /* horizontally center on mobile */
+  text-align: center;      /* center text on mobile */
+}
+
+/* On tablets+ switch to row mode */
+@media (min-width: 768px) {
+  .carousel-slide-content.partner-slide {
+    flex-direction: row;   /* image + text side by side */
+    justify-content: center; /* center the block in the carousel */
+    align-items: center;     /* vertically center image & text block */
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Now fine-tune the text column */
+  .carousel-slide-content.partner-slide .partner-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center the text vertically beside the image */
+    align-items: flex-start; /* left-align both name & description */
+    text-align: left;
+    margin: 0;               /* reset any stray margins */
+    padding-left: 1rem;      /* space between image and text block */
+    flex: 1;                 /* take the remaining width */
+  }
+}
+
