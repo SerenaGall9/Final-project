@@ -57,7 +57,7 @@ def login():
 
         # If password check failed
         conn.close()
-        return render_template('login.html', error="Invalid credentials.")
+        return render_template('login.html', error="Invalid email or password, please try again.")
 
     return render_template('login.html')
 
@@ -87,6 +87,37 @@ def signup():
         return redirect(url_for('login'))
 
     return render_template('signup.html')
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form['email']
+        surname = request.form['surname']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm_password']
+
+        if new_password != confirm_password:
+            return render_template('forgot_password.html', error="Passwords do not match.")
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM user WHERE email = %s AND surname = %s", (email, surname))
+        user = cursor.fetchone()
+
+        if not user:
+            conn.close()
+            return render_template('forgot_password.html', error="User not found. Please check your email and surname.")
+
+        new_hash = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        cursor.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
+        conn.commit()
+        conn.close()
+
+        return render_template('forgot_password.html', success="Password updated. You can now log in.")
+
+    return render_template('forgot_password.html')
+
+
 
 
 @app.route('/vibes')
