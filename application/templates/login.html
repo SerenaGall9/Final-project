@@ -15,7 +15,9 @@
       <p><label for="password">Password: </label></p>
       <p><input type="password" id="password" name="password" required/></p>
       <p><input type="submit" value="Login" /></p>
-      <p><a href="{{ url_for('forgot_password') }}"><button type="button">Forgot Password?</button></a></p>
+     <a href="{{ url_for('forgot_password') }}" class="btn btn-link">
+        Forgot Password?
+     </a>
       <p>Don't have an account?</p>
       <p><a href="{{ url_for('signup') }}"><button type="button">Sign Up</button></a></p>
    </form>

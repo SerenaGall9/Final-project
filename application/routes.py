@@ -11,52 +11,71 @@ from application.data_access import get_db_connection, find_cuisine_from_id, fin
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        email = request.form['email']
-        entered_password = request.form['password']
+    # 1. Prepare the carousel data
+    team_members = [
+        { 'name': 'Renée', 'photo': 'images/members/renee.png' },
+        { 'name': 'Milena', 'photo': 'images/members/milena.png' },
+        { 'name': 'Serena', 'photo': 'images/members/serena.png' },
+        { 'name': 'Eleanor', 'photo': 'images/members/eleanor.png' },
+        { 'name': 'Khrisha', 'photo': 'images/members/khrisha.png' },
+    ]
+    restaurant_partners = [
+        { 'name': 'Gymkhana', 'description': 'A Michelin-starred Indian restaurant.', 'image': 'images/restaurantimages/gymkhana.png' },
+        { 'name': 'Dishoom', 'description': 'Bombay-inspired cafés with bold flavors.', 'image': 'images/restaurantimages/dishoom.png' },
+        { 'name': 'Beit El Zaytoun', 'description': 'Authentic Palestinian cuisine.', 'image': 'images/restaurantimages/beit.png' },
+        { 'name': 'Inamo Sukoshi', 'description': 'Pan-Asian fusion with interactive tables.', 'image': 'images/restaurantimages/inamo.png' },
+        { 'name': 'La Tagliata', 'description': 'Traditional Italian trattoria.', 'image': 'images/restaurantimages/tagliata.png' },
+    ]
 
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM user WHERE email = %s", (email,))
-        user = cursor.fetchone()
+    error = None
+    if request.method == 'POST':
+        # — your existing login logic —
+        email = request.form['email']
+        pw    = request.form['password']
+        conn  = get_db_connection()
+        cur   = conn.cursor(dictionary=True)
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
+        user = cur.fetchone()
 
         if not user:
-            conn.close()
-            return render_template('login.html', error="User not found. Please sign up first.")
-
-        stored_password = user['password']
-
-        try:
-            # Try checking as if it's a hashed password
-            if bcrypt.check_password_hash(stored_password, entered_password):
-                session['email'] = email
-                session['username'] = user['user_name']
-                session['loggedIn'] = True
-                session['user_id'] = user['user_id']
-                conn.close()
-                return redirect(url_for('show_vibes'))
-
-        except ValueError:
-            # ValueError means the stored password was not a valid hash
-
-            if stored_password == entered_password:
-                # If correct, rehash the password and store it
-                new_hash = bcrypt.generate_password_hash(entered_password).decode('utf-8')
-                cursor.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
-                conn.commit()
-
-                session['email'] = email
-                session['username'] = user['user_name']
-                session['loggedIn'] = True
-                session['user_id'] = user['user_id']
-                conn.close()
-                return redirect(url_for('show_vibes'))
-
-        # If password check failed
+            error = "User not found. Please sign up first."
+        else:
+            stored = user['password']
+            try:
+                if bcrypt.check_password_hash(stored, pw):
+                    # success
+                    session.update({
+                      'email': email,
+                      'username': user['user_name'],
+                      'loggedIn': True,
+                      'user_id': user['user_id'],
+                    })
+                    conn.close()
+                    return redirect(url_for('show_vibes'))
+            except ValueError:
+                # legacy plaintext
+                if stored == pw:
+                    new_hash = bcrypt.generate_password_hash(pw).decode('utf-8')
+                    cur.execute("UPDATE user SET password = %s WHERE email = %s", (new_hash, email))
+                    conn.commit()
+                    session.update({
+                      'email': email,
+                      'username': user['user_name'],
+                      'loggedIn': True,
+                      'user_id': user['user_id'],
+                    })
+                    conn.close()
+                    return redirect(url_for('show_vibes'))
+            error = "Invalid email or password, please try again."
         conn.close()
-        return render_template('login.html', error="Invalid email or password, please try again.")
 
-    return render_template('login.html')
+    # render the landing page (which includes the login form in section 3)
+    return render_template(
+      'layout_landing.html',
+      team_members=team_members,
+      restaurant_partners=restaurant_partners,
+      error=error
+    )
 
 
 @app.route('/signup', methods=['GET', 'POST'])
