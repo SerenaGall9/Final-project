@@ -2,16 +2,20 @@
 {% block body_content %}
 
 <h1>Welcome to Food for Thought</h1>
+
+<p class="intro-text">We are an independent platform created to give you a space to reflect on your dining experiences and help you find a perfect place for your next culinary outing. Discover restaurants that fit your mood, share your thoughts and let's eat! </p>
 {% if error %}
   <p style="color: red;">{{ error }}</p>
-{% else %}
-  <p>Please log in</p>
+
 {% endif %}
 
 <section>
-   <form action="" method="POST">
+   <form action="" method="POST" class="login-form">
+      <br>
+      <p>Please login</p>
       <p><label for="email">Email: </label></p>
-      <p><input type="email" id="email" name="email" required/></p>
+      <input type="email" id="email" name="email" required/>
+      <br>
       <p><label for="password">Password: </label></p>
       <p><input type="password" id="password" name="password" required/></p>
       <p><input type="submit" value="Login" /></p>
@@ -20,6 +24,9 @@
      </a>
       <p>Don't have an account?</p>
       <p><a href="{{ url_for('signup') }}"><button type="button">Sign Up</button></a></p>
+      <br>
    </form>
 </section>
 {% endblock %}
+
+
