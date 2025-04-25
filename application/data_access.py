@@ -57,13 +57,19 @@ def get_all_vibes():
     ]
 
 def get_all_cuisines():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM cuisine")
-    cuisines = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return cuisines
+    # conn = get_db_connection()
+    # cursor = conn.cursor(dictionary=True)
+    # cursor.execute("SELECT * FROM cuisine")
+    # cuisines = cursor.fetchall()
+    # cursor.close()
+    # conn.close()
+    return [
+        {"cuisine_id": 2, "name": "Indian", "image_url": "/static/images/cuisines/indian.png"},
+        {"cuisine_id": 1, "name": "Italian", "image_url": "/static/images/cuisines/italian.png"},
+        {"cuisine_id": 4, "name": "Lebanese", "image_url": "/static/images/cuisines/lebanese.png"},
+        {"cuisine_id": 3, "name": "Japanese", "image_url": "/static/images/cuisines/japanese.png"},
+        {"cuisine_id": 5, "name": "Mediterranean", "image_url": "/static/images/cuisines/mediterranean.png"}
+    ]
 
 
 def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):

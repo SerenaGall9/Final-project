@@ -86,3 +86,76 @@ p {text-align:center;}
 .review-title {
     margin-left: 1rem;
 }
+
+.scroll-wrapper {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.scroll-track {
+  display: inline-block;
+  animation: scroll 20s linear infinite;
+}
+
+.scroll-item {
+  display: inline-block;
+  margin-right: -80px;
+  width: 300px;
+  height: 200px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  line-height: 200px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.filter-controls {
+    position: relative; /* Needed for positioning the pop-up */
+    /* ... other styles for your main filter area ... */
+}
+
+.other-filters-container {
+    position: absolute; /* To position the button */
+    top: 10px; /* Adjust as needed */
+    right: 10px; /* Adjust as needed */
+}
+
+#filter-by-button {
+    padding: 8px 15px;
+    background-color: #ddd;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#other-filters-popup {
+    position: absolute;
+    top: 40px; /* Adjust based on button height */
+    right: 10px; /* Align with the button */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Ensure it's above other elements */
+    display: none; /* Initially hidden */
+    flex-direction: column; /* Stack filter groups vertically */
+    gap: 10px;
+}
+
+#other-filters-popup.show {
+    display: flex; /* Show the pop-up */
+}
+
+.hidden {
+    display: none !important;
+}

@@ -1,14 +1,11 @@
-from flask import request, redirect, url_for, render_template, flash
 from flask import flash
 from flask import render_template, url_for, request, redirect, session
 
 from application import app
-from datetime import datetime
 from app import bcrypt
 from application.data_access import get_db_connection, find_cuisine_from_id, find_vibe_from_id, find_restaurant, \
     get_all_vibes, get_vibe_by_id, get_all_cuisines, get_reviews_by_restaurant_id, save_review, get_user, \
     get_reviews_by_user
-import mysql
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -131,6 +128,7 @@ def display_cuisines(vibe_id):
     selected_vibe = get_vibe_by_id(vibe_id)
     if not selected_vibe:
         return "Vibe not found", 404
+
     session['selected_vibe_id'] = vibe_id
     cuisines = get_all_cuisines()
     return render_template('cuisines.html', cuisines=cuisines, vibe=selected_vibe)
