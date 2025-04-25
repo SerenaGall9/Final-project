@@ -53,9 +53,9 @@ def login():
 
         # If password check failed
         conn.close()
-        return render_template('login.html', error="Invalid credentials.")
+        return render_template('login1.html', error="Invalid credentials.")
 
-    return render_template('login.html')
+    return render_template('login1.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -76,7 +76,7 @@ def signup():
             conn.close()
             return render_template('signup.html', error="User already exists. Please login instead.")
 
-        cursor.execute("INSERT INTO user (email, password,name,surname) VALUES (%s, %s,%s,%s)", (email, password_hash, name, surname))
+        cursor.execute("INSERT INTO user (email, password,user_name,surname) VALUES (%s, %s,%s,%s)", (email, password_hash, name, surname))
         conn.commit()
         conn.close()
 

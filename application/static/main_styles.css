@@ -6,7 +6,21 @@ body {text-align:center;
 html, body {
   height: 100%;
 }
+.intro-text {text-align:center;
+      font-family: 'Lora', serif;
+      padding: 10%}
 
+.login-form {
+  background-color: #B0C4DE !important;
+  font-weight: bold;
+  font-family: 'Lora', serif;
+  color: #11293D;
+  padding: 2rem;              /* Adds space inside the form */
+  border-radius: 10px;         /* Rounded corners */
+  width: 300px;                /* Optional: control width */
+  margin: 0 auto;              /* Center horizontally */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Optional: add a soft shadow */
+}
 
 form {text-align:center;
 background-color: transparent;}
