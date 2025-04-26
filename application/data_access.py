@@ -33,28 +33,29 @@ def find_cuisine_from_id(cuisine_id):
     return None
 
 def find_vibe_from_id(vibe_id):
-    connection = get_db_connection()
-    cursor = connection.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = "SELECT * FROM vibetype WHERE vibe_id = %s"
+    cursor.execute(query, (vibe_id,))
+    result = cursor.fetchone()  # Might be None if no match
+    cursor.close()
+    conn.close()  # 🔥 CLOSE IT!
 
-    sql = "SELECT name FROM vibetype WHERE vibe_id = %s"
+    if result is None:
+        print(f"No vibe found with ID: {vibe_id}")
+    return result
 
-    cursor.execute(sql, (vibe_id,))
-    vibe = cursor.fetchone()
-    connection.close()
-
-    if vibe is not None:
-        return vibe[0]
-    return None
 
 def get_all_vibes():
-    return [
-        {"id": 3, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
-        {"id": 5, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
-        {"id": 6, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
-        {"id": 4, "name": "Special Occasion", "image_url": "/static/images/vibes/occassion.png"},
-        {"id": 1, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
-        {"id": 2, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
-    ]
+        return [
+            {"id": 3, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
+            {"id": 5, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
+            {"id": 6, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
+            {"id": 4, "name": "Special Occasion", "image_url": "/static/images/vibes/occassion.png"},
+            {"id": 1, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
+            {"id": 2, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
+        ]
+
 
 def get_all_cuisines():
     # conn = get_db_connection()

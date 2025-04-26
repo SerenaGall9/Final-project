@@ -135,8 +135,6 @@ def forgot_password():
     return render_template('forgot_password.html')
 
 
-
-
 @app.route('/vibes')
 def show_vibes(name=None):
     vibes = get_all_vibes()
