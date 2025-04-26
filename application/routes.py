@@ -1,6 +1,7 @@
 from flask import request, redirect, url_for, render_template, flash
 from flask import flash
 from flask import render_template, url_for, request, redirect, session
+from mysql.connector import ProgrammingError
 
 from application import app
 from datetime import datetime
@@ -459,9 +460,15 @@ def review(restaurant_id):
         comment = request.form['comment']
 
         # Save to database
-        save_review(restaurant_id, overall, ambience, service, location, value, comment)
-        flash('Review submitted successfully!')
-        return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
+        try:
+            save_review(restaurant_id, overall, ambience, service, location, value, comment)
+            flash('Review submitted successfully!')
+            return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
+        except ProgrammingError as error:
+            print("Error doing save_review: " + error.msg)
+            return render_template('review_form.html', restaurant=restaurant, error="Something went wrong. Please try again later.")
+
+
 
     return render_template('review_form.html', restaurant=restaurant)
 
