@@ -327,6 +327,10 @@ def review(restaurant_id):
         return "Restaurant not found", 404
 
     if request.method == 'POST':
+        user_id = session.get('user_id')  # Get logged-in user's ID
+        if not user_id:
+            flash('You must be logged in to leave a review.')
+            return redirect(url_for('login'))
 
         overall = int(request.form['overall_rating'])
         ambience = int(request.form['ambience_rating'])
@@ -336,11 +340,12 @@ def review(restaurant_id):
         comment = request.form['comment']
 
         # Save to database
-        save_review(restaurant_id, overall, ambience, service, location, value, comment)
+        save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment)
         flash('Review submitted successfully!')
         return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
 
     return render_template('review_form.html', restaurant=restaurant)
+
 
 
 # review url->pass in restaurant id->got into database, get restaurant name, put it in a label

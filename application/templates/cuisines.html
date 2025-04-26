@@ -2,9 +2,122 @@
 {% block title %}Choose a Cuisine{% endblock %}
 {% block body_content %}
 
+<style>
+    .page-header {
+        text-align: center;
+        margin: 2rem 0;
+        padding-top: 60px; /* Add padding for fixed navbar */
+    }
+
+    .selected-vibe {
+        font-size: 1.2rem;
+        color: #666;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .cuisine-grid {
+        display: flex; /* Use flexbox for centering and custom arrangement */
+        flex-wrap: wrap; /* Allow items to wrap to the next line */
+        justify-content: center; /* Center the grid horizontally */
+        gap: 20px;
+        padding: 0 2rem 2rem;
+        max-width: 1000px;
+        margin: 0 auto; /* Center the grid on the page */
+    }
+
+    .cuisine-card {
+        background-color: #B9BAA3;;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        height: 200px; /* Keep the fixed height */
+        width: 220px; /* Set a fixed width for the cards */
+        text-align: center;
+        display: flex; /* Use flexbox to center content within the card */
+        flex-direction: column;
+        justify-content: center; /* Center vertically */
+        align-items: center; /* Center horizontally */
+        flex-basis: auto; /* Allow flex items to take their inherent width */
+    }
+
+    /* Force the first two items onto their own line (row of two) */
+    .cuisine-grid > div:nth-child(1),
+    .cuisine-grid > div:nth-child(2) {
+        flex-basis: calc(50% - 10px); /* Try to take half the width */
+        max-width: 300px; /* Optional max width */
+    }
+
+    /* Force the next three items onto their own line (row of three) */
+    .cuisine-grid > div:nth-child(3),
+    .cuisine-grid > div:nth-child(4),
+    .cuisine-grid > div:nth-child(5) {
+        flex-basis: calc(33.33% - 14px); /* Try to take one-third the width */
+        max-width: 380px; /* Optional max width */
+    }
+
+    .cuisine-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        text-align: center;
+    }
+
+    .cuisine-card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+    }
+
+    .cuisine-name {
+        padding: 12px;
+        text-align: center;
+        font-weight: bold;
+        color: #474B24;
+        order: 1; /* Push the name below the image */
+        background-color: #B9BAA3; /* Add your desired background color here */
+    }
+
+    .cuisine-card a {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center content within the link */
+        align-items: center;
+    }
+
+    /* Overlay effect on hover */
+    .cuisine-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.3s ease;
+        z-index: 1;
+    }
+
+    .cuisine-card:hover::before {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .cuisine-card a {
+        z-index: 2;
+    }
+</style>
 
 <div class="page-header">
-    <h1>What are you hungry for?</h1>
+    <h1>Choose a Cuisine</h1>
 </div>
 
 <div class="selected-vibe">
@@ -15,7 +128,9 @@
     {% for cuisine in cuisines %}
         <div class="cuisine-card">
             <a href="{{ url_for('select_cuisine', cuisine_id=cuisine.cuisine_id) }}">
-                <img src="{{ cuisine.image_url }}" alt="{{ cuisine.name }}">
+                <img src="{{ url_for('static', filename='cuisine_images/' ~ cuisine_id ~ '.jpg') }}" alt="Cuisine Image">
+
+
                 <div class="cuisine-name">{{ cuisine.name }}</div>
             </a>
         </div>

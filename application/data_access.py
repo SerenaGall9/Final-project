@@ -1,11 +1,10 @@
 import mysql.connector
-from datetime import date
 
 mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="projectdb4"
+  database="projectdb2"
 )
 
 
@@ -34,44 +33,46 @@ def find_cuisine_from_id(cuisine_id):
     return None
 
 def find_vibe_from_id(vibe_id):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    sql = "SELECT name FROM vibetype WHERE vibe_id = %s"
+
+    cursor.execute(sql, (vibe_id,))
+    vibe = cursor.fetchone()
+    connection.close()
+
+    if vibe is not None:
+        return vibe[0]
+    return None
+
+def get_user(user_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM vibetype WHERE vibe_id = %s"
-    cursor.execute(query, (vibe_id,))
-    result = cursor.fetchone()  # Might be None if no match
+    cursor.execute("SELECT * FROM user WHERE user_id = %s", (user_id,))
+    user = cursor.fetchone()
     cursor.close()
-    conn.close()  # 🔥 CLOSE IT!
-
-    if result is None:
-        print(f"No vibe found with ID: {vibe_id}")
-    return result
-
+    conn.close()
+    return user
 
 def get_all_vibes():
-        return [
-            {"id": 3, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
-            {"id": 5, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
-            {"id": 6, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
-            {"id": 4, "name": "Special Occasion", "image_url": "/static/images/vibes/occassion.png"},
-            {"id": 1, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
-            {"id": 2, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
-        ]
-
+    return [
+        {"id": 3, "name": "Cozy & Intimate", "image_url": "/static/images/vibes/cosy.png"},
+        {"id": 5, "name": "Office Eats", "image_url": "/static/images/vibes/officeeats.png"},
+        {"id": 6, "name": "Loud & Lively", "image_url": "/static/images/vibes/loud.png"},
+        {"id": 4, "name": "Special Occasion", "image_url": "/static/images/vibes/occassion.png"},
+        {"id": 1, "name": "Casual Dining", "image_url": "/static/images/vibes/casual.png"},
+        {"id": 2, "name": "Fine Dining", "image_url": "/static/images/vibes/finedining.png"},
+    ]
 
 def get_all_cuisines():
-    # conn = get_db_connection()
-    # cursor = conn.cursor(dictionary=True)
-    # cursor.execute("SELECT * FROM cuisine")
-    # cuisines = cursor.fetchall()
-    # cursor.close()
-    # conn.close()
-    return [
-        {"cuisine_id": 2, "name": "Indian", "image_url": "/static/images/cuisines/indian.png"},
-        {"cuisine_id": 1, "name": "Italian", "image_url": "/static/images/cuisines/italian.png"},
-        {"cuisine_id": 4, "name": "Lebanese", "image_url": "/static/images/cuisines/lebanese.png"},
-        {"cuisine_id": 3, "name": "Japanese", "image_url": "/static/images/cuisines/japanese.png"},
-        {"cuisine_id": 5, "name": "Mediterranean", "image_url": "/static/images/cuisines/mediterranean.png"}
-    ]
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM cuisine")
+    cuisines = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return cuisines
 
 
 def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):
@@ -86,25 +87,6 @@ def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):
     conn.close()
     return restaurants
 
-
-def get_reviews_by_restaurant_id(restaurant_id):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-
-    query = """
-        SELECT review.*, user.user_name AS user_name
-        FROM review
-        JOIN user ON review.user_id = user.user_id
-        WHERE review.restaurant_id = %s
-        ORDER BY review.creation_date DESC
-    """
-
-    cursor.execute(query, (restaurant_id,))
-    reviews = cursor.fetchall()
-
-    cursor.close()
-    conn.close()
-    return reviews
 
 def find_restaurant(id):
     connection = get_db_connection()
@@ -146,47 +128,38 @@ def get_vibe_by_id(vibe_id):
         print(f"No vibe found with ID: {vibe_id}")
     return result
 
-def save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment):
+def save_review(restaurant_id, overall, ambience, service, location, value, comment):
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO review
-        (user_id, restaurant_id, Rating, Ambience, Service, Location, Value_for_money, Overall_review, creation_date) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO reviews 
+        (restaurant_id, overall_rating, ambience_rating, service_rating, location_rating, value_rating, comment) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    today = date.today()
-    cursor.execute(query, (user_id, restaurant_id, overall, ambience, service, location, value, comment, today))
+    cursor.execute(query, (restaurant_id, overall, ambience, service, location, value, comment))
     conn.commit()
     cursor.close()
     conn.close()
+
+def get_reviews_by_user(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM review WHERE user_id = %s ORDER BY creation_date DESC", (user_id,))
+    reviews = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return reviews
 
 
 def get_reviews_by_restaurant_id(restaurant_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM review WHERE restaurant_id = %s ORDER BY creation_date DESC", (restaurant_id,))
-    review = cursor.fetchall()
+    reviews = cursor.fetchall()
     cursor.close()
     conn.close()
-    return review
+    return reviews
 
-def get_user(user_id):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM user WHERE user_id = %s", (user_id,))
-    user = cursor.fetchone()
-    cursor.close()
-    conn.close()
-    return user
-
-def get_reviews_by_user(user_id):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM review WHERE user_id = %s ORDER BY creation_date DESC", (user_id,))
-    review = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return review
 
 if __name__ == "__main__":
     main()
