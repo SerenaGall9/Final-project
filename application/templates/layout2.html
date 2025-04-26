@@ -10,22 +10,28 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+  <link href='https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&display=swap' rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">
   <title>Food for Thought</title>
 </head>
 <body>
 
-<nav class="navbar bg-body-tertiary fixed-top">
+<nav class="navbar fixed-top" style="background-color: #265780;">
   <div class="container-fluid d-flex justify-content-between align-items-center">
 
     <!-- Left: Burger Menu -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+   <button class="btn btn-outline-light rounded-circle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" style="width:40px; height:40px; font-weight:bold; background-color: #474b24; border:none; color: #d2cac5;">
+  {% if session.get('username') %}
+    {{ session['username'][0]|upper }}
+  {% else %}
+    ☰
+  {% endif %}
+</button>
+
 
     <!-- Center: Title -->
     <div class="mx-auto position-absolute start-50 translate-middle-x">
-      <a class="navbar-brand mb-0 h1" href="{{ url_for('login') }}">Food for Thought</a>
+      <a class="navbar-brand mb-0 h1" href="{{ url_for('login') }}" style="font-family: 'Playfair Display', cursive; font-size: 25px; color: #a19c99;">Food for Thought</a>
     </div>
 
     <!-- Right: empty spacer for layout balance -->
@@ -41,7 +47,7 @@
 <!-- Offcanvas Navbar Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Food for Thought</h5>
+    <h5 class="offcanvas-title custom-logo fade-in mx-auto" id="offcanvasNavbarLabel">Food for Thought</h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
