@@ -4,7 +4,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="projectdb2"
+  database="projectdb4"
 )
 
 
@@ -49,7 +49,7 @@ def find_vibe_from_id(vibe_id):
 def get_user(user_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM user WHERE user_id = %s", (user_id,))
+    cursor.execute("SELECT * FROM `user` WHERE `user_id` = %s", (user_id,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
@@ -68,7 +68,7 @@ def get_all_vibes():
 def get_all_cuisines():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM cuisine")
+    cursor.execute("SELECT * FROM `cuisine`")
     cuisines = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -79,7 +79,7 @@ def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     cursor.execute(
-        "SELECT * FROM restaurants WHERE vibe_id = %s AND cuisine_id = %s",
+        "SELECT * FROM `restaurants` WHERE `vibe_id` = %s AND `cuisine_id` = %s",
         (vibe_id, cuisine_id)
     )
     restaurants = cursor.fetchall()
@@ -92,7 +92,7 @@ def find_restaurant(id):
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    sql = "SELECT restaurant_id,name, address, location_id, phone_number, website, price_range, cuisine_id, vibe_id, description, menu_link FROM restaurants WHERE restaurant_id = %s"
+    sql = "SELECT `restaurant_id`, `name`, `address`, `location_id`, `phone_number`, `website`, `price_range`, `cuisine_id`, `vibe_id`, `description`, `menu_link` FROM `restaurants` WHERE `restaurant_id` = %s"
     cursor.execute(sql, (id,))
 
     restaurant = cursor.fetchone()
@@ -118,7 +118,7 @@ def find_restaurant(id):
 def get_vibe_by_id(vibe_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    query = "SELECT * FROM vibetype WHERE vibe_id = %s"
+    query = "SELECT * FROM `vibetype` WHERE `vibe_id` = %s"
     cursor.execute(query, (vibe_id,))
 
     result = cursor.fetchone()  # Might be None if no match
@@ -132,8 +132,8 @@ def save_review(restaurant_id, overall, ambience, service, location, value, comm
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO reviews 
-        (restaurant_id, overall_rating, ambience_rating, service_rating, location_rating, value_rating, comment) 
+        INSERT INTO `reviews` 
+        (`restaurant_id`, `overall_rating`, `ambience_rating`, `service_rating`, `location_rating`, `value_rating`, `comment`) 
         VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     cursor.execute(query, (restaurant_id, overall, ambience, service, location, value, comment))
@@ -144,7 +144,7 @@ def save_review(restaurant_id, overall, ambience, service, location, value, comm
 def get_reviews_by_user(user_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM review WHERE user_id = %s ORDER BY creation_date DESC", (user_id,))
+    cursor.execute("SELECT * FROM review WHERE `user_id` = %s ORDER BY creation_date DESC", (user_id,))
     reviews = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -154,7 +154,7 @@ def get_reviews_by_user(user_id):
 def get_reviews_by_restaurant_id(restaurant_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM review WHERE restaurant_id = %s ORDER BY creation_date DESC", (restaurant_id,))
+    cursor.execute("SELECT * FROM `review` WHERE `restaurant_id` = %s ORDER BY creation_date DESC", (restaurant_id,))
     reviews = cursor.fetchall()
     cursor.close()
     conn.close()
