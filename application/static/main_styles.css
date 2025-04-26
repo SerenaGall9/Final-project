@@ -283,3 +283,35 @@ p {text-align:center;}
   }
 }
 
+
+@media (min-width: 768px) {
+  #logo {
+    max-width: 400px;
+  }
+}
+
+
+.logo-reveal-wrapper {
+  display: inline-block;
+  overflow: hidden;
+}
+.logo-mask {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #11293D;    /* match your bg */
+  animation: wipeLogo 2s ease forwards;
+}
+@keyframes wipeLogo {
+  to { transform: translateX(100%); }
+}
+
+/* make the logo IMG fill more of its section */
+#logo {
+  display: block;       /* so margin auto works */
+  margin: 0 auto;       /* center it horizontally */
+  width: 85%;           /* fill 80% of the parent’s width */
+  max-width: 600px;     /* but never exceed 600px */
+  height: auto;         /* keep aspect ratio */
+}
+

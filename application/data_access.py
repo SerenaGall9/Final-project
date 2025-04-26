@@ -4,7 +4,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="projectdb2"
+  database="projectdb3"
 )
 
 
