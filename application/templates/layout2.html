@@ -33,7 +33,9 @@
     {% if session['loggedIn'] == False %}
     <a href="{{url_for('login')}}"><button> Login</button></a>
     {% else %}
-    <a href="{{url_for('logout')}}"><button> Logout </button></a>
+    <a href="{{url_for('logout')}}">
+  <button class="btn btn-logout">Logout</button>
+</a>
     {% endif %}
       </ul>
         </div>
@@ -42,17 +44,19 @@
 
 <!-- Offcanvas Navbar Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Food for Thought</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
+<div class="offcanvas-header d-flex justify-content-center position-relative">
+  <h5 class="offcanvas-title mx-auto" id="offcanvasNavbarLabel">Food for Thought</h5>
+  <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+</div>
+
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
       <li>
   {% if session.get('loggedIn') %}
-    Welcome, {{ session['username'] }}!
+    <strong>Welcome, {{ session['username'] }}!</strong>
   {% endif %}
     </li>
+      <br>
 
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="{{url_for('all_restaurants')}}">Our Restaurants</a>

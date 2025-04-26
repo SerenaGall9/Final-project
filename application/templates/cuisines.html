@@ -128,7 +128,8 @@
     {% for cuisine in cuisines %}
         <div class="cuisine-card">
             <a href="{{ url_for('select_cuisine', cuisine_id=cuisine.cuisine_id) }}">
-                <img src="{{ url_for('static', filename='cuisine_images/' ~ cuisine_id ~ '.jpg') }}" alt="Cuisine Image">
+                <img src="{{ url_for('static', filename='mages/cuisines/' ~ cuisine.cuisine_id ~ '.png') }}" alt="Cuisine Image">
+
 
 
                 <div class="cuisine-name">{{ cuisine.name }}</div>

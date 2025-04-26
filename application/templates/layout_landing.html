@@ -1,7 +1,3 @@
-<!-- layout_landing.html with smooth-scroll sections and context usage -->
-<!--  # Ensure your static folder has:-->
-<!--  # static/images/logo.png-->
-<!--  # static/images/Renée.png, Milena.png, etc.-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +7,7 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='main_styles.css') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet"> <!-- Bebas Neue font -->
   <title>Food for Thought</title>
 
   <style>
@@ -20,15 +17,68 @@
       scroll-snap-align: start;
       position: relative;
       min-height: 100vh;
-      padding: 100px 20px;
-      background-color: #11293D;
-      color: #d2cac5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
     }
-    .scroll-section:not(:first-child) { margin-top: -50px; }
-    .scroll-section:nth-child(1) { z-index: 4; }
-    .scroll-section:nth-child(2) { z-index: 3; }
-    .scroll-section:nth-child(3) { z-index: 2; }
-    .scroll-section:nth-child(4) { z-index: 1; }
+
+    /* Section 1: Fullscreen logo */
+    .logo-section {
+      background-color: #11293D;
+    }
+    .logo-section img {
+      max-width: 300px;
+    }
+
+    /* Section 2: Login */
+    .login-section {
+      background-color: #d2cac5; /* Updated background */
+      padding: 3rem 1rem;
+    }
+    .login-header {
+      color: #49111c;
+      font-size: 4rem;
+      margin-bottom: 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+    }
+    .welcome-paragraph {
+      color: #49111c;
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+    .login-card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    .login-card .form-label,
+    .login-card .form-control,
+    .login-card .btn-primary,
+    .login-card .welcome-text,
+    .login-card .btn-link {
+      color: #49111c !important;
+    }
+    .login-card .form-control::placeholder {
+      color: #49111c;
+    }
+    .login-card .btn-primary {
+      background-color: white;
+      border: 2px solid #49111c;
+      transition: all 0.3s ease;
+    }
+    .login-card .btn-primary:hover {
+      background-color: #11293D;
+      color: #d2cac5 !important;;
+    }
+    /* Carousel team images */
     .team-img {
       width: 150px;
       height: 150px;
@@ -41,61 +91,31 @@
 <body>
 
 <div class="scroll-container">
-  <!-- Section 1: Logo -->
-  <section class="scroll-section d-flex align-items-center justify-content-center">
-    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="img-fluid" style="max-width: 300px;">
+
+  <!-- Section 1: Logo Fullscreen -->
+  <section class="scroll-section logo-section">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="img-fluid">
   </section>
 
-  <!-- Section 2: Team -->
-  <section class="scroll-section">
-    <div class="container text-center">
-      <h2>Meet Our Team</h2>
-      <p>Learn a little about the people behind Food for Thought.</p>
-
-  <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    {% for member in team_members %}
-    <div class="carousel-item {% if loop.first %}active{% endif %}">
-      <!-- NEW wrapper -->
-      <div class="carousel-slide-content team-slide">
-        <img
-          src="{{ url_for('static', filename=member.photo) }}"
-          class="team-img"
-          alt="{{ member.name }}">
-        <h5 class="mt-3">{{ member.name }}</h5>
-        <p class="small">{{ member.title }}</p>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-<!--  …controls…-->
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon"></span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Section 3: Login -->
-  <section class="scroll-section d-flex align-items-center justify-content-center">
-    <div class="col-md-6">
+  <!-- Section 2: All stacked vertically -->
+  <section class="scroll-section login-section">
+    <h1 class="login-header">Welcome to Food For Thought</h1>
+    <p class="welcome-paragraph">
+      We're a community passionate about connecting food lovers with thoughtfully selected restaurants. Reflect on your dining experiences, explore our partners, and discover the perfect place for your next culinary outing.
+    </p>
+    <div class="login-card">
+      <p class="text-center mb-4 welcome-text">Please log in to continue</p>
       {% if error %}
-        <p class="text-danger">{{ error }}</p>
-      {% else %}
-        <p>Please log in to continue</p>
+        <p class="text-danger text-center">{{ error }}</p>
       {% endif %}
-      <form action="" method="POST" class="mt-4">
+      <form action="" method="POST">
         <div class="mb-3">
           <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" class="form-control" required>
+          <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password:</label>
-          <input type="password" id="password" name="password" class="form-control" required>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
         <div class="d-flex justify-content-between mt-2">
@@ -106,33 +126,55 @@
     </div>
   </section>
 
-  <!-- Section 4: Partners -->
+
+  <!-- Section 3: Restaurant Partners Carousel -->
   <section class="scroll-section">
-    <div class="container">
-      <h2 class="text-center">Our Restaurant Partners</h2>
-  <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
-    {% for partner in restaurant_partners %}
-    <div class="carousel-item {% if loop.first %}active{% endif %}">
-      <!-- NEW wrapper -->
-      <div class="carousel-slide-content partner-slide">
-        <img
-          src="{{ url_for('static', filename=partner.image) }}"
-          class="partner-img"
-          alt="{{ partner.name }}">
-        <div class="partner-text">
-          <h5>{{ partner.name }}</h5>
-          <p>{{ partner.description }}</p>
+    <div class="container text-center">
+      <h2>Our Restaurant Partners</h2>
+      <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for partner in restaurant_partners %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <div class="carousel-slide-content partner-slide">
+              <img src="{{ url_for('static', filename=partner.image) }}" class="partner-img" alt="{{ partner.name }}">
+              <div class="partner-text">
+                <h5>{{ partner.name }}</h5>
+                <p>{{ partner.description }}</p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
         </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  <!-- controls… -->
         <button class="carousel-control-prev" type="button" data-bs-target="#partnersCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#partnersCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Meet the Team Carousel -->
+  <section class="scroll-section">
+    <div class="container text-center">
+      <h2>Meet Our Team</h2>
+      <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for member in team_members %}
+          <div class="carousel-item {% if loop.first %}active{% endif %}">
+            <div class="carousel-slide-content team-slide">
+              <img src="{{ url_for('static', filename=member.photo) }}" class="team-img" alt="{{ member.name }}">
+              <h5 class="mt-3">{{ member.name }}</h5>
+              <p class="small">{{ member.title }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
           <span class="carousel-control-next-icon"></span>
         </button>
       </div>
@@ -149,3 +191,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
