@@ -293,9 +293,29 @@ def all_restaurants():
 # interacts with the database to filter based on other criteria (session handling; price, vibe,cuisine,location)
 
 @app.route('/restaurant/<int:id>')
+@app.route('/restaurant/<int:id>')
 def get_restaurant(id):
     restaurant = find_restaurant(id)
-    # cuisine = find_cuisine_to_restaurant(id)
+
+    # Dictionary: hardcode restaurant_id → image filename
+    image_filenames = {
+        2: 'coco.png',
+        3: 'olive.png',
+        4: 'scarpetta.png',
+        5: 'alexander.png',
+        6: 'latagliata.png',
+        7: 'gloria.png',
+        8: 'chutney.png',
+        9: 'dishoom.png',
+        10: 'gymkhana.png',
+        11: 'babel.png',
+        12: 'baba.png',
+        13: 'mazar.png',
+        14: 'beit.png',
+        15: 'nijo.png',
+        16: 'inamo.png'
+    }
+
     if restaurant is not None:
         name = restaurant["name"]
         phone_number = restaurant["phone_number"]
@@ -308,15 +328,30 @@ def get_restaurant(id):
         menu_link = restaurant['menu_link']
         reviews = get_reviews_by_restaurant_id(id)
         restaurant_id = id
+
+        # ✅ Get the correct image filename from the dictionary
+        image_filename = image_filenames.get(id, 'default.jpg')  # fallback if not found
+
         if cuisine is None:
             cuisine = "Unknown cuisine"
-        # vibe = restaurant["vibe_id"]
-        return render_template('restaurant.html', name=name, phone_number=phone_number, address=address, website=website,
-                               price_range=price_range, cuisine=cuisine, vibe=vibe, description=description, menu_link=menu_link, reviews=reviews,restaurant_id=restaurant_id)
+
+        return render_template(
+            'restaurant.html',
+            name=name,
+            phone_number=phone_number,
+            address=address,
+            website=website,
+            price_range=price_range,
+            cuisine=cuisine,
+            vibe=vibe,
+            description=description,
+            menu_link=menu_link,
+            reviews=reviews,
+            restaurant_id=restaurant_id,
+            image_filename=image_filename  # Pass it here!
+        )
     else:
         return render_template("404.html")
-#
-#
 
 
 @app.route('/myreviews')

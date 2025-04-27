@@ -1,58 +1,128 @@
 {% extends "layout2.html" %}
 
 {% block body_content %}
-<br />
-<br />
-<br />
+<style>
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
 
-<ul>{{ name }}</ul>
-<!--<img src="./images/{{ id }}.png" />-->
-<ul> About: {{ description }} </ul>
-<br>
-<ul>Address: {{ address }}</ul>
-<br>
-<ul>Phone number: {{ phone_number }}</ul>
-<br>
-<ul>Website: {{ website }}</ul>
-<br>
-<ul>Price range: {{ price_range }}</ul>
-<br>
-<ul>Cuisine: {{ cuisine }}</ul>
-<br>
-<ul>Vibe: {{ vibe }}</ul>
+.scroll-container {
+  overflow-y: auto;
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+}
 
-<a href="{{ menu_link }}">
-    <button> MENU LINK </button>
-</a>
+.scroll-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  padding: 100px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-<br>
-<em> Reviews </em>
-{% if reviews %}
-  {% for review in reviews %}
-    <div class="review-box">
-      <p><strong>Overall:</strong> {{ review.Rating }}</p>
-      <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
-      <p><strong>Service:</strong> {{ review.Service }}</p>
-      <p><strong>Location:</strong> {{ review.Location }}</p>
-      <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
-      <blockquote class="review-box">
-    "{{ review.Overall_review }}"
-    </blockquote>
+.section-1 {
+  background: linear-gradient(to bottom, #11293D, #331B22);
+}
 
-      <hr>
+.section-2 {
+  background: linear-gradient(to bottom, #331B22, #152334);
+}
+
+  .section-3 {
+  background: linear-gradient(to bottom, #152334, #11293D);
+}
+
+</style>
+
+<div class="scroll-container">
+
+<section class="scroll-section section-1">
+<!-- === Hero Section === -->
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center section-hero">
+  <div class="row w-100 align-items-center">
+    <div class="col-md-6 text-center">
+<img src="{{ url_for('static', filename='images/restaurantimages/' ~ image_filename) }}" alt="{{ name }}" class="img-fluid rounded-4 hero-image">
     </div>
-  {% endfor %}
-{% else %}
-  <p>No reviews yet. Be the first to leave one!</p>
-{% endif %}
-<br>
-<a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
-  <button>Leave a Review</button>
-</a>
+    <div class="col-md-6 text-center text-md-start">
+      <h1 class="restaurant-title">{{ name }}</h1>
+      <p class="restaurant-description">{{ description }}</p>
+    </div>
+  </div>
+</div>
+  </section>
+
+<!-- === Details + Review Button Section === -->
+<section class="scroll-section section-2 d-flex align-items-center justify-content-center">
+  <div class="container d-flex flex-column flex-md-row align-items-center justify-content-around">
+
+    <!-- Left Side: Give Us Your Thoughts -->
+    <div class="text-center mb-5 mb-md-0" style="flex:1;">
+      <h2 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #d2cac5;">Give Us Your Thoughts</h2>
+      <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
+        <button class="btn btn-review" style="background-color: #468099; color: #d2cac5; font-size: 1.3rem;">Leave a Review</button>
+      </a>
+    </div>
 
 
-<br>
+    <!-- Right side: Restaurant Details -->
+       <div style="flex:1; max-width: 600px; min-width: 300px; max-height: 600px; border-radius: 5px;">
+      <h2 class="text-center mb-4" style="font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #d2cac5;">The Little Details</h2>
+        <p><strong>Address:</strong> {{ address }}</p>
+        <p><strong>Phone:</strong> {{ phone_number }}</p>
+        <p><strong>Website:</strong> <a href="{{ website }}" target="_blank" style="color:#8B95C9;">{{ website }}</a></p>
+        <p><strong>Price Range:</strong> {{ price_range }}</p>
+        <p><strong>Cuisine:</strong> {{ cuisine }}</p>
+        <div class="text-center mt-4">
+          <a href="{{ menu_link }}" target="_blank" class="btn btn-outline-primary btn-lg">View Menu</a>
+        </div>
+      </div>
+    </div>
+</section>
 
+<!-- === Community Reviews Carousel Section === -->
+  <section class="scroll-section section-3">
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center section-reviews">
+  <div class="row w-100">
+    <div class="col-12 text-center mb-5">
+      <h2 class="reviews-title">See What Our Community Thinks</h2>
+    </div>
 
+    {% if reviews %}
+      <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
 
+          {% for review in reviews %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+              <div>
+                <div class="body">
+                  <h5 class="title">"{{ review.Overall_review }}"</h5>
+                  <p class="text"><strong>Overall:</strong> {{ review.Rating }}</p>
+                  <p class="text"><strong>Ambience:</strong> {{ review.Ambience }}</p>
+                  <p class="text"><strong>Service:</strong> {{ review.Service }}</p>
+                  <p class="text"><strong>Location:</strong> {{ review.Location }}</p>
+                  <p class="text"><strong>Value:</strong> {{ review.Value_for_money }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </button>
+      </div>
+    {% else %}
+      <p class="text-center">No reviews yet. Be the first to leave one!</p>
+    {% endif %}
+  </div>
+</div>
+    </section>
+</div>
 {% endblock %}

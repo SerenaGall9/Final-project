@@ -676,3 +676,82 @@ p, a, li, span, label, input, button {
   height: 250px;
 }
 
+.section-reviews {
+  padding: 4rem 2rem;
+}
+
+.reviews-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #D2CAC5;
+}
+
+.review-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  width: 80%;
+  max-width: 600px;
+  max-height: 600px;
+  border-radius: 20px;
+  color: #D2CAC5;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  margin-bottom: 2rem;
+}
+
+.review-card h5 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.review-card p {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #D2CAC5;
+  border-radius: 50%;
+}
+
+.restaurant-description {
+  font-style: italic;
+  margin: 1.5rem 4rem;
+  text-align: left;
+  font-size: 1.2rem;
+  color: #d2cac5;
+}
+
+/* Mobile view: smaller margins */
+@media (max-width: 768px) {
+  .restaurant-description {
+    margin: 1.5rem 2rem;
+  }
+}
+.restaurant-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #D2CAC5;
+  text-align: left;
+  margin: 0 5rem;
+  padding-bottom: 0.7rem;
+  position: relative;
+}
+
+.restaurant-title::after {
+  content: '';
+  position: absolute;
+  width: 40%;
+  height: 3px;
+  background-color: #8B95C9;
+  left: 30%;
+  transform: translateX(-50%); /* still balance it */
+  bottom: 0;
+  border-radius: 2px;
+}
+
