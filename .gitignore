@@ -4,6 +4,6 @@
 # Python cache
 __pycache__/
 *.pyc
-
+venv/
 # Ignore all __pycache__ folders anywhere
 **/__pycache__/
