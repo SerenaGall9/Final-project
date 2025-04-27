@@ -167,7 +167,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-#
 @app.route('/all_restaurants')
 def all_restaurants():
     # Get selected filters from query string
@@ -252,6 +251,24 @@ def all_restaurants():
 
     cursor.execute(query, params)
     restaurants = cursor.fetchall()
+    image_mapping = {
+        "Dishoom Covent Garden": "dishoom.png",
+        "Coco Grill & Lounge": "coco.png",
+        "Olives and Meze": "olive.png",
+        "Scarpetta Canary Wharf": "scarpetta.png",
+        "Alexander The Great Greek Restaurant": "alexander.png",
+        "Gloria Trattoria": "gloria.png",
+        "Chutney Mary": "chutney.png",
+        "Gymkhana": "gymkhana.png",
+        "Babel grill house": "babel.png",
+        "Baba ghanouj": "baba.png",
+        "Mazar": "mazar.png",
+        "Beit El Zaytoun": "beit.png",
+        "NIJŪ": "nijo.png",
+        "Inamo sukoshi": "inamo.png",}
+
+    for r in restaurants:
+        r['image_filename'] = image_mapping.get(r['name'], 'default.jpg')
     conn.close()
 
     return render_template(
