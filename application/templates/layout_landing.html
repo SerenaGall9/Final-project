@@ -10,35 +10,48 @@
   <title>Food for Thought</title>
 
   <style>
-    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
-    .scroll-container { overflow-y: auto; height: 100vh; scroll-snap-type: y mandatory; }
-    .scroll-section {
-      scroll-snap-align: start;
-      position: relative;
-      min-height: 100vh;
-      padding: 100px 20px;
-      background-color: #152334;
-      color: #d2cac5;
-    }
-    .scroll-section:not(:first-child) { margin-top: -50px; }
-    .scroll-section:nth-child(1) { z-index: 4; }
-    .scroll-section:nth-child(2) { z-index: 3; }
-    .scroll-section:nth-child(3) { z-index: 2; }
-    .scroll-section:nth-child(4) { z-index: 1; }
-    .team-img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 0 auto;
-    }
+    html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-container {
+  overflow-y: auto;
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+}
+
+.scroll-section {
+  scroll-snap-align: start;
+  position: relative;
+  min-height: 100vh;
+  padding: 100px 20px;
+  color: #d2cac5;
+}
+
+/* Section-specific backgrounds */
+.section-1 {
+  background-color: #152334; /* deep navy */
+}
+
+.section-2 {
+  background: linear-gradient(to bottom, #152334, #331B22);
+}
+
+.section-3 {
+  background: linear-gradient(to bottom, #331B22, #28220F);
+}
+
+.section-4 {
+  background: linear-gradient(to bottom, #28220F, #172A3A);
+}
   </style>
 </head>
 <body>
 
 <div class="scroll-container">
    <!-- Section 1: Animated Logo -->
-<section class="scroll-section scroll-logo d-flex align-items-center justify-content-center p-0 m-0">
+<section class="scroll-section section-1 scroll-logo d-flex align-items-center justify-content-center p-0 m-0">
   <div class="logo-wrapper">
     <img
       id="logo"
@@ -51,7 +64,7 @@
 
 
   <!-- Section 2: Team -->
-  <section class="scroll-section">
+ <section class="scroll-section section-2">
     <div class="container text-center">
       <h2>Meet Our Team</h2>
       <p>Learn a little about the people behind Food for Thought.</p>
@@ -85,7 +98,7 @@
   </section>
 
   <!-- Section 3: Login -->
-  <section class="scroll-section d-flex align-items-center justify-content-center">
+ <section class="scroll-section section-3 d-flex align-items-center justify-content-center">
     <div class="col-md-6">
       {% if error %}
         <p class="text-danger">{{ error }}</p>
@@ -111,9 +124,9 @@
   </section>
 
   <!-- Section 4: Partners -->
-  <section class="scroll-section">
+ <section class="scroll-section section-4">
     <div class="container">
-      <h2 class="text-center">Our Restaurant Partners</h2>
+      <h2 class="text-center">Some of our Restaurant Partners</h2>
   <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
     {% for partner in restaurant_partners %}

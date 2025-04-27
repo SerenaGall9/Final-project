@@ -1,10 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "layout2.html" %}
 
-</body>
-</html>
+{% block title %}Our Ethos{% endblock %}
+
+{% block body_content %}
+
+<section class="ethos-hero d-flex align-items-center justify-content-center text-center">
+  <div>
+    <h1 class="ethos-title">Our Ethos</h1>
+    <p class="ethos-subtitle">Where Flavor Meets Purpose</p>
+  </div>
+</section>
+
+<section class="ethos-section container my-5">
+  <div class="row">
+    <div class="col-md-6 d-flex align-items-center">
+      <div>
+        <h2 class="ethos-heading">Authenticity at Every Bite</h2>
+        <p>We collaborate with restaurants that honor tradition, celebrate culture, and serve food crafted from the heart. Each dish tells a story.</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+     <video autoplay loop muted playsinline class="img-fluid rounded">
+  <source src="{{ url_for('static', filename='images/ethos/1.mp4') }}" type="video/mp4">
+</video>
+    </div>
+  </div>
+</section>
+
+<section class="ethos-section container my-5">
+  <div class="row flex-md-row-reverse">
+    <div class="col-md-6 d-flex align-items-center">
+      <div>
+        <h2 class="ethos-heading">Sustainability</h2>
+        <p>We believe great food starts with great respect for the earth. We champion local sourcing, mindful practices, and sustainable dining experiences.</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+<video autoplay loop muted playsinline class="img-fluid rounded">
+  <source src="{{ url_for('static', filename='images/ethos/2.mp4') }}" type="video/mp4">
+</video>
+    </div>
+  </div>
+</section>
+
+<section class="ethos-section container my-5">
+  <div class="row">
+    <div class="col-md-6 d-flex align-items-center">
+      <div>
+        <h2 class="ethos-heading">Community</h2>
+        <p>Dining connects us. We are committed to cultivating meaningful relationships between diners, chefs, and the communities they nourish.</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+<video autoplay loop muted playsinline class="img-fluid rounded">
+  <source src="{{ url_for('static', filename='images/ethos/3.mp4') }}" type="video/mp4">
+</video>
+    </div>
+  </div>
+</section>
+
+<section class="ethos-quote text-center py-5">
+  <blockquote class="blockquote">
+    <p class="mb-0">Behind every plate is a story — we’re here to help you find the ones worth telling.</p>
+  </blockquote>
+</section>
+
+{% endblock %}
