@@ -447,37 +447,31 @@ def review(restaurant_id):
         return "Restaurant not found", 404
 
     if request.method == 'POST':
-        overall = int(request.form['overall_rating'])
-        ambience = int(request.form['ambience_rating'])
-        service = int(request.form['service_rating'])
-        location = int(request.form['location_rating'])
-        value = int(request.form['value_rating'])
-        comment = request.form['comment']
+        try:
+            user_id = session.get('user_id')  # Make sure user is logged in!
+            if not user_id:
+                flash('You must be logged in to leave a review.')
+                return redirect(url_for('login'))
 
-        # Get the logged in user's ID
-        email = session.get('email')
-        if not email:
-            flash("You must be logged in to submit a review.")
-            return redirect(url_for('login'))
+            overall = int(request.form['overall_rating'])
+            ambience = int(request.form['ambience_rating'])
+            service = int(request.form['service_rating'])
+            location = int(request.form['location_rating'])
+            value = int(request.form['value_rating'])
+            comment = request.form.get('comment', '')
 
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT user_id FROM User WHERE email = %s", (email,))
-        user = cursor.fetchone()
-        cursor.close()
-        conn.close()
+            # Save to database
+            save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment)
 
-        if not user:
-            flash("User not found.")
-            return redirect(url_for('login'))
+            flash('Review submitted successfully!')
+            return redirect(url_for('get_restaurant', id=restaurant_id))
 
-        user_id = user['user_id']
+        except Exception as e:
+            print(e)
+            flash('There was an error submitting your review. Please try again.')
 
-        # Save to database
-        save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment)
-
-        flash('Review submitted successfully!')
-        return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
+    # Always render the form if GET or if POST fails
+    return render_template('review_form.html', restaurant=restaurant)
 
 
 # review url->pass in restaurant id->got into database, get restaurant name, put it in a label
