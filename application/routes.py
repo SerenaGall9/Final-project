@@ -6,7 +6,9 @@ from mysql.connector import ProgrammingError
 from application import app
 from datetime import datetime
 from app import bcrypt
-from application.data_access import get_db_connection, find_cuisine_from_id,find_vibe_from_id,find_restaurant, get_all_vibes, get_vibe_by_id,get_all_cuisines, get_reviews_by_restaurant_id,save_review,get_user,get_reviews_by_user
+from application.data_access import get_db_connection, find_cuisine_from_id, find_vibe_from_id, find_restaurant, \
+    get_all_vibes, get_vibe_by_id, get_all_cuisines, get_reviews_by_restaurant_id, save_review, get_user, \
+    get_reviews_by_user, get_average_score_of_review, get_average_score_of_restaurant
 
 import mysql
 
@@ -307,6 +309,7 @@ def get_restaurant(id):
         menu_link = restaurant['menu_link']
         reviews = get_reviews_by_restaurant_id(id)
         restaurant_id = id
+        average_rating = get_average_score_of_restaurant(restaurant_id)
 
         if cuisine is None:
             cuisine = "Unknown cuisine"
@@ -344,6 +347,7 @@ def get_restaurant(id):
             cuisine=cuisine,
             vibe=vibe,
             description=description,
+            average_rating=average_rating,
             menu_link=menu_link,
             reviews=reviews,
             restaurant_id=restaurant_id,
@@ -417,6 +421,8 @@ def account():
             stars = stars + "⭐"
         user_review["stars"] = stars
         user_review["restaurant_name"] = find_restaurant(user_review["restaurant_id"])["name"]
+        user_review['average_rating'] = get_average_score_of_review(user_review['review_id'])
+
 
 
     return render_template("account.html", title="Account", user_name=user["user_name"], surname=user["surname"],

@@ -1,4 +1,5 @@
 import mysql.connector
+import statistics
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -159,6 +160,45 @@ def get_reviews_by_restaurant_id(restaurant_id):
     cursor.close()
     conn.close()
     return reviews
+
+# average rating of a single review
+# used in the account page
+# e.g. take ambience: 5, service: 5, value_for_money: 3, rating: 3 = average of 4
+def get_average_score_of_review(review_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT `rating`, `ambience`, `service`, `location`, `value_for_money` FROM `review` WHERE `review_id` = %s", (review_id,))
+
+    review = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+    if review:
+        ratings = [review['rating'], review['ambience'], review['service'], review['location'],
+                   review['value_for_money']]
+        return statistics.mean(ratings)
+
+    else:
+        return 'No data to show here'
+
+# get average rating of restaurant from ALL reviews
+# e.g. if there were 4 reviews, 2 were rating:3 , 2 were rating: 5, the average score is 4
+def get_average_score_of_restaurant(restaurant_id):
+    reviews = get_reviews_by_restaurant_id(restaurant_id)
+    ratings = []
+    if reviews:
+        for review in reviews:
+            try:
+                if review['rating'] is not None:
+                    ratings.append(review['rating'])
+            # for some reason, some reviews have a key of 'rating' and some are 'Rating'
+            # this try/except means that we can handle both
+            except KeyError:
+                if review['Rating'] is not None:
+                    ratings.append(review['Rating'])
+        return statistics.mean(ratings)
+    else:
+        return 'No data to show here'
 
 
 if __name__ == "__main__":
