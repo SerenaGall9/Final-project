@@ -1,45 +1,179 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
-
-
 body {text-align:center;
       font-family: 'Lora', serif;
       background-color: #11293D !important;
-      color: #D2CAC5 !important;
+      color: #d2cac5 !important;}
+
+.offcanvas {
+    background-color: #e8e9eb !important;
+    color: #49111c ;
+}
+.signup-card {
+  background-color: #d2cac5 ;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.signup-card p,
+.signup-card .text-center,
+.signup-card .btn-link {
+  color: #49111c;
+}
+
+.signup-header {
+  color: #49111c;
+}
+
+.signup-card .form-label {
+  color: #49111c;
+  font-weight: bold;
+}
+
+.signup-card .btn-primary {
+  background-color: white;
+  color: #49111c;
+  border: 2px solid #49111c;
+  transition: all 0.3s ease;
+}
+
+.signup-card .btn-primary:hover {
+  background-color: #11293D;
+  color: #d2cac5;
+}
+
+.signup-card .btn-outline-secondary {
+  border: 2px solid #49111c;
+  color: #49111c;
+  transition: all 0.3s ease;
+}
+
+.signup-card .btn-outline-secondary:hover {
+  background-color: #11293D;
+  color: #d2cac5;
+}
+
+.btn-logout {
+  background-color: white;
+  color: #49111c;
+
+  padding: 6px 12px;
+
+
+  transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #11293D;
+  color: #d2cac5;
+  border-color: #11293D;
+}
+
+
+.filter-bar {
+    background-color: #11293D;
+    color: #d2cac5;
+}
+
+
+.filter-bar .form-label {
+    color: #d2cac5;
+}
+
+
+.filter-bar .form-select {
+    background-color: #d2cac5;
+    color: #49111c;
+    border: none;
+}
+
+
+.filter-bar .btn {
+    background-color: #e8e9eb ;
+    color: #49111c;
+
+}
+
+.filter-bar .btn:hover {
+    background-color: #11293D;
+    color: #e8e9eb;
+
 }
 
 html, body {
   height: 100%;
 }
-.intro-text {text-align:center;
-      font-family: 'Lora', serif;
-      padding: 10%}
+.navbar {
+    background-color: #e8e9eb !important;  /* Ash grey */
+}
 
-.login-form {
-  background-color: #B0C4DE !important;
-  font-weight: bold;
-  font-family: 'Lora', serif;
-  color: #11293D;
-  padding: 2rem;              /* Adds space inside the form */
-  border-radius: 10px;         /* Rounded corners */
-  width: 300px;                /* Optional: control width */
-  margin: 0 auto;              /* Center horizontally */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Optional: add a soft shadow */
+.navbar a {
+    color:#49111c  !important;  /* White text for links */
+}
+
+
+.restaurant-card-link {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.restaurant-card {
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.restaurant-card:hover {
+    transform: scale(1.02);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    transition: background 0.3s ease;
+}
+
+.card-overlay h3 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    z-index: 2;
+}
+
+.card-details {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.restaurant-card:hover .card-details {
+    opacity: 1;
+}
+
+.restaurant-card:hover .card-overlay {
+    background: rgba(0,0,0,0.7);
 }
 
 form {text-align:center;
 background-color: transparent;}
 
-
-h1, h2, h3, h4, h5, h6 {
-  text-align: center;
-  font-family: 'Playfair Display', serif;
-  color: #D2CAC5;
-}
-
-p, a, li, span, label, input, button {
-  font-family: 'Lato', sans-serif;
-}
-
+h1 {text-align: center;
+    font-family: 'Lora', serif;}
+p {text-align:center;}
 .carousel-item:hover {
     transform: scale(1);
 }
@@ -55,7 +189,7 @@ p, a, li, span, label, input, button {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-color:#11293D;
+    border-color: #11293D;
 }
 
 .vibe-name {
@@ -104,9 +238,9 @@ p, a, li, span, label, input, button {
 
 .review-card {
     text-align: left;
-    background-color: #11293D;
-    border: 1px solid white;
-    color: white;
+    background-color: #d2cac5 ;
+
+    color: #49111c;
 }
 
 .review-title {
@@ -145,14 +279,13 @@ p, a, li, span, label, input, button {
 }
 
 .filter-controls {
-    position: relative; /* Needed for positioning the pop-up */
-    /* ... other styles for your main filter area ... */
+    position: relative;
 }
 
 .other-filters-container {
-    position: absolute; /* To position the button */
-    top: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
 #filter-by-button {
@@ -307,496 +440,5 @@ p, a, li, span, label, input, button {
     padding-left: 1rem;      /* space between image and text block */
     flex: 1;                 /* take the remaining width */
   }
-}
-
-
-.scroll-logo {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background-color: #11293D;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-}
-
-.logo-wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-contained {
-  width: 150vw;
-  height: 96vh; /* 95% of the viewport height */
-  max-width: 150vw; /* 95% of viewport width */
-  object-fit: contain;
-  object-position: center;
-}
-@keyframes logoFadeIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.logo-contained {
-  /* everything from before... */
-  animation: logoFadeIn 1.5s ease-out forwards;
-}
-
-
-
- /* vibes.html styling */
-    .card-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 80vh;
-        padding-top: 60px; /* Add padding to account for fixed navbar */
-        color:#11293D
-    }
-
-    /* Card styling */
-    .card {
-        width: 1400px;
-        height: 1800px;
-        display: flex;
-        gap: 5px;
-        padding: .4em;
-        position: relative;
-        background-color: #11293D;
-        border: none;
-    }
-
-    .card p {
-        height: 100%;
-        flex: 1;
-        overflow: hidden;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: all .5s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-size: cover;
-        background-position: center;
-        position: relative;
-    }
-
-    .card p:hover {
-        flex: 4;
-    }
-
-    .card p span {
-        min-width: 14em;
-        padding: .5em;
-        text-align: center;
-        transform: rotate(90deg); /* Changed from -90deg to 90deg */
-        transition: all .5s;
-        text-transform: uppercase;
-        color: white;
-        letter-spacing: .1em;
-        font-weight: bold;
-        z-index: 1;
-        text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
-    }
-
-    .card p:hover span {
-        transform: rotate(0);
-    }
-
-    /* Overlay to make text more readable */
-    .card p::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.3);
-        transition: background 0.3s;
-    }
-
-    .card p:hover::after {
-        background: rgba(0,0,0,0.5);
-    }
-
-    /* Style for the anchor tags */
-    .card p a {
-        text-decoration: none;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
- .page-header {
-        text-align: center;
-        margin: 2rem 0;
-        padding-top: 60px; /* Add padding for fixed navbar */
-    }
-
-    .selected-vibe {
-        font-size: 1.2rem;
-        color: #666;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .cuisine-grid {
-        display: flex; /* Use flexbox for centering and custom arrangement */
-        flex-wrap: wrap; /* Allow items to wrap to the next line */
-        justify-content: center; /* Center the grid horizontally */
-        gap: 20px;
-        padding: 0 2rem 2rem;
-        max-width: 1000px;
-        margin: 0 auto; /* Center the grid on the page */
-    }
-
-    .cuisine-card {
-        background-color: #B9BAA3;;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-        position: relative;
-        height: 200px; /* Keep the fixed height */
-        width: 220px; /* Set a fixed width for the cards */
-        text-align: center;
-        display: flex; /* Use flexbox to center content within the card */
-        flex-direction: column;
-        justify-content: center; /* Center vertically */
-        align-items: center; /* Center horizontally */
-        flex-basis: auto; /* Allow flex items to take their inherent width */
-    }
-
-    /* Force the first two items onto their own line (row of two) */
-    .cuisine-grid > div:nth-child(1),
-    .cuisine-grid > div:nth-child(2) {
-        flex-basis: calc(50% - 10px); /* Try to take half the width */
-        max-width: 300px; /* Optional max width */
-    }
-
-    /* Force the next three items onto their own line (row of three) */
-    .cuisine-grid > div:nth-child(3),
-    .cuisine-grid > div:nth-child(4),
-    .cuisine-grid > div:nth-child(5) {
-        flex-basis: calc(33.33% - 14px); /* Try to take one-third the width */
-        max-width: 380px; /* Optional max width */
-    }
-
-    .cuisine-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        text-align: center;
-    }
-
-    .cuisine-card img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
-    }
-
-    .cuisine-name {
-        padding: 12px;
-        text-align: center;
-        font-weight: bold;
-        color: #474B24;
-        order: 1; /* Push the name below the image */
-        background-color: #B9BAA3; /* Add your desired background color here */
-    }
-
-    .cuisine-card a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        text-decoration: none;
-        color: inherit;
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Center content within the link */
-        align-items: center;
-    }
-
-    /* Overlay effect on hover */
-    .cuisine-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0);
-        transition: background 0.3s ease;
-        z-index: 1;
-    }
-
-    .cuisine-card:hover::before {
-        background: rgba(0, 0, 0, 0.1);
-    }
-
-    .cuisine-card a {
-        z-index: 2;
-    }
-
- .custom-logo {
-  font-family: 'Playfair Display';
-  font-size: 25px;
-  color: #bab4b1;
-  text-align: center;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  animation: fadeIn 0.8s ease-out forwards;
-}
-
-.offcanvas {
-  background-color: #265780;
-  color: #bab4b1;
-  text-align: center;
-}
-
-/* === Ethos Hero Section === */
-.ethos-hero {
-  background-color: #172A3A; /* soft navy (logo-matching background) */
-  color: #D2CAC5; /* beige-grey */
-  min-height: 80vh;
-  padding: 4rem 2rem;
-  background-size: cover;
-  background-position: center;
-}
-
-.ethos-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: bold;
-  color: #D2CAC5;
-}
-
-.ethos-subtitle {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.5rem;
-  margin-top: 1rem;
-  color: #a3a0a0;
-}
-
-/* === Ethos Content Sections === */
-.ethos-section {
-  padding: 4rem 0;
-}
-
-.ethos-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.2rem;
-  margin-bottom: 1rem;
-  color: #d2cac5;
-}
-
-.ethos-section p {
-  font-family: 'Lato', sans-serif;
-  font-size: 1.1rem;
-  color: #B9BAA3; /* neutral body text */
-}
-
-/* === Quote Section === */
-.ethos-quote {
-  font-family: 'Playfair Display', serif;
-  background-color: #2A4C3C;
-  color: #d2cac5;
-}
-
-.ethos-quote blockquote {
-  font-size: 1.5rem;
-}
-
-.restaurant-card-link {
-    text-decoration: none;
-    color: white;
-    display: block;
-}
-
-.restaurant-card {
-    position: relative;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
-}
-
-.restaurant-card:hover {
-    transform: scale(1.02);
-}
-
-.card-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-    transition: background 0.3s ease;
-}
-
-.card-overlay h3 {
-    font-size: 2rem;
-    margin-bottom: 0;
-    z-index: 2;
-}
-
-.card-details {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 2;
-}
-
-.restaurant-card:hover .card-details {
-    opacity: 1;
-}
-
-.restaurant-card:hover .card-overlay {
-    background: rgba(0,0,0,0.7);
-}
-
-.filter-bar {
-    background-color: #11293D;
-    color: #d2cac5;
-}
-
-
-.filter-bar .form-label {
-    color: #d2cac5;
-}
-
-
-.filter-bar .form-select {
-    background-color: #d2cac5;
-    color: #49111c;
-    border: none;
-}
-
-
-.filter-bar .btn {
-    background-color: #D2CAC5 ;
-    color: #49111c;
-
-}
-
-.filter-bar .btn:focus,
-.filter-bar .btn:active {
-    background-color: #11293D;
-    color: #e8e9eb;
-    border: 2px solid #d2cac5;
-    box-shadow: none; /* remove Bootstrap’s blue glow */
-}
-
-
-.section-reviews {
-  padding: 4rem 2rem;
-}
-
-.reviews-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #D2CAC5;
-}
-
-.review-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  padding: 2rem;
-  width: 80%;
-  max-width: 600px;
-  max-height: 600px;
-  border-radius: 20px;
-  color: #D2CAC5;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  margin-bottom: 2rem;
-}
-
-.review-card h5 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.review-card p {
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-}
-
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-  background-color: #D2CAC5;
-  border-radius: 50%;
-}
-
-.restaurant-description {
-  font-style: italic;
-  margin: 1.5rem 4rem;
-  text-align: left;
-  font-size: 1.2rem;
-  color: #d2cac5;
-}
-
-/* Mobile view: smaller margins */
-@media (max-width: 768px) {
-  .restaurant-description {
-    margin: 1.5rem 2rem;
-  }
-}
-.restaurant-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: bold;
-  color: #D2CAC5;
-  text-align: left;
-  margin: 0 5rem;
-  padding-bottom: 0.7rem;
-  position: relative;
-}
-
-.restaurant-title::after {
-  content: '';
-  position: absolute;
-  width: 40%;
-  height: 3px;
-  background-color: #8B95C9;
-  left: 30%;
-  transform: translateX(-50%); /* still balance it */
-  bottom: 0;
-  border-radius: 2px;
 }
 

@@ -1,36 +1,9 @@
 {% extends "layout2.html" %}
 
 {% block body_content %}
+
+
 <style>
-  /* Full page gradient */
-html, body {
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, #11293D, #331B22, #152334);
-  color: #D2CAC5;
-  background-attachment: fixed;
-}
-
-.hero-container {
-  margin-top: -80px; /* Pulls it up to overlap the navbar */
-}
-
-/* Restaurant Images Carousel */
-.restaurant-carousel .carousel-item {
-  height: 600px; /* Fixed height for the carousel item */
-  border-radius: 20px; /* Rounded corners */
-  overflow: hidden; /* Ensures image stays inside the corners */
-}
-
-.restaurant-carousel img {
-  width: 100%;
-  height: 100%; /* Stretch image to fill the carousel item */
-  object-fit: cover; /* Keeps aspect ratio, fills the area */
-  border-radius: 20px; /* Rounded corners for the image too */
-}
-
-
   .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -44,160 +17,215 @@ html, body {
     }
   }
 
-  /* Hero image */
+  .star-rating {
+    color: gold;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .restaurant-details,
+    .review-box {
+      padding: 1rem;
+      margin: 1rem;
+      max-width: 90%;
+    }
+    .fade-in {
+      transform: translateY(0);
+    }
+    .hero-container img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+  }
+
+  .main-btn {
+    background-color: #11293D;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .main-btn:hover {
+    background-color: #11293D;
+    transform: scale(1.05);
+  }
+
+  .menu-btn {
+    background-color: #11293D;
+    border: none;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+  }
+
+  .menu-btn:hover {
+    background-color: #0f2a3d;
+    transform: scale(1.05);
+  }
+
+  .restaurant-details,
+  .review-box {
+    background-color: #1e3a5f;
+    border-radius: 16px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    color: #fff;
+  }
+
+  .hero-container {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    overflow: hidden;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 2rem;
+  }
+
   .hero-container img {
     width: 100%;
     height: auto;
-    max-height: 450px;
     object-fit: cover;
     border-radius: 0 0 20px 20px;
   }
 
-  /* Sections without glass effect */
-  .info-section, .details-section, .review-section, .carousel-section {
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 900px;
+  .review-box {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
   }
 
-  .info-section h2, .details-section h3, .review-section h3, .carousel-section h3 {
-    font-family: 'Lora', serif;
-    font-size: 2.5rem;
-    text-align: center;
-  }
-
-  a {
-    color: #8B95C9;
-  }
-
-  /* Buttons */
-  .btn-custom {
-    background-color: #468099;
-    color: #D2CAC5;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  .btn-custom:hover {
-    background-color: #355e73;
-    transform: scale(1.05);
-  }
-
-  /* Restaurant Images Carousel */
-  .restaurant-carousel img {
+  .carousel-inner img {
     width: 100%;
     height: 800px;
-    object-fit: cover;
-    border-radius: 20px;
+    object-fit: contain;
+    border-radius: 12px;
   }
 
-  /* Review Carousel */
-  .review-section blockquote {
+  h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  blockquote {
     font-style: italic;
     color: #ccc;
     padding-left: 1rem;
-    border-left: 3px solid #f5b700;
+
     margin-top: 1rem;
     font-size: 1.1rem;
-  }
-
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: #D2CAC5;
-    border-radius: 50%;
   }
 </style>
 
 <!-- Banner Image -->
-
 <div class="fade-in hero-container">
   <img src="{{ url_for('static', filename=banner_image) }}" alt="Restaurant Banner">
 </div>
 
-<!-- About Info -->
-<div class="info-section text-center fade-in">
+<!-- Restaurant Info Section -->
+<div class="restaurant-details fade-in centered container my-4 p-4">
   <h2>{{ name }}</h2>
   <p><strong>About:</strong> {{ description }}</p>
+  <p><strong>Address:</strong> {{ address }}</p>
+  <p><strong>Phone:</strong> {{ phone_number }}</p>
+  <p><strong>Price Range:</strong> {{ price_range }}</p>
+  <p><strong>Cuisine:</strong> {{ cuisine }}</p>
+  <p><strong>Vibe:</strong> {{ vibe }}</p>
+  <p><strong>Website:</strong>
+    <a href="{{ website }}" target="_blank" style="color: #f5b700;">{{ website }}</a>
+  </p>
+  <a href="{{ menu_link }}" target="_blank">
+    <button class="menu-btn mt-3">📖 View Menu</button>
+  </a>
 </div>
 
-<!-- Restaurant Images Carousel -->
-<div class="carousel-section fade-in restaurant-carousel">
-  <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for image in images %}
-      <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <img src="{{ url_for('static', filename=image) }}" class="d-block w-100" alt="Restaurant Image {{ loop.index }}">
-      </div>
-      {% endfor %}
+<!-- Carousel for Restaurant Images -->
+{% if images %}
+<div id="restaurantCarousel" class="carousel slide fade-in container my-5" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    {% for image in images %}
+    <div class="carousel-item {% if loop.first %}active{% endif %}">
+      <img src="{{ url_for('static', filename=image) }}" class="d-block w-100" alt="Restaurant Image {{ loop.index }}">
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
+    {% endfor %}
   </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
 </div>
+{% else %}
+<p class="text-center mt-4">No additional images available for this restaurant.</p>
+{% endif %}
 
-<!-- Review Button + Details -->
-<section class="d-flex flex-column flex-md-row justify-content-around align-items-center fade-in details-section">
-  <!-- Left: Review Button -->
-  <div class="text-center mb-4 mb-md-0">
-    <h2 style="font-family: 'Playfair Display', serif;">Give Us Your Thoughts</h2>
-    <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
-      <button class="btn btn-custom mt-3">Leave a Review</button>
-    </a>
-  </div>
+<!-- Reviews Section -->
+<div class="fade-in centered container my-5" style="max-width: 800px;">
+  <h3>Reviews</h3>
 
-  <!-- Right: Little Details -->
-  <div>
-    <h3 class="text-center">The Little Details</h3>
-    <p><strong>Address:</strong> {{ address }}</p>
-    <p><strong>Phone:</strong> {{ phone_number }}</p>
-    <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
-    <p><strong>Price Range:</strong> {{ price_range }}</p>
-    <p><strong>Cuisine:</strong> {{ cuisine }}</p>
-    <p><strong>Vibe:</strong> {{ vibe }}</p>
-    <div class="text-center mt-3">
-      <a href="{{ menu_link }}" target="_blank" class="btn btn-outline-light">View Menu</a>
-    </div>
-  </div>
-</section>
-
-
-
-<!-- Reviews Carousel -->
-<div class="review-section fade-in">
-  <h3>See What Our Community Thinks</h3>
   {% if reviews %}
-  <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div id="reviewsCarousel" class="carousel slide fade-in container my-5" data-bs-ride="carousel">
     <div class="carousel-inner">
       {% for review in reviews %}
       <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <div class="text-center">
-          <blockquote>"{{ review.Overall_review }}"</blockquote>
+        <div class="review-box mb-4">
           <p><strong>By:</strong> {{ review.user_name }}</p>
-          <p><strong>Overall:</strong> {{ review.Rating }}</p>
+          <p>
+            <strong>Overall:</strong>
+            <span class="star-rating">
+              {% for i in range(review.Rating|int) %}
+                &#9733;
+              {% endfor %}
+              {% for i in range(5 - review.Rating|int) %}
+                &#9734;
+              {% endfor %}
+            </span>
+          </p>
           <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
           <p><strong>Service:</strong> {{ review.Service }}</p>
           <p><strong>Location:</strong> {{ review.Location }}</p>
           <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
+          <blockquote>"{{ review.Overall_review }}"</blockquote>
         </div>
       </div>
       {% endfor %}
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
     </button>
   </div>
   {% else %}
-  <p class="text-center">No reviews yet. Be the first to leave one!</p>
+  <p>No reviews yet. Be the first to leave one!</p>
   {% endif %}
+
+  <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
+    <button class="main-btn mt-3">Leave a Review</button>
+  </a>
 </div>
 
 {% endblock %}

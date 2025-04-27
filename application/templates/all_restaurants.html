@@ -52,8 +52,8 @@
         <label for="sort" class="form-label">Sort By</label>
         <select class="form-select" name="sort" id="sort">
           <option value="">All</option>
-          <option value="top5" {% if sort_option == 'top5' %}selected{% endif %}>Our Top Five</option>
-          <option value="bottom5" {% if sort_option == 'bottom5' %}selected{% endif %}>Our Worst Five</option>
+          <option value="top5" {% if sort_option == 'top5' %}selected{% endif %}>Top 5 Rated</option>
+          <option value="bottom5" {% if sort_option == 'bottom5' %}selected{% endif %}>Bottom 5 Rated</option>
         </select>
       </div>
     </div>
@@ -67,7 +67,7 @@
 
     <div class="col-md-3 d-flex align-items-end">
       <!-- Apply Filters Button -->
-      <button type="submit" class="btn w-100">Apply Filters</button>
+      <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
     </div>
   </form>
 
@@ -182,3 +182,6 @@
     }
   });
 </script>
+
+
+

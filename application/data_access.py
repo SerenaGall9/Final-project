@@ -128,15 +128,16 @@ def get_vibe_by_id(vibe_id):
         print(f"No vibe found with ID: {vibe_id}")
     return result
 
-def save_review(restaurant_id, overall, ambience, service, location, value, comment):
+
+def save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment):
     conn = get_db_connection()
     cursor = conn.cursor()
     query = """
-        INSERT INTO reviews 
-        (restaurant_id, overall_rating, ambience_rating, service_rating, location_rating, value_rating, comment) 
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO review
+        (user_id, restaurant_id, Rating, ambience, service, location, value_for_money, overall_review) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
     """
-    cursor.execute(query, (restaurant_id, overall, ambience, service, location, value, comment))
+    cursor.execute(query, (user_id, restaurant_id, overall, ambience, service, location, value, comment))
     conn.commit()
     cursor.close()
     conn.close()
@@ -154,8 +155,18 @@ def get_reviews_by_user(user_id):
 def get_reviews_by_restaurant_id(restaurant_id):
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM review WHERE restaurant_id = %s ORDER BY creation_date DESC", (restaurant_id,))
+
+    query = """
+        SELECT review.*, user.user_name AS user_name
+        FROM review
+        JOIN user ON review.user_id = user.user_id
+        WHERE review.restaurant_id = %s
+        ORDER BY review.creation_date DESC
+    """
+
+    cursor.execute(query, (restaurant_id,))
     reviews = cursor.fetchall()
+
     cursor.close()
     conn.close()
     return reviews

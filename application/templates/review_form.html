@@ -1,101 +1,107 @@
 {% extends "layout2.html" %}
+
 {% block body_content %}
-  <h2>Leave a Review for "{{ restaurant.name }}"</h2>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-  <form method="POST" class="mt-4">
-
-    <!-- Overall Rating -->
-    <div class="rating-group">
-      <label>Overall Experience:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="overall-{{ i }}" name="overall_rating" value="{{ i }}">
-          <label for="overall-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Ambience -->
-    <div class="rating-group">
-      <label>Ambience:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="ambience-{{ i }}" name="ambience_rating" value="{{ i }}">
-          <label for="ambience-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Service -->
-    <div class="rating-group">
-      <label>Service:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="service-{{ i }}" name="service_rating" value="{{ i }}">
-          <label for="service-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Location -->
-    <div class="rating-group">
-      <label>Location:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="location-{{ i }}" name="location_rating" value="{{ i }}">
-          <label for="location-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Value -->
-    <div class="rating-group">
-      <label>Value for Money:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="value-{{ i }}" name="value_rating" value="{{ i }}">
-          <label for="value-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <br>
-
-    <!-- Comment Box -->
-    <p>Additional Comments:</p>
-    <div class="d-flex justify-content-center mb-3">
-      <textarea name="comment" class="form-control" rows="5" style="max-width: 600px; align: center;"></textarea>
-    </div>
-
-    <!-- Submit -->
-    <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
-  </form>
-
-<!-- Extra CSS for prettier stars -->
 <style>
-.star-rating {
-  direction: rtl; /* Right to Left for star selection */
-  font-size: 2rem;
-  unicode-bidi: bidi-override;
-  display: inline-flex;
-}
-
-.star-rating input {
-  display: none; /* hide radio buttons */
-}
-
-.star-rating label {
-  color: #ccc;
-  cursor: pointer;
-}
-
-.star-rating label:hover,
-.star-rating label:hover ~ label {
-  color: gold;
-}
-
-.star-rating input:checked ~ label {
-  color: gold;
-}
+  .star-rating {
+    display: inline-flex;
+    direction: ltr; /* Ensure left-to-right */
+  }
+  .star-rating .bi-star-fill {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  .star-rating .bi-star-fill.hovered,
+  .star-rating .bi-star-fill.selected {
+    color: gold;
+  }
 </style>
+
+<h2>Leave a Review for "{{ restaurant.name }}"</h2>
+
+<form method="POST">
+  <!-- Overall Rating -->
+  <label>Overall Experience:</label>
+  <div class="star-rating" data-input="overall_rating">
+    {% for i in range(1, 6) %}
+      <i class="bi bi-star-fill" data-value="{{ i }}"></i>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="overall_rating" required><br><br>
+
+  <!-- Ambience Rating -->
+  <label>Ambience:</label>
+  <div class="star-rating" data-input="ambience_rating">
+    {% for i in range(1, 6) %}
+      <i class="bi bi-star-fill" data-value="{{ i }}"></i>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="ambience_rating" required><br><br>
+
+  <!-- Service Rating -->
+  <label>Service:</label>
+  <div class="star-rating" data-input="service_rating">
+    {% for i in range(1, 6) %}
+      <i class="bi bi-star-fill" data-value="{{ i }}"></i>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="service_rating" required><br><br>
+
+  <!-- Location Rating -->
+  <label>Location:</label>
+  <div class="star-rating" data-input="location_rating">
+    {% for i in range(1, 6) %}
+      <i class="bi bi-star-fill" data-value="{{ i }}"></i>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="location_rating" required><br><br>
+
+  <!-- Value for Money Rating -->
+  <label>Value for Money:</label>
+  <div class="star-rating" data-input="value_rating">
+    {% for i in range(1, 6) %}
+      <i class="bi bi-star-fill" data-value="{{ i }}"></i>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="value_rating" required><br><br>
+
+  <!-- Additional Comments -->
+  <label>Additional Comments:</label><br>
+  <textarea name="comment" rows="5" cols="40"></textarea><br><br>
+
+  <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+
+<script>
+  const ratings = document.querySelectorAll('.star-rating');
+  ratings.forEach(rating => {
+    const stars = rating.querySelectorAll('.bi-star-fill');
+    const inputName = rating.dataset.input;
+    const hiddenInput = document.querySelector(`input[name="${inputName}"]`);
+
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', () => {
+        const value = parseInt(star.dataset.value);
+        stars.forEach(s => {
+          s.classList.toggle('hovered', parseInt(s.dataset.value) <= value);
+        });
+      });
+
+      star.addEventListener('mouseleave', () => {
+        stars.forEach(s => s.classList.remove('hovered'));
+      });
+
+      star.addEventListener('click', () => {
+        const value = parseInt(star.dataset.value);
+        hiddenInput.value = value;
+        stars.forEach(s => {
+          s.classList.toggle('selected', parseInt(s.dataset.value) <= value);
+        });
+      });
+    });
+  });
+</script>
 {% endblock %}

@@ -1,51 +1,6 @@
 {% extends "layout_baseline.html" %}
 {% block body_content %}
-<style>
-.signup-card {
-  background-color: #d2cac5 ;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
 
-.signup-card p,
-.signup-card .text-center,
-.signup-card .btn-link {
-  color: #49111c;
-}
-
-.signup-header {
-  color: #49111c;
-}
-
-.signup-card .form-label {
-  color: #49111c;
-  font-weight: bold;
-}
-
-.signup-card .btn-primary {
-  background-color: white;
-  color: #49111c;
-  border: 2px solid #49111c;
-  transition: all 0.3s ease;
-}
-
-.signup-card .btn-primary:hover {
-  background-color: #11293D;
-  color: #d2cac5;
-}
-
-.signup-card .btn-outline-secondary {
-  border: 2px solid #49111c;
-  color: #49111c;
-  transition: all 0.3s ease;
-}
-
-.signup-card .btn-outline-secondary:hover {
-  background-color: #11293D;
-  color: #d2cac5;
-}
-</style>
 <div class="container my-5">
     <div class="signup-card mx-auto" style="max-width: 500px;">
         {% if error %}
