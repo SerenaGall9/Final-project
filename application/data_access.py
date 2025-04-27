@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="projectdb3"
+  database="projectdb4"
 )
 
 
@@ -14,7 +14,7 @@ def get_db_connection():
         host="localhost",
         user="root",
         password="",
-        database="projectdb3"
+        database="projectdb4"
     )
 
     return mydb
@@ -86,6 +86,25 @@ def get_restaurants_by_vibe_and_cuisine(vibe_id, cuisine_id):
     conn.close()
     return restaurants
 
+
+def get_reviews_by_restaurant_id(restaurant_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT review.*, user.user_name AS user_name
+        FROM review
+        JOIN user ON review.user_id = user.user_id
+        WHERE review.restaurant_id = %s
+        ORDER BY review.creation_date DESC
+    """
+
+    cursor.execute(query, (restaurant_id,))
+    reviews = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return reviews
 
 def find_restaurant(id):
     connection = get_db_connection()

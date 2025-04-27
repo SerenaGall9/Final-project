@@ -5,7 +5,7 @@ from application import app
 from app import bcrypt
 from application.data_access import get_db_connection, find_cuisine_from_id, find_vibe_from_id, find_restaurant, \
     get_all_vibes, get_vibe_by_id, get_all_cuisines, get_reviews_by_restaurant_id, save_review, get_user, \
-    get_reviews_by_user
+    get_reviews_by_user, get_reviews_by_restaurant_id
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -167,6 +167,127 @@ def logout():
     return redirect(url_for('login'))
 
 
+# @app.route('/all_restaurants')
+# def all_restaurants():
+#     # Get selected filters from query string
+#     selected_cuisine = request.args.get('cuisine', type=int)
+#     selected_vibe = request.args.get('vibe', type=int)
+#     selected_location = request.args.get('location', type=int)
+#     selected_rating = request.args.get('rating', type=float)
+#     selected_ambiance = request.args.get('ambience', type=float)
+#     selected_service = request.args.get('service', type=float)
+#     selected_value = request.args.get('value', type=float)
+#     selected_location_rating = request.args.get('location_rating', type=float)
+#     selected_price_range = request.args.get('price_range', type=float)
+#
+#     if selected_cuisine is None and selected_vibe is None:
+#         selected_cuisine = session.get('selected_cuisine_id')
+#         selected_vibe = session.get('selected_vibe_id')
+#     else:
+#
+#         session['selected_cuisine_id'] = selected_cuisine
+#         session['selected_vibe_id'] = selected_vibe
+#
+#     conn = get_db_connection()
+#     cursor = conn.cursor(dictionary=True)
+#
+#     # Fetch filter options for dropdowns
+#     cursor.execute("SELECT cuisine_id, name FROM Cuisine")
+#     cuisines = cursor.fetchall()
+#
+#     cursor.execute("SELECT vibe_id, name FROM vibetype")
+#     vibes = cursor.fetchall()
+#
+#     cursor.execute("SELECT location_id, direction FROM londonlocation")
+#     locations = cursor.fetchall()
+#
+#     # Main query with filters
+#     query = """
+#     SELECT
+#         r.restaurant_id,
+#         r.name,
+#         r.address,
+#         r.website,
+#         r.price_range,
+#         c.name AS cuisine,
+#         v.name AS vibe,
+#         l.direction AS location,
+#         r.price_range AS price_range,
+#         AVG(rv.rating) AS avg_rating,
+#         AVG(rv.ambience) AS avg_ambiance,
+#         AVG(rv.service) AS avg_service,
+#         AVG(rv.value_for_money) AS avg_value,
+#         AVG(rv.location) AS avg_location_rating
+#     FROM Restaurants r
+#     JOIN Cuisine c ON r.cuisine_id = c.cuisine_id
+#     JOIN vibetype v ON r.vibe_id = v.vibe_id
+#     JOIN londonlocation l ON r.location_id = l.location_id
+#     LEFT JOIN Review rv ON r.restaurant_id = rv.restaurant_id
+#     WHERE
+#         (%s IS NULL OR r.cuisine_id = %s) AND
+#         (%s IS NULL OR r.vibe_id = %s) AND
+#         (%s IS NULL OR r.location_id = %s) AND
+#         (%s IS NULL OR r.price_range = %s)
+#     GROUP BY r.restaurant_id
+#     HAVING
+#         (%s IS NULL OR avg_rating >= %s) AND
+#         (%s IS NULL OR avg_ambiance >= %s) AND
+#         (%s IS NULL OR avg_service >= %s) AND
+#         (%s IS NULL OR avg_value >= %s) AND
+#         (%s IS NULL OR avg_location_rating >= %s)
+#     """
+#
+#     params = [
+#         selected_cuisine, selected_cuisine,
+#         selected_vibe, selected_vibe,
+#         selected_location, selected_location,
+#         selected_price_range, selected_price_range,
+#         selected_rating, selected_rating,
+#         selected_ambiance, selected_ambiance,
+#         selected_service, selected_service,
+#         selected_value, selected_value,
+#         selected_location_rating, selected_location_rating
+#     ]
+#
+#     cursor.execute(query, params)
+#     restaurants = cursor.fetchall()
+#     image_mapping = {
+#         "Dishoom Covent Garden": "dishoom.png",
+#         "Coco Grill & Lounge": "coco.png",
+#         "Olives and Meze": "olive.png",
+#         "Scarpetta Canary Wharf": "scarpetta.png",
+#         "Alexander The Great Greek Restaurant": "alexander.png",
+#         "Gloria Trattoria": "gloria.png",
+#         "Chutney Mary": "chutney.png",
+#         "Gymkhana": "gymkhana.png",
+#         "Babel grill house": "babel.png",
+#         "Baba ghanouj": "baba.png",
+#         "Mazar": "mazar.png",
+#         "Beit El Zaytoun": "beit.png",
+#         "NIJŪ": "nijo.png",
+#         "Inamo sukoshi": "inamo.png",}
+#
+#     for r in restaurants:
+#         r['image_filename'] = image_mapping.get(r['name'], 'default.jpg')
+#     conn.close()
+#
+#     return render_template(
+#         "all_restaurants.html",
+#         restaurants=restaurants,
+#         cuisines=cuisines,
+#         vibes=vibes,
+#         locations=locations,
+#         selected_cuisine=selected_cuisine,
+#         selected_price_range=selected_price_range,
+#         selected_vibe=selected_vibe,
+#         selected_location=selected_location,
+#         selected_rating=selected_rating,
+#         selected_ambiance=selected_ambiance,
+#         selected_service=selected_service,
+#         selected_value=selected_value,
+#         selected_location_rating=selected_location_rating
+#     )
+
 @app.route('/all_restaurants')
 def all_restaurants():
     # Get selected filters from query string
@@ -179,15 +300,17 @@ def all_restaurants():
     selected_value = request.args.get('value', type=float)
     selected_location_rating = request.args.get('location_rating', type=float)
     selected_price_range = request.args.get('price_range', type=float)
+    sort_option = request.args.get('sort')  # NEW: Sorting option
 
-    if selected_cuisine is None and selected_vibe is None:
+    # Use session-stored cuisine/vibe if not selected
+    if not request.args:
         selected_cuisine = session.get('selected_cuisine_id')
         selected_vibe = session.get('selected_vibe_id')
     else:
-
         session['selected_cuisine_id'] = selected_cuisine
         session['selected_vibe_id'] = selected_vibe
 
+    # Connect to database
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
@@ -249,73 +372,46 @@ def all_restaurants():
         selected_location_rating, selected_location_rating
     ]
 
+    # Add sorting logic
+    if sort_option == 'top5':
+        query += " ORDER BY avg_rating DESC LIMIT 5"
+    elif sort_option == 'bottom5':
+        query += " ORDER BY avg_rating ASC LIMIT 5"
+    else:
+        query += " ORDER BY avg_rating DESC"  # Default sorting
+
+    # Execute query
     cursor.execute(query, params)
     restaurants = cursor.fetchall()
-    image_mapping = {
-        "Dishoom Covent Garden": "dishoom.png",
-        "Coco Grill & Lounge": "coco.png",
-        "Olives and Meze": "olive.png",
-        "Scarpetta Canary Wharf": "scarpetta.png",
-        "Alexander The Great Greek Restaurant": "alexander.png",
-        "Gloria Trattoria": "gloria.png",
-        "Chutney Mary": "chutney.png",
-        "Gymkhana": "gymkhana.png",
-        "Babel grill house": "babel.png",
-        "Baba ghanouj": "baba.png",
-        "Mazar": "mazar.png",
-        "Beit El Zaytoun": "beit.png",
-        "NIJŪ": "nijo.png",
-        "Inamo sukoshi": "inamo.png",}
-
-    for r in restaurants:
-        r['image_filename'] = image_mapping.get(r['name'], 'default.jpg')
     conn.close()
 
     return render_template(
-        "all_restaurants.html",
-        restaurants=restaurants,
+        'all_restaurants.html',
         cuisines=cuisines,
         vibes=vibes,
         locations=locations,
+        restaurants=restaurants,
         selected_cuisine=selected_cuisine,
-        selected_price_range=selected_price_range,
         selected_vibe=selected_vibe,
         selected_location=selected_location,
         selected_rating=selected_rating,
         selected_ambiance=selected_ambiance,
         selected_service=selected_service,
         selected_value=selected_value,
-        selected_location_rating=selected_location_rating
+        selected_location_rating=selected_location_rating,
+        selected_price_range=selected_price_range,
+        sort_option=sort_option  # Pass the sort option for button highlighting
     )
 
 
 # takes input from the first 2 pages into the filtering criteria,
 # interacts with the database to filter based on other criteria (session handling; price, vibe,cuisine,location)
-
+import os
 @app.route('/restaurant/<int:id>')
 def get_restaurant(id):
     restaurant = find_restaurant(id)
-
-    # Dictionary: hardcode restaurant_id → image filename
-    image_filenames = {
-        2: 'coco.png',
-        3: 'olive.png',
-        4: 'scarpetta.png',
-        5: 'alexander.png',
-        6: 'latagliata.png',
-        7: 'gloria.png',
-        8: 'chutney.png',
-        9: 'dishoom.png',
-        10: 'gymkhana.png',
-        11: 'babel.png',
-        12: 'baba.png',
-        13: 'mazar.png',
-        14: 'beit.png',
-        15: 'nijo.png',
-        16: 'inamo.png'
-    }
-
     if restaurant is not None:
+
         name = restaurant["name"]
         phone_number = restaurant["phone_number"]
         address = restaurant["address"]
@@ -328,14 +424,34 @@ def get_restaurant(id):
         reviews = get_reviews_by_restaurant_id(id)
         restaurant_id = id
 
-        # ✅ Get the correct image filename from the dictionary
-        image_filename = image_filenames.get(id, 'default.jpg')  # fallback if not found
-
         if cuisine is None:
             cuisine = "Unknown cuisine"
 
+        image_folder = os.path.join(app.static_folder, 'restaurant_images', str(restaurant_id))
+        banner_image = None
+        carousel_images = []
+
+        if os.path.exists(image_folder):
+
+            banner_path = os.path.join(image_folder, 'banner.jpg')
+            if os.path.exists(banner_path):
+                banner_image = f'restaurant_images/{restaurant_id}/banner.jpg'
+            else:
+                banner_image = 'default/banner_default.jpg'  # fallback banner
+
+
+            carousel_images = [
+                f'restaurant_images/{restaurant_id}/{filename}'
+                for filename in os.listdir(image_folder)
+                if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')) and filename != 'banner.jpg'
+            ]
+        else:
+
+            banner_image = 'default/banner_default.jpg'
+            carousel_images = []
+
         return render_template(
-            'restaurant.html',
+            'restaurant1.html',
             name=name,
             phone_number=phone_number,
             address=address,
@@ -347,10 +463,12 @@ def get_restaurant(id):
             menu_link=menu_link,
             reviews=reviews,
             restaurant_id=restaurant_id,
-            image_filename=image_filename  # Pass it here!
+            banner_image=banner_image,     # pass banner image
+            images=carousel_images         # pass carousel images
         )
     else:
         return render_template("404.html")
+
 
 
 @app.route('/myreviews')

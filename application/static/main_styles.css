@@ -617,64 +617,95 @@ p, a, li, span, label, input, button {
   font-size: 1.5rem;
 }
 
+.restaurant-card-link {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
 .restaurant-card {
-  background: rgba(255, 255, 255, 0.1); /* semi-transparent white */
-  backdrop-filter: blur(10px); /* frosted glass effect */
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 2rem;
-  color: #d2cac5; /* beige-grey text */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
 .restaurant-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    transform: scale(1.02);
 }
 
-/* Restaurant Name */
-.restaurant-card h4 a {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  font-weight: bold;
-  color: #d2cac5; /* soft white */
-  text-decoration: none;
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    transition: background 0.3s ease;
 }
 
-.restaurant-card h4 a:hover {
-  text-decoration: underline;
+.card-overlay h3 {
+    font-size: 2rem;
+    margin-bottom: 0;
+    z-index: 2;
 }
 
-/* Information like Cuisine, Vibe, etc. */
-.restaurant-card p {
-  font-family: 'Lato', sans-serif;
-  font-size: 1rem;
-  color: #b9baa3; /* lighter grey for info text */
-  margin-bottom: 0.5rem;
+.card-details {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
 }
 
-/* Visit Website button */
-.restaurant-card a.btn {
-  margin-top: 1rem;
-  background-color: transparent;
-  color: #8B95C9; /* soft blue accent */
-  border: 1px solid #8B95C9;
-  transition: background-color 0.3s, color 0.3s;
+.restaurant-card:hover .card-details {
+    opacity: 1;
 }
 
-.restaurant-card a.btn:hover {
-  background-color: #8B95C9;
-  color: #11293D;
+.restaurant-card:hover .card-overlay {
+    background: rgba(0,0,0,0.7);
 }
 
-/* Image tweaks */
-.restaurant-card img {
-  border-radius: 12px;
-  object-fit: cover;
-  width: 100%;
-  height: 250px;
+.filter-bar {
+    background-color: #11293D;
+    color: #d2cac5;
 }
+
+
+.filter-bar .form-label {
+    color: #d2cac5;
+}
+
+
+.filter-bar .form-select {
+    background-color: #d2cac5;
+    color: #49111c;
+    border: none;
+}
+
+
+.filter-bar .btn {
+    background-color: #D2CAC5 ;
+    color: #49111c;
+
+}
+
+.filter-bar .btn:focus,
+.filter-bar .btn:active {
+    background-color: #11293D;
+    color: #e8e9eb;
+    border: 2px solid #d2cac5;
+    box-shadow: none; /* remove Bootstrap’s blue glow */
+}
+
 
 .section-reviews {
   padding: 4rem 2rem;
