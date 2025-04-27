@@ -618,21 +618,61 @@ p, a, li, span, label, input, button {
 }
 
 .restaurant-card {
+  background: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+  backdrop-filter: blur(10px); /* frosted glass effect */
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  color: #d2cac5; /* beige-grey text */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .restaurant-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
-.restaurant-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Restaurant Name */
+.restaurant-card h4 a {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #d2cac5; /* soft white */
+  text-decoration: none;
 }
 
-.restaurant-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+.restaurant-card h4 a:hover {
+  text-decoration: underline;
 }
 
+/* Information like Cuisine, Vibe, etc. */
+.restaurant-card p {
+  font-family: 'Lato', sans-serif;
+  font-size: 1rem;
+  color: #b9baa3; /* lighter grey for info text */
+  margin-bottom: 0.5rem;
+}
+
+/* Visit Website button */
+.restaurant-card a.btn {
+  margin-top: 1rem;
+  background-color: transparent;
+  color: #8B95C9; /* soft blue accent */
+  border: 1px solid #8B95C9;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.restaurant-card a.btn:hover {
+  background-color: #8B95C9;
+  color: #11293D;
+}
+
+/* Image tweaks */
+.restaurant-card img {
+  border-radius: 12px;
+  object-fit: cover;
+  width: 100%;
+  height: 250px;
+}
 
