@@ -97,31 +97,50 @@
     </div>
   </section>
 
-  <!-- Section 3: Login -->
- <section class="scroll-section section-3 d-flex align-items-center justify-content-center">
-    <div class="col-md-6">
-      {% if error %}
-        <p class="text-danger">{{ error }}</p>
-      {% else %}
-        <p>Please log in to continue</p>
-      {% endif %}
-      <form action="" method="POST" class="mt-4">
-        <div class="mb-3">
-          <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" class="form-control" required>
+ <!-- Section 3: Login -->
+<section class="scroll-section section-3 d-flex align-items-center">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- Left: Big welcoming text -->
+      <div class="col-md-6 text-start">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #d2cac5;">Sign in to satisfy your cravings</h1>
+        <p style="font-family: 'Lato', sans-serif; font-size: 1.2rem; color: #d2cac5;">Discover restaurants, hidden gems, and experiences curated just for you.</p>
+      </div>
+
+      <!-- Right: Login Card -->
+      <div class="col-md-6 d-flex justify-content-center align-items-center">
+        <div class="card p-4 shadow-lg" style="background-color: #2b4769; border-radius: 1rem; width: 100%; max-width: 400px;">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4" style="font-family: 'Playfair Display', serif; color: #d2cac5;">Log In</h2>
+            {% if error %}
+              <p class="text-danger text-center">{{ error }}</p>
+            {% endif %}
+            <form action="" method="POST">
+              <div class="mb-3">
+                <label for="email" class="form-label" style="color: #d2cac5;">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label" style="color: #d2cac5;">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+              </div>
+             <div class="d-grid gap-2">
+              <button type="submit" class="btn" style="background-color: #22311D; color: #d2cac5;">Login</button>
+             </div>
+            <div class="d-flex justify-content-between mt-3">
+              <a href="{{ url_for('forgot_password') }}" class="text-light" style="text-decoration: none;">Forgot Password?</a>
+              <a href="{{ url_for('signup') }}" class="text-light" style="text-decoration: none;">Sign Up</a>
+            </div>
+            </form>
+          </div>
         </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password:</label>
-          <input type="password" id="password" name="password" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
-        <div class="d-flex justify-content-between mt-2">
-          <a href="{{ url_for('forgot_password') }}" class="btn btn-link">Forgot Password?</a>
-          <a href="{{ url_for('signup') }}" class="btn btn-link">Sign Up</a>
-        </div>
-      </form>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Section 4: Partners -->
  <section class="scroll-section section-4">
