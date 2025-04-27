@@ -2,203 +2,214 @@
 
 {% block body_content %}
 <style>
-  /* Full page gradient */
-html, body {
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(to bottom, #11293D, #331B22, #152334);
-  color: #D2CAC5;
-  background-attachment: fixed;
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
 }
 
-.hero-container {
-  margin-top: -80px; /* Pulls it up to overlap the navbar */
+main {
+  margin-top: -80px;
 }
 
-/* Restaurant Images Carousel */
-.restaurant-carousel .carousel-item {
-  height: 600px; /* Fixed height for the carousel item */
-  border-radius: 20px; /* Rounded corners */
-  overflow: hidden; /* Ensures image stays inside the corners */
+.content-block {
+  padding-top: 0;
 }
 
-.restaurant-carousel img {
+.scroll-container {
+  overflow-y: auto;
+  height: 100vh;
+  scroll-snap-type: y mandatory;
+}
+
+/* Snap sections */
+.scroll-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  padding: 100px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Gradient backgrounds */
+.section-1 {
+  background: linear-gradient(to bottom, #11293D, #331B22);
+}
+
+.section-2 {
+  background: linear-gradient(to bottom, #331B22, #152334);
+}
+
+.section-3 {
+  background: linear-gradient(to bottom, #152334, #0f1b2a);
+}
+
+.section-4 {
+  background: linear-gradient(to bottom, #0f1b2a, #11293D);
+}
+
+/* Carousel images */
+.carousel-inner img {
   width: 100%;
-  height: 100%; /* Stretch image to fill the carousel item */
-  object-fit: cover; /* Keeps aspect ratio, fills the area */
-  border-radius: 20px; /* Rounded corners for the image too */
+  height: 600px;
+  object-fit: cover;
+  border-radius: 20px;
 }
 
+/* Buttons & Text */
+.btn-custom {
+  background-color: #468099;
+  color: #d2cac5;
+  font-size: 1.1rem;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
 
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards;
-  }
+.btn-custom:hover {
+  background-color: #355e73;
+  transform: scale(1.05);
+}
 
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+a {
+  color: #8B95C9;
+}
 
-  /* Hero image */
-  .hero-container img {
-    width: 100%;
-    height: auto;
-    max-height: 450px;
-    object-fit: cover;
-    border-radius: 0 0 20px 20px;
-  }
+.details-section a {
+  color: #d2cac5;
+  text-decoration: underline;
+}
 
-  /* Sections without glass effect */
-  .info-section, .details-section, .review-section, .carousel-section {
-    padding: 2rem;
-    margin: 2rem auto;
-    max-width: 900px;
-  }
+.details-section a:hover {
+  color: #8B95C9;
+}
 
-  .info-section h2, .details-section h3, .review-section h3, .carousel-section h3 {
-    font-family: 'Lora', serif;
-    font-size: 2.5rem;
-    text-align: center;
-  }
+.reviews-title {
+  font-family: 'Lora', serif;
+  font-size: 2.5rem;
+  color: #d2cac5;
+}
 
-  a {
-    color: #8B95C9;
-  }
+h1.restaurant-title {
+  font-family: 'Lora', serif;
+  font-size: 3rem;
+  color: #d2cac5;
+}
 
-  /* Buttons */
-  .btn-custom {
-    background-color: #468099;
-    color: #D2CAC5;
-    border: none;
-    padding: 0.8rem 2rem;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  .btn-custom:hover {
-    background-color: #355e73;
-    transform: scale(1.05);
-  }
+p.restaurant-description {
+  font-size: 1.2rem;
+  color: #d2cac5;
+}
 
-  /* Restaurant Images Carousel */
-  .restaurant-carousel img {
-    width: 100%;
-    height: 800px;
-    object-fit: cover;
-    border-radius: 20px;
-  }
-
-  /* Review Carousel */
-  .review-section blockquote {
-    font-style: italic;
-    color: #ccc;
-    padding-left: 1rem;
-    border-left: 3px solid #f5b700;
-    margin-top: 1rem;
-    font-size: 1.1rem;
-  }
-
-  .carousel-control-prev-icon,
-  .carousel-control-next-icon {
-    background-color: #D2CAC5;
-    border-radius: 50%;
-  }
+/* Carousel controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: #D2CAC5;
+  border-radius: 50%;
+}
 </style>
 
-<!-- Banner Image -->
+<div class="scroll-container">
 
-<div class="fade-in hero-container">
-  <img src="{{ url_for('static', filename=banner_image) }}" alt="Restaurant Banner">
-</div>
-
-<!-- About Info -->
-<div class="info-section text-center fade-in">
-  <h2>{{ name }}</h2>
-  <p><strong>About:</strong> {{ description }}</p>
-</div>
-
-<!-- Restaurant Images Carousel -->
-<div class="carousel-section fade-in restaurant-carousel">
-  <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for image in images %}
-      <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <img src="{{ url_for('static', filename=image) }}" class="d-block w-100" alt="Restaurant Image {{ loop.index }}">
+<!-- === Hero Section === -->
+<section class="scroll-section section-1">
+  <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center section-hero">
+    <div class="row w-100 align-items-center">
+      <div class="col-md-6 text-center">
+        <img src="{{ url_for('static', filename=banner_image) }}" alt="{{ name }}" class="img-fluid rounded-4 hero-image">
       </div>
-      {% endfor %}
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
-  </div>
-</div>
-
-<!-- Review Button + Details -->
-<section class="d-flex flex-column flex-md-row justify-content-around align-items-center fade-in details-section">
-  <!-- Left: Review Button -->
-  <div class="text-center mb-4 mb-md-0">
-    <h2 style="font-family: 'Playfair Display', serif;">Give Us Your Thoughts</h2>
-    <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
-      <button class="btn btn-custom mt-3">Leave a Review</button>
-    </a>
-  </div>
-
-  <!-- Right: Little Details -->
-  <div>
-    <h3 class="text-center">The Little Details</h3>
-    <p><strong>Address:</strong> {{ address }}</p>
-    <p><strong>Phone:</strong> {{ phone_number }}</p>
-    <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
-    <p><strong>Price Range:</strong> {{ price_range }}</p>
-    <p><strong>Cuisine:</strong> {{ cuisine }}</p>
-    <p><strong>Vibe:</strong> {{ vibe }}</p>
-    <div class="text-center mt-3">
-      <a href="{{ menu_link }}" target="_blank" class="btn btn-outline-light">View Menu</a>
+      <div class="col-md-6 text-center text-md-start">
+        <h1 class="restaurant-title">{{ name }}</h1>
+        <p class="restaurant-description">{{ description }}</p>
+      </div>
     </div>
   </div>
 </section>
 
-
-
-<!-- Reviews Carousel -->
-<div class="review-section fade-in">
-  <h3>See What Our Community Thinks</h3>
-  {% if reviews %}
-  <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      {% for review in reviews %}
-      <div class="carousel-item {% if loop.first %}active{% endif %}">
-        <div class="text-center">
-          <blockquote>"{{ review.Overall_review }}"</blockquote>
-          <p><strong>By:</strong> {{ review.user_name }}</p>
-          <p><strong>Overall:</strong> {{ review.Rating }}</p>
-          <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
-          <p><strong>Service:</strong> {{ review.Service }}</p>
-          <p><strong>Location:</strong> {{ review.Location }}</p>
-          <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
-        </div>
-      </div>
-      {% endfor %}
+<!-- === Details + Review Button Section === -->
+<section class="scroll-section section-2 d-flex align-items-center justify-content-center details-section">
+  <div class="container d-flex flex-column flex-md-row align-items-center justify-content-around">
+    <div class="text-center mb-5 mb-md-0" style="flex:1;">
+      <h2 style="font-family: 'Lora', serif; font-size: 3rem; color: #d2cac5;">Give Us Your Thoughts</h2>
+      <a href="{{ url_for('review', restaurant_id=restaurant_id) }}">
+        <button class="btn btn-custom mt-3">Leave a Review</button>
+      </a>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-    </button>
+    <div style="flex:1; max-width: 600px; min-width: 300px; max-height: 600px; text-align: center;">
+      <h2 class="mb-4" style="font-family: 'Lora', serif; font-size: 2.5rem; color: #d2cac5;">The Little Details</h2>
+      <p><strong>Address:</strong> {{ address }}</p>
+      <p><strong>Phone:</strong> {{ phone_number }}</p>
+      <p><strong>Website:</strong> <a href="{{ website }}" target="_blank">{{ website }}</a></p>
+      <p><strong>Price Range:</strong> {{ price_range }}</p>
+      <p><strong>Cuisine:</strong> {{ cuisine }}</p>
+      <div class="text-left mt-4">
+        <a href="{{ menu_link }}" target="_blank" class="btn btn-custom">View Menu</a>
+      </div>
+    </div>
   </div>
-  {% else %}
-  <p class="text-center">No reviews yet. Be the first to leave one!</p>
-  {% endif %}
+</section>
+
+<!-- === Restaurant Images Carousel === -->
+{% if images %}
+<section class="scroll-section section-3">
+  <div class="container">
+    <div id="restaurantCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for image in images %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+          <img src="{{ url_for('static', filename=image) }}" alt="Restaurant Image {{ loop.index }}">
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#restaurantCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- === Community Reviews Carousel Section === -->
+<section class="scroll-section section-4">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="reviews-title">See What Our Community Thinks</h2>
+    </div>
+    {% if reviews %}
+    <div id="reviewsCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for review in reviews %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+          <div class="text-center">
+            <h5 class="title">"{{ review.Overall_review }}"</h5>
+            <p><strong>By:</strong> {{ review.user_name }}</p>
+            <p><strong>Overall:</strong> {{ review.Rating }}</p>
+            <p><strong>Ambience:</strong> {{ review.Ambience }}</p>
+            <p><strong>Service:</strong> {{ review.Service }}</p>
+            <p><strong>Location:</strong> {{ review.Location }}</p>
+            <p><strong>Value:</strong> {{ review.Value_for_money }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#reviewsCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+    {% else %}
+    <p class="text-center">No reviews yet. Be the first to leave one!</p>
+    {% endif %}
+  </div>
+</section>
+
 </div>
-
 {% endblock %}
-

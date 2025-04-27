@@ -161,14 +161,7 @@ def save_review(user_id, restaurant_id, overall, ambience, service, location, va
     conn.close()
 
 
-def get_reviews_by_restaurant_id(restaurant_id):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM review WHERE restaurant_id = %s ORDER BY creation_date DESC", (restaurant_id,))
-    review = cursor.fetchall()
-    cursor.close()
-    conn.close()
-    return review
+
 
 def get_user(user_id):
     conn = get_db_connection()
