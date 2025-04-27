@@ -17,7 +17,7 @@
       position: relative;
       min-height: 100vh;
       padding: 100px 20px;
-      background-color: #11293D;
+      background-color: #152334;
       color: #d2cac5;
     }
     .scroll-section:not(:first-child) { margin-top: -50px; }
@@ -38,17 +38,16 @@
 
 <div class="scroll-container">
    <!-- Section 1: Animated Logo -->
-<section class="scroll-section d-flex align-items-center justify-content-center">
-  <div class="logo-reveal-wrapper" style="position:relative; display:inline-block;">
-  <img
-    id="logo"
-    src="{{ url_for('static', filename='images/logo.png') }}"
-    alt="Logo"
-    class="img-fluid"
-    style="max-width: 1200px;">
-      <div class="logo-mask"></div>
-</div>
+<section class="scroll-section scroll-logo d-flex align-items-center justify-content-center p-0 m-0">
+  <div class="logo-wrapper">
+    <img
+      id="logo"
+      src="{{ url_for('static', filename='images/logo.png') }}"
+      alt="Logo"
+      class="logo-contained">
+  </div>
 </section>
+
 
 
   <!-- Section 2: Team -->

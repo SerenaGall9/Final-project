@@ -16,7 +16,7 @@
 </head>
 <body>
 
-<nav class="navbar fixed-top" style="background-color: #265780;">
+<nav class="navbar fixed-top" style="background-color: #152334;">
   <div class="container-fluid d-flex justify-content-between align-items-center">
 
     <!-- Left: Burger Menu -->
@@ -30,9 +30,13 @@
 
 
     <!-- Center: Title -->
-    <div class="mx-auto position-absolute start-50 translate-middle-x">
-      <a class="navbar-brand mb-0 h1" href="{{ url_for('login') }}" style="font-family: 'Playfair Display', cursive; font-size: 25px; color: #a19c99;">Food for Thought</a>
-    </div>
+   <!-- Center: Logo Image -->
+<div class="mx-auto position-absolute start-50 translate-middle-x">
+  <a class="navbar-brand" href="{{ url_for('login') }}">
+    <img src="{{ url_for('static', filename='images/navlogo.png') }}" alt="Food for Thought Logo" style="height: 50px;">
+  </a>
+</div>
+
 
     <!-- Right: empty spacer for layout balance -->
     <div>
