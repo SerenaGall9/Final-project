@@ -293,7 +293,6 @@ def all_restaurants():
 # interacts with the database to filter based on other criteria (session handling; price, vibe,cuisine,location)
 
 @app.route('/restaurant/<int:id>')
-@app.route('/restaurant/<int:id>')
 def get_restaurant(id):
     restaurant = find_restaurant(id)
 
@@ -448,7 +447,6 @@ def review(restaurant_id):
         return "Restaurant not found", 404
 
     if request.method == 'POST':
-
         overall = int(request.form['overall_rating'])
         ambience = int(request.form['ambience_rating'])
         service = int(request.form['service_rating'])
@@ -456,12 +454,30 @@ def review(restaurant_id):
         value = int(request.form['value_rating'])
         comment = request.form['comment']
 
+        # Get the logged in user's ID
+        email = session.get('email')
+        if not email:
+            flash("You must be logged in to submit a review.")
+            return redirect(url_for('login'))
+
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT user_id FROM User WHERE email = %s", (email,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not user:
+            flash("User not found.")
+            return redirect(url_for('login'))
+
+        user_id = user['user_id']
+
         # Save to database
-        save_review(restaurant_id, overall, ambience, service, location, value, comment)
+        save_review(user_id, restaurant_id, overall, ambience, service, location, value, comment)
+
         flash('Review submitted successfully!')
         return redirect(url_for('get_restaurant', id=restaurant['restaurant_id']))
-
-    return render_template('review_form.html', restaurant=restaurant)
 
 
 # review url->pass in restaurant id->got into database, get restaurant name, put it in a label
