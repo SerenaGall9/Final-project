@@ -10,24 +10,37 @@
   <title>Food for Thought</title>
 
   <style>
-    html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-}
+ html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
 
-.scroll-container {
-  overflow-y: auto;
-  height: 100vh;
-  scroll-snap-type: y mandatory;
-}
+  .scroll-container {
+    overflow-y: auto;
+    height: 100vh;
+    scroll-snap-type: y mandatory;
+  }
 
-.scroll-section {
-  scroll-snap-align: start;
-  position: relative;
-  min-height: 100vh;
-  padding: 100px 20px;
-  color: #d2cac5;
-}
+  .scroll-section {
+    scroll-snap-align: start;
+    position: relative;
+    min-height: 100vh;
+    padding: 100px 40px; /* wider padding */
+    color: #d2cac5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* center everything vertically */
+  }
+
+  /* Bigger text inside sections */
+  .scroll-section h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .scroll-section p {
+    font-size: 1.5rem;
+  }
 
 /* Section-specific backgrounds */
 .section-1 {
@@ -46,17 +59,48 @@
   background: linear-gradient(to bottom, #28220F, #172A3A);
 }
 
-  .glass-card {
-  background: rgba(0, 100, 400, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); /* for Safari */
-  border-radius: 1rem;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  width: 100%;
-  max-width: 400px;
+/* Team images bigger */
+.team-carousel-img {
+  height: 80vh; /* Big tall slides */
+  object-fit: cover;
 }
 
+.carousel-caption h5 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #d2cac5;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+}
+
+.carousel-caption p, .carousel-caption small {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.2rem;
+  color: #d2cac5;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+
+/* Partner images bigger */
+  .partner-img {
+    width: 350px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+
+/* Card form bigger */
+  .glass-card {
+    background: rgba(0, 100, 400, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem; /* make form bigger inside */
+  }
   </style>
 </head>
 <body>
@@ -77,32 +121,31 @@
 
   <!-- Section 2: Team -->
  <section class="scroll-section section-2">
-    <div class="container text-center">
-      <h2>Meet Our Team</h2>
-      <p>Learn a little about the people behind Food for Thought.</p>
-
-  <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="container">
+      <h2 class="text-center">Our Restaurant Partners</h2>
+  <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
-    {% for member in team_members %}
+    {% for partner in restaurant_partners %}
     <div class="carousel-item {% if loop.first %}active{% endif %}">
       <!-- NEW wrapper -->
-      <div class="carousel-slide-content team-slide">
+      <div class="carousel-slide-content partner-slide">
         <img
-          src="{{ url_for('static', filename=member.photo) }}"
-          class="team-img"
-          alt="{{ member.name }}">
-        <h5 class="mt-3">{{ member.name }}</h5>
-        <p class="small">{{ member.title }}</p>
+          src="{{ url_for('static', filename=partner.image) }}"
+          class="partner-img"
+          alt="{{ partner.name }}">
+        <div class="partner-text">
+          <h5>{{ partner.name }}</h5>
+          <p>{{ partner.description }}</p>
+        </div>
       </div>
     </div>
     {% endfor %}
   </div>
-<!--  …controls…-->
-
-        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+  <!-- controls… -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#partnersCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#partnersCarousel" data-bs-slide="next">
           <span class="carousel-control-next-icon"></span>
         </button>
       </div>
@@ -156,31 +199,32 @@
 
   <!-- Section 4: Partners -->
  <section class="scroll-section section-4">
-    <div class="container">
-      <h2 class="text-center">Some of our Restaurant Partners</h2>
-  <div id="partnersCarousel" class="carousel slide" data-bs-ride="carousel">
+     <div class="container text-center">
+      <h2>Meet Our Team</h2>
+      <p>The people behind Food for Thought.</p>
+
+  <div id="teamCarousel" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
-    {% for partner in restaurant_partners %}
+    {% for member in team_members %}
     <div class="carousel-item {% if loop.first %}active{% endif %}">
       <!-- NEW wrapper -->
-      <div class="carousel-slide-content partner-slide">
+      <div class="carousel-slide-content team-slide">
         <img
-          src="{{ url_for('static', filename=partner.image) }}"
-          class="partner-img"
-          alt="{{ partner.name }}">
-        <div class="partner-text">
-          <h5>{{ partner.name }}</h5>
-          <p>{{ partner.description }}</p>
-        </div>
+          src="{{ url_for('static', filename=member.photo) }}"
+          class="team-img"
+          alt="{{ member.name }}">
+        <h5 class="mt-3">{{ member.name }}</h5>
+        <p class="small">{{ member.title }}</p>
       </div>
     </div>
     {% endfor %}
   </div>
-  <!-- controls… -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#partnersCarousel" data-bs-slide="prev">
+<!--  …controls…-->
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#partnersCarousel" data-bs-slide="next">
+        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
           <span class="carousel-control-next-icon"></span>
         </button>
       </div>

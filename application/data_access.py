@@ -5,7 +5,7 @@ mydb = mysql.connector.connect(
   host="localhost",
   user="root",
   password="",
-  database="projectdb4"
+  database="projectdb3"
 )
 
 
@@ -14,7 +14,7 @@ def get_db_connection():
         host="localhost",
         user="root",
         password="",
-        database="projectdb4"
+        database="projectdb3"
     )
 
     return mydb
