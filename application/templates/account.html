@@ -14,31 +14,28 @@
 }
 </style>
 
-<br>
-<p class="h2">{{ user_name }} {{ surname }}</p>
-<p class="h5">{{ email }}</p>
-<br>
+<div class="account-header my-5">
+  <h2 class="ethos-title">{{ user_name }} {{ surname }}'s Reviews</h2>
+  <p class="ethos-subtitle">{{ email }}</p>
+</div>
 <hr>
-<p class="h5 text-start review-title"><em>Your Reviews</em> </p>
 {% if reviews %}
     <div class="reviews">
     {% for review in reviews %}
-        <div class="card review-card" style="width: 15rem;">
-          <div class="card-body">
-              <div class="card-title"><strong></strong>{{ review.restaurant_name }}</div>
-              <h6 class="card-subtitle mb-2"><strong>Overall:</strong> {{ review.stars }}</h6>
-              <hr>
-              <div class="card-text">Ambience: {{ review.Ambience }}</div>
-              <div class="card-text">Service: {{ review.Service }}</div>
-              <div class="card-text">Location: {{ review.Location }}</div>
-              <div class="card-text">Value: {{ review.Value_for_money }}</div>
-              <hr>
-              <div class="card-text">{{ review.Overall_review }}</div>
-              <br>
-              <div class="card-text date"><em>Posted on {{ review.creation_date.strftime('%d %B %Y') }}</em></div>
-              <blockquote class="review-box">
-          </div>
-        </div>
+      <div class="card review-card flex-row mb-4" style="max-width: 600px;">
+  <div class="card-body text-start">
+    <h5 class="card-title">{{ review.restaurant_name }}</h5>
+    <h6 class="card-subtitle mb-2"><strong>Overall:</strong> {{ review.stars }}</h6>
+    <hr>
+    <p class="card-text mb-1">Ambience: {{ review.Ambience }}</p>
+    <p class="card-text mb-1">Service: {{ review.Service }}</p>
+    <p class="card-text mb-1">Location: {{ review.Location }}</p>
+    <p class="card-text mb-1">Value: {{ review.Value_for_money }}</p>
+    <hr>
+    <p class="card-text">{{ review.Overall_review }}</p>
+    <p class="card-text"><em>Posted on {{ review.creation_date.strftime('%d %B %Y') }}</em></p>
+  </div>
+</div>
     {% endfor %}
     </div>
 

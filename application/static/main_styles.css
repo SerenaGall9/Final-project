@@ -77,12 +77,13 @@ p, a, li, span, label, input, button {
 }
 
 .reviews {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
 }
+
 
 .review-card {
     text-align: left;
@@ -739,25 +740,55 @@ p, a, li, span, label, input, button {
 .review-card {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  padding: 2rem;
-  width: 80%;
-  max-width: 600px;
-  max-height: 600px;
-  border-radius: 20px;
-  color: #D2CAC5;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 400px;
+  padding: 1rem;
 }
+
+.review-card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+
+.review-card .card-title {
+  font-family: 'Lora', serif;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.review-card .card-text {
+  font-family: 'Lato', sans-serif;
+  color: #D2CAC5;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.review-card .date {
+  font-size: 0.8rem;
+  color: #D2CAC5;
+}
+
 
 .review-card h5 {
   font-family: 'Lora', serif;
+  color: #D2CAC5;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
 
 .review-card p {
   font-family: 'Lato', sans-serif;
+  color: #D2CAC5;
   font-size: 1rem;
 }
 
