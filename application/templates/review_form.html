@@ -1,87 +1,30 @@
 {% extends "layout2.html" %}
 {% block body_content %}
-  <h2>Leave a Review for "{{ restaurant.name }}"</h2>
 
-  <form method="POST" class="mt-4">
-
-    <!-- Overall Rating -->
-    <div class="rating-group">
-      <label>Overall Experience:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="overall-{{ i }}" name="overall_rating" value="{{ i }}">
-          <label for="overall-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Ambience -->
-    <div class="rating-group">
-      <label>Ambience:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="ambience-{{ i }}" name="ambience_rating" value="{{ i }}">
-          <label for="ambience-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Service -->
-    <div class="rating-group">
-      <label>Service:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="service-{{ i }}" name="service_rating" value="{{ i }}">
-          <label for="service-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Location -->
-    <div class="rating-group">
-      <label>Location:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="location-{{ i }}" name="location_rating" value="{{ i }}">
-          <label for="location-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- Value -->
-    <div class="rating-group">
-      <label>Value for Money:</label><br>
-      <div class="star-rating">
-        {% for i in range(5, 0, -1) %}
-          <input type="radio" id="value-{{ i }}" name="value_rating" value="{{ i }}">
-          <label for="value-{{ i }}">&#9733;</label>
-        {% endfor %}
-      </div>
-    </div>
-
-    <br>
-
-    <!-- Comment Box -->
-    <p>Additional Comments:</p>
-    <div class="d-flex justify-content-center mb-3">
-      <textarea name="comment" class="form-control" rows="5" style="max-width: 600px; align: center;"></textarea>
-    </div>
-
-    <!-- Submit -->
-    <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
-  </form>
-
-<!-- Extra CSS for prettier stars -->
 <style>
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  text-align: center;
+  font-family: 'Lora', serif;
+  background-color: #11293D !important;
+  color: #D2CAC5 !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 .star-rating {
-  direction: rtl; /* Right to Left for star selection */
+  direction: rtl;
   font-size: 2rem;
   unicode-bidi: bidi-override;
   display: inline-flex;
 }
 
 .star-rating input {
-  display: none; /* hide radio buttons */
+  display: none;
 }
 
 .star-rating label {
@@ -97,5 +40,124 @@
 .star-rating input:checked ~ label {
   color: gold;
 }
+
+/* Form Wrapper to mimic signup style */
+.review-form-wrapper {
+  background-color: #d2cac5;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 700px;
+  width: 90%;
+  margin: 2rem auto;
+  color: #49111c;
+}
+
+.review-form-wrapper h2 {
+  font-family: 'Playfair Display', serif;
+  color: #49111c;
+}
+
+.review-form-wrapper label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #49111c;
+}
+
+.review-form-wrapper textarea {
+  resize: none;
+}
+
+/* Button Styling */
+.review-form-wrapper .btn-primary {
+  background-color: white;
+  color: #49111c;
+  border: 2px solid #49111c;
+  transition: all 0.3s ease;
+}
+
+.review-form-wrapper .btn-primary:hover {
+  background-color: #11293D;
+  color: #d2cac5;
+}
+
 </style>
+
+<div class="container d-flex flex-column align-items-center justify-content-center">
+  <div class="review-form-wrapper">
+
+    <h2 class="mb-4">Leave a Review for "{{ restaurant.name }}"</h2>
+
+    <form method="POST">
+
+      <!-- Overall Rating -->
+      <div class="rating-group mb-3">
+        <label>Overall Experience:</label>
+        <div class="star-rating">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="overall-{{ i }}" name="overall_rating" value="{{ i }}">
+            <label for="overall-{{ i }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Ambience -->
+      <div class="rating-group mb-3">
+        <label>Ambience:</label>
+        <div class="star-rating">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="ambience-{{ i }}" name="ambience_rating" value="{{ i }}">
+            <label for="ambience-{{ i }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Service -->
+      <div class="rating-group mb-3">
+        <label>Service:</label>
+        <div class="star-rating">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="service-{{ i }}" name="service_rating" value="{{ i }}">
+            <label for="service-{{ i }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="rating-group mb-3">
+        <label>Location:</label>
+        <div class="star-rating">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="location-{{ i }}" name="location_rating" value="{{ i }}">
+            <label for="location-{{ i }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Value -->
+      <div class="rating-group mb-3">
+        <label>Value for Money:</label>
+        <div class="star-rating">
+          {% for i in range(5, 0, -1) %}
+            <input type="radio" id="value-{{ i }}" name="value_rating" value="{{ i }}">
+            <label for="value-{{ i }}">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Comment Box -->
+      <div class="mb-4">
+        <label>Additional Comments:</label>
+        <textarea name="comment" class="form-control" rows="4"></textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+
+    </form>
+
+  </div>
+</div>
+
 {% endblock %}

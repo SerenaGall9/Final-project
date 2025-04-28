@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
 
-
-body {text-align:center;
-      font-family: 'Lora', serif;
-      background-color: #11293D !important;
-      color: #D2CAC5 !important;
+html {
+  scroll-behavior: smooth;
 }
 
-html, body {
-  height: 100%;
+body {
+  text-align: center;
+  font-family: 'Lora', serif;
+  background-color: #11293D !important;
+  color: #D2CAC5 !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -537,10 +540,10 @@ p, a, li, span, label, input, button {
     }
 
  .custom-logo {
-  font-family: 'Playfair Display';
+  font-family: 'Lora';
   font-size: 25px;
-  color: #bab4b1;
-  text-align: center;
+  color: #49111c;
+  text-align: right;
 }
 
 @keyframes fadeIn {
@@ -559,10 +562,27 @@ p, a, li, span, label, input, button {
 }
 
 .offcanvas {
-  background-color: #265780;
-  color: #bab4b1;
+  background: rgba(210, 202, 197, 0.7); /* #d2cac5 but transparent */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* for Safari */
+  color: #49111c; /* your dark wine color for text */
   text-align: center;
+  border-right: 1px solid rgba(73, 17, 28, 0.2); /* subtle border */
 }
+.offcanvas a.nav-link {
+  color: #49111c;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: color 0.3s ease, background 0.3s ease;
+}
+
+.offcanvas a.nav-link:hover {
+  background: rgba(73, 17, 28, 0.15); /* very light burgundy hover */
+  color: #11293D; /* deep blue on hover if you want contrast */
+  border-radius: 8px;
+  padding: 5px 10px;
+}
+
 
 /* === Ethos Hero Section === */
 .ethos-hero {
@@ -786,3 +806,6 @@ p, a, li, span, label, input, button {
   border-radius: 2px;
 }
 
+footer {
+  margin-top: auto;
+}

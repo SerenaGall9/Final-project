@@ -17,10 +17,10 @@
 <body>
 
 <nav class="navbar fixed-top" style="background-color: #152334;">
-  <div class="container-fluid d-flex justify-content-between align-items-center">
+  <div class="container-fluid d-flex justify-content-between align-items-right">
 
     <!-- Left: Burger Menu -->
-   <button class="btn btn-outline-light rounded-circle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" style="width:40px; height:40px; font-weight:bold; background-color: #474b24; border:none; color: #d2cac5;">
+   <button class="btn btn-outline-light rounded-circle" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" style="width:40px; height:40px; font-weight:bold; background-color: #d2cac5; border:none; color: #49111c;">
   {% if session.get('username') %}
     {{ session['username'][0]|upper }}
   {% else %}
@@ -50,30 +50,31 @@
 
 <!-- Offcanvas Navbar Menu -->
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title custom-logo fade-in mx-auto" id="offcanvasNavbarLabel">Food for Thought</h5>
+  <div class="offcanvas-header justify-content-center"> <!-- force center -->
+    <h5 class="offcanvas-title custom-logo fade-in" id="offcanvasNavbarLabel">
+      {% if session.get('loggedIn') %}
+        Welcome, {{ session['username'] }}!
+      {% else %}
+        Food for Thought
+      {% endif %}
+    </h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-      <li>
-  {% if session.get('loggedIn') %}
-    Welcome, {{ session['username'] }}!
-  {% endif %}
-    </li>
-
       <li class="nav-item">
         <a class="nav-link active" aria-current="page" href="{{url_for('all_restaurants')}}">Our Restaurants</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{url_for('ethos')}}">Our Ethos</a>
       </li>
-      <a class="nav-link" href="{{ url_for('account') }}" role="button">
-        Account
-      </a>
-
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('account') }}">Account</a>
+      </li>
+    </ul>
   </div>
 </div>
+
 
 <!-- Content Block where child templates will be inserted -->
 <main style="padding-top: 80px;">
