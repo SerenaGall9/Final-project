@@ -39,13 +39,23 @@
 
 
     <!-- Right: empty spacer for layout balance -->
-    <div>
-    {% if session['loggedIn'] == False %}
-    <a href="{{url_for('login')}}"><button> Login</button></a>
-    {% else %}
-    <a href="{{url_for('logout')}}"><button> Logout </button></a>
-    {% endif %}
-  </div>
+<div>
+  {% if session.get('loggedIn') %}
+    <a href="{{ url_for('logout') }}">
+      <button class="btn btn-outline-light rounded-pill"
+              style="width: 90px; height: 40px; font-weight: bold; background-color: #d2cac5; border: none; color: #49111c;">
+        Logout
+      </button>
+    </a>
+  {% else %}
+    <a href="{{ url_for('login') }}">
+      <button class="btn btn-outline-light rounded-pill"
+              style="width: 90px; height: 40px; font-weight: bold; background-color: #d2cac5; border: none; color: #49111c;">
+        Login
+      </button>
+    </a>
+  {% endif %}
+</div>
 </nav>
 
 <!-- Offcanvas Navbar Menu -->
@@ -96,7 +106,7 @@
         crossorigin="anonymous"></script>
 
 </body>
-<!-- Footer -->
+
 
 </html>
 

@@ -31,21 +31,69 @@ main {
   justify-content: center;
 }
 
-/* Gradient backgrounds */
-.section-1 {
-  background: linear-gradient(to bottom, #11293D, #331B22);
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.section-2 {
-  background: linear-gradient(to bottom, #331B22, #152334);
+.banner-overlay {
+  animation: fadeUp 1s ease-out forwards;
 }
 
-.section-3 {
-  background: linear-gradient(to bottom, #152334, #0f1b2a);
+.banner-image {
+  width: 100%;
+  height: 80vh; /* Taller hero */
+  object-fit: cover;
+  filter: brightness(70%); /* darken image slightly so text pops */
 }
 
-.section-4 {
-  background: linear-gradient(to bottom, #0f1b2a, #11293D);
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* semi-transparent black */
+  backdrop-filter: blur(2px);
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.restaurant-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  color: #d2cac5;
+  margin-bottom: 1rem;
+}
+
+.restaurant-description {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.5rem;
+  max-width: 800px;
+  color: #d2cac5;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+}
+
+
+  body {
+  text-align: center;
+  font-family: 'Lora', serif;
+  background: linear-gradient(to bottom, #152334, #331B22, #27263F, #172A3A);
+  background-attachment: fixed; /* subtle parallax feeling */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #D2CAC5 !important;
+  min-height: 100vh;
 }
 
 /* Carousel images */
@@ -112,20 +160,22 @@ p.restaurant-description {
 
 <div class="scroll-container">
 
-<!-- === Hero Section === -->
-<section class="scroll-section section-1">
-  <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center section-hero">
-    <div class="row w-100 align-items-center">
-      <div class="col-md-6 text-center">
-        <img src="{{ url_for('static', filename=banner_image) }}" alt="{{ name }}" class="img-fluid rounded-4 hero-image">
-      </div>
-      <div class="col-md-6 text-center text-md-start">
-        <h1 class="restaurant-title">{{ name }}</h1>
-        <p class="restaurant-description">{{ description }}</p>
-      </div>
+
+<!-- === Hero Section with Overlay Text === -->
+<section class="scroll-section section-1 p-0 m-0" style="margin-top: 0;">
+  <div class="position-relative">
+    <!-- Banner image -->
+    <img src="{{ url_for('static', filename=banner_image) }}" alt="{{ name }}" class="img-fluid w-100 banner-image">
+
+    <!-- Overlay text -->
+    <div class="banner-overlay d-flex flex-column justify-content-center align-items-center text-center">
+      <h1 class="restaurant-title">{{ name }}</h1>
+      <p class="restaurant-description">{{ description }}</p>
     </div>
   </div>
 </section>
+
+
 
 <!-- === Details + Review Button Section === -->
 <section class="scroll-section section-2 d-flex align-items-center justify-content-center details-section">

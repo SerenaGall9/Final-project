@@ -32,19 +32,12 @@ p, a, li, span, label, input, button {
 .carousel-item:hover {
     transform: scale(1);
 }
-.card p {
-    border: 5px solid #11293D;
-}
 
-.card-container {
-    background-color: #11293D;  /* Or whatever your body bg color is */
-}
 
 .carousel-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-color:#11293D;
 }
 
 .vibe-name {
@@ -360,7 +353,7 @@ p, a, li, span, label, input, button {
         gap: 5px;
         padding: .4em;
         position: relative;
-        background-color: #11293D;
+        background-color: #152334;
         border: none;
     }
 
@@ -451,28 +444,27 @@ p, a, li, span, label, input, button {
     }
 
     .cuisine-card {
-        background-color: #B9BAA3;;
+        background-color: #d2cac5;;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         cursor: pointer;
         position: relative;
-        height: 200px; /* Keep the fixed height */
-        width: 220px; /* Set a fixed width for the cards */
+        height: 280px;
+        width: 450px;
         text-align: center;
-        display: flex; /* Use flexbox to center content within the card */
+        display: flex;
         flex-direction: column;
         justify-content: center; /* Center vertically */
         align-items: center; /* Center horizontally */
-        flex-basis: auto; /* Allow flex items to take their inherent width */
+        flex: 0 0 auto;
     }
 
     /* Force the first two items onto their own line (row of two) */
     .cuisine-grid > div:nth-child(1),
     .cuisine-grid > div:nth-child(2) {
-        flex-basis: calc(50% - 10px); /* Try to take half the width */
-        max-width: 300px; /* Optional max width */
+        flex-basis: calc(40% - 10px); /* Try to take half the width */
     }
 
     /* Force the next three items onto their own line (row of three) */
@@ -480,7 +472,6 @@ p, a, li, span, label, input, button {
     .cuisine-grid > div:nth-child(4),
     .cuisine-grid > div:nth-child(5) {
         flex-basis: calc(33.33% - 14px); /* Try to take one-third the width */
-        max-width: 380px; /* Optional max width */
     }
 
     .cuisine-card:hover {
@@ -491,7 +482,7 @@ p, a, li, span, label, input, button {
 
     .cuisine-card img {
         width: 100%;
-        height: 160px;
+        height: 240px;
         object-fit: cover;
     }
 
@@ -499,9 +490,9 @@ p, a, li, span, label, input, button {
         padding: 12px;
         text-align: center;
         font-weight: bold;
-        color: #474B24;
+        color: #49111c;
         order: 1; /* Push the name below the image */
-        background-color: #B9BAA3; /* Add your desired background color here */
+        background-color: #d2cac5; /* Add your desired background color here */
     }
 
     .cuisine-card a {
@@ -586,16 +577,18 @@ p, a, li, span, label, input, button {
 
 /* === Ethos Hero Section === */
 .ethos-hero {
-  background-color: #172A3A; /* soft navy (logo-matching background) */
-  color: #D2CAC5; /* beige-grey */
+  background: transparent;
+  color: #D2CAC5;
   min-height: 80vh;
   padding: 4rem 2rem;
-  background-size: cover;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .ethos-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 3rem;
   font-weight: bold;
   color: #D2CAC5;
@@ -605,7 +598,7 @@ p, a, li, span, label, input, button {
   font-family: 'Lato', sans-serif;
   font-size: 1.5rem;
   margin-top: 1rem;
-  color: #a3a0a0;
+  color: #d2cac5;
 }
 
 /* === Ethos Content Sections === */
@@ -614,7 +607,7 @@ p, a, li, span, label, input, button {
 }
 
 .ethos-heading {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 2.2rem;
   margin-bottom: 1rem;
   color: #d2cac5;
@@ -623,15 +616,20 @@ p, a, li, span, label, input, button {
 .ethos-section p {
   font-family: 'Lato', sans-serif;
   font-size: 1.1rem;
-  color: #B9BAA3; /* neutral body text */
+  color: #d2cac5;
 }
 
 /* === Quote Section === */
 .ethos-quote {
-  font-family: 'Playfair Display', serif;
-  background-color: #2A4C3C;
-  color: #d2cac5;
+  font-family: 'Lora', serif;
+  background: rgba(210, 202, 197, 0.5);
+  backdrop-filter: blur(5px); /* adds a soft glassy effect */
+  color: #49111c;
+  padding: 4rem 2rem;
+  border-radius: 0;
+  margin: 0;
 }
+
 
 .ethos-quote blockquote {
   font-size: 1.5rem;
@@ -732,7 +730,7 @@ p, a, li, span, label, input, button {
 }
 
 .reviews-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 2.5rem;
   font-weight: bold;
   color: #D2CAC5;
@@ -753,7 +751,7 @@ p, a, li, span, label, input, button {
 }
 
 .review-card h5 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 1.5rem;
   margin-bottom: 1rem;
 }
