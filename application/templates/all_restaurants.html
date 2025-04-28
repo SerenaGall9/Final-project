@@ -6,70 +6,69 @@
   <h1 class="mb-4">Explore Restaurants</h1>
 
   <!-- Filter bar -->
-  <form method="get" action="{{ url_for('all_restaurants') }}" class="row g-3 mb-4 filter-bar p-4 rounded shadow-sm">
-    <div class="col-md-3 d-flex justify-content-center">
-      <!-- Cuisine Filter -->
-      <div class="w-100">
-        <label for="cuisine" class="form-label">Cuisine</label>
-        <select class="form-select" name="cuisine" id="cuisine">
-          <option value="">All</option>
-          {% for c in cuisines %}
-            <option value="{{ c.cuisine_id }}" {% if selected_cuisine == c.cuisine_id %}selected{% endif %}>{{ c.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
+ <!-- Filter Bar -->
+<form method="get" action="{{ url_for('all_restaurants') }}" class="filter-bar p-4 rounded shadow-sm text-center">
+
+  <div class="row justify-content-center mb-4">
+    <!-- Cuisine -->
+    <div class="col-md-3 mb-3">
+      <label for="cuisine" class="form-label">Cuisine</label>
+      <select class="form-select" name="cuisine" id="cuisine">
+        <option value="">All</option>
+        {% for c in cuisines %}
+          <option value="{{ c.cuisine_id }}" {% if selected_cuisine == c.cuisine_id %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
     </div>
 
-    <div class="col-md-3 d-flex justify-content-center">
-      <!-- Vibe Filter -->
-      <div class="w-100">
-        <label for="vibe" class="form-label">Vibe</label>
-        <select class="form-select" name="vibe" id="vibe">
-          <option value="">All</option>
-          {% for v in vibes %}
-            <option value="{{ v.vibe_id }}" {% if selected_vibe == v.vibe_id %}selected{% endif %}>{{ v.name }}</option>
-          {% endfor %}
-        </select>
-      </div>
+    <!-- Vibe -->
+    <div class="col-md-3 mb-3">
+      <label for="vibe" class="form-label">Vibe</label>
+      <select class="form-select" name="vibe" id="vibe">
+        <option value="">All</option>
+        {% for v in vibes %}
+          <option value="{{ v.vibe_id }}" {% if selected_vibe == v.vibe_id %}selected{% endif %}>{{ v.name }}</option>
+        {% endfor %}
+      </select>
     </div>
 
-    <div class="col-md-3 d-flex justify-content-center">
-      <!-- Location Filter -->
-      <div class="w-100">
-        <label for="location" class="form-label">Location</label>
-        <select class="form-select" name="location" id="location">
-          <option value="">All</option>
-          {% for l in locations %}
-            <option value="{{ l.location_id }}" {% if selected_location == l.location_id %}selected{% endif %}>{{ l.direction }}</option>
-          {% endfor %}
-        </select>
-      </div>
+    <!-- Location -->
+    <div class="col-md-3 mb-3">
+      <label for="location" class="form-label">Location</label>
+      <select class="form-select" name="location" id="location">
+        <option value="">All</option>
+        {% for l in locations %}
+          <option value="{{ l.location_id }}" {% if selected_location == l.location_id %}selected{% endif %}>{{ l.direction }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- Sort By + Filter By Buttons -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-3 mb-3">
+      <select class="form-select" name="sort" id="sort">
+        <option value="">Sort By</option>
+        <option value="top5" {% if sort_option == 'top5' %}selected{% endif %}>Our Top Five</option>
+        <option value="bottom5" {% if sort_option == 'bottom5' %}selected{% endif %}>Our Worst Five</option>
+      </select>
     </div>
 
-    <div class="col-md-3 d-flex justify-content-center">
-      <!-- Sort By Filter -->
-      <div class="w-100">
-        <label for="sort" class="form-label">Sort By</label>
-        <select class="form-select" name="sort" id="sort">
-          <option value="">All</option>
-          <option value="top5" {% if sort_option == 'top5' %}selected{% endif %}>Our Top Five</option>
-          <option value="bottom5" {% if sort_option == 'bottom5' %}selected{% endif %}>Our Worst Five</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="col-md-3 d-flex justify-content-center">
-      <!-- Button to open the additional filters modal -->
+    <div class="col-md-3 mb-3">
       <button class="btn btn-outline-secondary w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#additionalFiltersModal" aria-controls="additionalFiltersModal">
         Filter by
       </button>
     </div>
+  </div>
 
-    <div class="col-md-3 d-flex align-items-end">
-      <!-- Apply Filters Button -->
-      <button type="submit" class="btn w-100">Apply Filters</button>
+  <!-- Apply Filters Button -->
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <button type="submit" class="btn btn-primary btn-lg w-100">Apply Filters</button>
     </div>
-  </form>
+  </div>
+</form>
+
 
   <!-- Offcanvas for Additional Filters -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="additionalFiltersModal" aria-labelledby="additionalFiltersModalLabel">

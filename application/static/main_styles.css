@@ -712,7 +712,7 @@ p, a, li, span, label, input, button {
 
 
 .filter-bar .btn {
-    background-color: #D2CAC5 ;
+    background-color: #D2CAC5;
     color: #49111c;
 
 }
@@ -813,7 +813,7 @@ p, a, li, span, label, input, button {
   }
 }
 .restaurant-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Lora', serif;
   font-size: 3rem;
   font-weight: bold;
   color: #D2CAC5;
